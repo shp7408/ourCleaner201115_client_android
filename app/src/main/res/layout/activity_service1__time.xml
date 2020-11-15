@@ -723,6 +723,7 @@ android:orientation="vertical">
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 android:text="다음"
+                android:textColor="@color/white"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/background"
                 android:enabled="false"
