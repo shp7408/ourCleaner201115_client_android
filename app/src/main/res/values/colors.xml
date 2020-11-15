@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary1">#64FE2E </color>
+    <color name="colorPrimary2">#7BE495  </color>
+    <color name="colorPrimary3">#ACFA58  </color>
+
+    <color name="colorName">#205072 </color>
+    <color name="colorTrademark">#56C596 </color>
+    <color name="colorSecondary1">#2C6975</color>
+    <color name="colorSecondary2">#68B2A0</color>
+    <color name="colorSecondary3">#CDE0C9 </color>
+    <color name="colorSecondary4">#E0ECDE </color>
+    <color name="colorSuccess">#7BE495  </color>
+    <color name="colorWarning">#FFCF5C  </color>
+    <color name="colorError">#F75010  </color>
+    <color name="white">#FFFFFF  </color>
+    <color name="black">#000000  </color>
+    <color name="red">#FF0000  </color>
+    <color name="blue">#0000FF  </color>
+    <color name="grey">#424242  </color>
+    <color name="transparent">#00000000</color>
+</resources>

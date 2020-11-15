@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="집 주소"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:id="@+id/placeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:paddingStart="20dp"
+            android:paddingLeft="20dp"
+            android:textColor="@color/black"
+            android:focusable="false"
+            android:textSize="20sp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="상세주소 입력"
+            android:inputType="text"
+            android:id="@+id/detailPlaceEdit"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="평수(공급면적)"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/size2Btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:background="@drawable/bordercircle602"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:visibility="gone"
+                />
+            <Button
+                android:id="@+id/size1Btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:textSize="20sp"
+                android:text="선택"
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="다음"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

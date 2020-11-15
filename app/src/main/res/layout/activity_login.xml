@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".View.LoginActivity"
+    android:padding="40dp"
+    >
+
+
+    <TextView
+        android:background="@drawable/border"
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
+        android:text="우리집 청소는\n
+'우리집 청소'에\n
+맡기세요."
+        android:padding="20dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="40sp"
+
+
+        />
+
+<!--    android:shadowDx="2"-->
+<!--    android:shadowDy="2"-->
+<!--    android:shadowRadius="15"-->
+<!--    android:shadowColor="@color/colorPrimary1"-->
+
+
+    <Button
+        android:id="@+id/btn_custom_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카카오 로그인"
+        android:visibility="gone"/>
+
+    <com.kakao.usermgmt.LoginButton
+        android:id="@+id/btn_kakao_login"
+        android:layout_width="371dp"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_custom_login_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="카카오 로그아웃"
+        tools:ignore="MissingConstraints" />
+
+
+
+
+</LinearLayout>

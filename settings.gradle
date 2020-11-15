@@ -1,0 +1,3 @@
+include ':commons-codec-1.15-tests'
+include ':app'
+rootProject.name = "ourCleaner_201008_java"

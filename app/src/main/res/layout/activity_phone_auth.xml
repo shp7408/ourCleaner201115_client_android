@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/close"
+            />
+
+        <TextView
+            android:id="@+id/main_label"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="휴대폰 인증"
+            android:textColor="@color/black"
+            android:paddingStart="10dp"
+            android:textSize="18sp"
+            android:paddingLeft="10dp"
+            android:gravity="center_vertical"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border"
+            android:text="예약하시는 분의 연락처를 \n입력해주세요."
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+
+
+        <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="20dp">
+
+            <EditText
+                android:id="@+id/phoneNumEdit"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="전화번호를 입력해주세요."
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                />
+
+            <Button
+                android:id="@+id/sendBtn"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="인증번호\n전송"
+                android:background="@drawable/background2"
+                android:layout_marginLeft="30dp"
+                android:enabled="false"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="20dp">
+
+            <EditText
+                android:id="@+id/authNumEdit"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:hint="인증번호를 입력해주세요."
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/time_counter"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:gravity="center"
+                android:layout_marginLeft="30dp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+
+
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="다음"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

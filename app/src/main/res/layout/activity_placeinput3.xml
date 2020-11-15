@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/back_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:text="기본정보"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:focusable="false"
+            android:paddingBottom="30dp"
+            android:textSize="15sp"
+            android:text="선택된 내용은 더 나은 서비스를 위한 필수 정보 입니다.\n서비스 가격에 영향을 미치지 않습니다."/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="반려동물"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginStart="10dp"
+            android:textSize="15sp"
+            android:layout_marginLeft="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+
+            >
+
+            <Button
+            android:id="@+id/pet1Btn"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:textSize="25sp"
+            android:text="개"
+            android:textColor="@color/black"
+            android:background="@drawable/color_change"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp" />
+
+            <Button
+                android:id="@+id/pet2Btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:textSize="25sp"
+                android:text="고양이"
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:id="@+id/pet3Btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:textSize="25sp"
+                android:text="기타"
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:id="@+id/pet4Btn"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:textSize="25sp"
+                android:text="없음"
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/petGuideTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="안전 관련 주의사항"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="예)두 마리가 있어요. 문 열때 조심해주세요."
+            android:textSize="15sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/petGuideEdit"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
+
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영유아(7세 이하)"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:layout_weight="2"
+            />
+
+            <Button
+                android:id="@+id/childIsBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/color_change"
+                android:text="있음"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <Button
+            android:id="@+id/childNotBtn"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="없음"
+                android:textStyle="bold"
+
+                android:textSize="15sp"
+            android:textColor="@color/black"
+                android:background="@drawable/color_change"
+            />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CCTV"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:layout_weight="2"
+                />
+
+            <Button
+                android:id="@+id/ctIsBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="있음"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                />
+
+            <Button
+                android:id="@+id/ctNotBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="없음"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            android:weightSum="2">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="무료 주차"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:padding="10dp"
+                android:textSize="15sp"
+                android:layout_weight="2"
+                />
+
+            <Button
+                android:id="@+id/parkingIsBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="가능"
+                android:textStyle="bold"
+
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                />
+
+            <Button
+                android:id="@+id/parkingNotBtn"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="불가"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:background="@drawable/color_change"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/parkingGuideTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="주차 방법"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:visibility="gone"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="예)지하주차장에 주차해 주세요."
+            android:textSize="15sp"
+            android:id="@+id/parkingGuideEdit"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="집 명칭"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:layout_marginTop="30dp"
+
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:hint="우리집"
+            android:textSize="20sp"
+            android:focusedByDefault="false"
+            android:id="@+id/placeNameEdit"/>
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="저장"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

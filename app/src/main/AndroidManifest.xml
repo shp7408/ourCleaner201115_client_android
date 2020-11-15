@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.ourcleaner_201008_java">
+
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- SMS Permission -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:name=".GlobalApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".View.Placeinput3Activity"></activity>
+        <activity android:name=".View.Placeinput2Activity" />
+        <activity android:name=".View.DaumWebViewActivity" />
+        <activity android:name=".View.PlaceinputActivity" />
+        <activity android:name=".View.Service1_TimeActivity" />
+        <activity android:name=".View.TermsMoreActivity" />
+        <activity android:name=".View.NameinputActivity" />
+        <activity android:name=".View.TermsActivity" />
+        <activity android:name=".View.PhoneAuthActivity" />
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+
+        <activity android:name=".View.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".View.MainActivity" />
+
+        <receiver
+            android:name=".Receiver.Broadcast"
+            android:enabled="true"
+            android:exported="true">
+
+            <!-- 오레오 이전 버전에서는 intent-filter 없애야함. -->
+            <!-- <intent-filter android:priority="9999"> -->
+            <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
+            <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
+            <!-- </intent-filter> -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
