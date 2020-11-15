@@ -125,7 +125,7 @@ public class Placeinput3Activity extends AppCompatActivity {
 
         ctIsBtn = findViewById(R.id.ctIsBtn);
         ctNotBtn = findViewById(R.id.ctNotBtn);
-
+//
         parkingIsBtn = findViewById(R.id.parkingIsBtn);
         parkingNotBtn = findViewById(R.id.parkingNotBtn);
 
