@@ -197,7 +197,7 @@ public class Placeinput3Activity extends AppCompatActivity {
                         nullCheckforNextBtnActivate();
 
                         break;
-
+//dd
                     //기타 버튼 행동
                     case R.id.pet3Btn:
                         Log.d(TAG, "=== pet3Btn ===" );
