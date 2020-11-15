@@ -2,9 +2,10 @@ package com.example.ourcleaner_201008_java.DTO;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class MyplaceDTO {
+public class MyplaceDTO  implements Serializable {
 
     String currentUser;
 
