@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 버튼 클릭시 이미지 -->
+    <item android:drawable="@drawable/baseline_night_shelter_black_18dp"
+        android:state_pressed="true">
+        <stroke
+            android:width="3dp"
+            android:color="@color/black" />
+        <solid android:color="@color/black" />
+    </item>
+
+    <!-- 기본이미지 -->
+    <item android:drawable="@drawable/outline_night_shelter_white_18dp">
+        <stroke
+            android:width="3dp"
+            android:color="@color/black" />
+        <solid android:color="@color/black" />
+    </item>
+
+</selector>
+
+
