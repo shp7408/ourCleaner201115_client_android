@@ -69,7 +69,6 @@ public class Placeinput3Activity extends AppCompatActivity {
 
     HashMap<String, Boolean> nexthashMap; //전체 클릭 여부 저장하는 해쉬맵
 
-
     /* volley 서버로 데이터 보내기 위한 변수 선언 */
     private RequestQueue queue;
 
@@ -166,7 +165,11 @@ public class Placeinput3Activity extends AppCompatActivity {
                         Log.d(TAG, "=== pet1Btn ===" );
 
                         pet1Btn.setSelected(true);
+                        pet1Btn.setTextColor(getResources().getColor(R.color.white));
+
                         pet4Btn.setSelected(false);
+                        pet4Btn.setTextColor(getResources().getColor(R.color.black));
+
                         Log.d(TAG, "=== 반려동물 유의사항 입력란 나타남 ===" );
                         petGuideTxt.setVisibility(View.VISIBLE);
                         petGuideEdit.setVisibility(View.VISIBLE);
@@ -183,7 +186,11 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.pet2Btn:
                         Log.d(TAG, "=== pet2Btn ===" );
                         pet2Btn.setSelected(true);
+                        pet2Btn.setTextColor(getResources().getColor(R.color.white));
+
                         pet4Btn.setSelected(false);
+                        pet4Btn.setTextColor(getResources().getColor(R.color.black));
+
                         Log.d(TAG, "=== 반려동물 유의사항 입력란 나타남 ===" );
                         petGuideTxt.setVisibility(View.VISIBLE);
                         petGuideEdit.setVisibility(View.VISIBLE);
@@ -202,7 +209,11 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.pet3Btn:
                         Log.d(TAG, "=== pet3Btn ===" );
                         pet3Btn.setSelected(true);
+                        pet3Btn.setTextColor(getResources().getColor(R.color.white));
+
                         pet4Btn.setSelected(false);
+                        pet4Btn.setTextColor(getResources().getColor(R.color.black));
+
                         Log.d(TAG, "=== 반려동물 유의사항 입력란 나타남 ===" );
                         petGuideTxt.setVisibility(View.VISIBLE);
                         petGuideEdit.setVisibility(View.VISIBLE);
@@ -221,9 +232,15 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.pet4Btn:
                         Log.d(TAG, "=== pet4Btn ===" );
                         pet4Btn.setSelected(true);
+                        pet4Btn.setTextColor(getResources().getColor(R.color.white));
+
                         pet1Btn.setSelected(false);
+                        pet1Btn.setTextColor(getResources().getColor(R.color.black));
                         pet2Btn.setSelected(false);
+                        pet2Btn.setTextColor(getResources().getColor(R.color.black));
                         pet3Btn.setSelected(false);
+                        pet3Btn.setTextColor(getResources().getColor(R.color.black));
+
                         Log.d(TAG, "=== 반려동물 유의사항 입력란 사라짐 ===" );
                         petGuideTxt.setVisibility(View.GONE);
                         petGuideEdit.setVisibility(View.GONE);
@@ -261,7 +278,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.childIsBtn:
                         Log.d(TAG, "=== 영유아 있음 버튼 클릭 ===" );
                         childIsBtn.setSelected(true);
+                        childIsBtn.setTextColor(getResources().getColor(R.color.white));
+
                         childNotBtn.setSelected(false);
+                        childNotBtn.setTextColor(getResources().getColor(R.color.black));
 
                         childBool = true;
 
@@ -274,8 +294,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                         case R.id.childNotBtn:
                             Log.d(TAG, "=== 영유아 없음 버튼 클릭 ===" );
                             childIsBtn.setSelected(false);
-                            childNotBtn.setSelected(true);
+                            childIsBtn.setTextColor(getResources().getColor(R.color.black));
 
+                            childNotBtn.setSelected(true);
+                            childNotBtn.setTextColor(getResources().getColor(R.color.white));
                             childBool = false;
 
                             nexthashMap.put("영유아", true);
@@ -302,7 +324,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.ctIsBtn:
                         Log.d(TAG, "=== cctv 있음 버튼 클릭 ===" );
                         ctIsBtn.setSelected(true);
+                        ctIsBtn.setTextColor(getResources().getColor(R.color.white));
+
                         ctNotBtn.setSelected(false);
+                        ctNotBtn.setTextColor(getResources().getColor(R.color.black));
 
                         cctvBool = true;
 
@@ -315,7 +340,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.ctNotBtn:
                         Log.d(TAG, "=== cctv 없음 버튼 클릭 ===" );
                         ctIsBtn.setSelected(false);
+                        ctIsBtn.setTextColor(getResources().getColor(R.color.black));
+
                         ctNotBtn.setSelected(true);
+                        ctNotBtn.setTextColor(getResources().getColor(R.color.white));
 
                         cctvBool = false;
 
@@ -341,7 +369,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.parkingIsBtn:
                         Log.d(TAG, "=== 무료주차 가능 버튼 클릭 ===" );
                         parkingIsBtn.setSelected(true);
+                        parkingIsBtn.setTextColor(getResources().getColor(R.color.white));
+
                         parkingNotBtn.setSelected(false);
+                        parkingNotBtn.setTextColor(getResources().getColor(R.color.black));
 
                         Log.d(TAG, "=== 무료주차 주차안내 텍스트, 에디트 나타남 ===" );
                         parkingGuideTxt.setVisibility(View.VISIBLE);
@@ -358,7 +389,10 @@ public class Placeinput3Activity extends AppCompatActivity {
                     case R.id.parkingNotBtn:
                         Log.d(TAG, "=== 무료주차 불가능 버튼 클릭 ===" );
                         parkingIsBtn.setSelected(false);
+                        parkingIsBtn.setTextColor(getResources().getColor(R.color.black));
+
                         parkingNotBtn.setSelected(true);
+                        parkingNotBtn.setTextColor(getResources().getColor(R.color.white));
 
                         Log.d(TAG, "=== 무료주차 주차안내 텍스트, 에디트 사라짐 ===" );
                         parkingGuideTxt.setVisibility(View.GONE);

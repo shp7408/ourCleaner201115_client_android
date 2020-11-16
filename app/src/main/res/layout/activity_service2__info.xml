@@ -1,0 +1,580 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <ImageButton
+                    android:id="@+id/close_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/close"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+
+                <TextView
+                    android:id="@+id/serTimePriTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:background="@drawable/border"
+                    android:text="선택한 곳은 더욱 신경써서\n서비스 하겠습니다."
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/roomTxt"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="15dp"
+                    android:textSize="20sp"
+                    android:text="방"
+                    android:textColor="@color/black"
+                    android:drawableTop="@drawable/baseline_night_shelter_black_18dp"
+                    android:drawablePadding="0dp"
+                    android:background="@drawable/color_change"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp" />
+                <Button
+                    android:id="@+id/bathRoomTxt"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="15dp"
+                    android:drawableTop="@drawable/baseline_bathtub_black_18dp"
+                    android:textSize="20sp"
+                    android:text="화장실"
+                    android:textColor="@color/black"
+                    android:background="@drawable/color_change"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp" />
+                <Button
+                    android:id="@+id/livingRoomTxt"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:padding="15dp"
+                    android:drawableTop="@drawable/baseline_family_restroom_black_18dp"
+                    android:textSize="20sp"
+                    android:text="거실"
+                    android:textColor="@color/black"
+                    android:background="@drawable/color_change"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp" />
+                <Button
+                    android:id="@+id/kitchenTxt"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:drawableTop="@drawable/baseline_kitchen_black_18dp"
+                    android:padding="15dp"
+                    android:textSize="20sp"
+                    android:text="주방"
+                    android:textColor="@color/black"
+                    android:background="@drawable/color_change"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp" />
+
+            </LinearLayout>
+
+
+                <LinearLayout
+                    android:padding="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bordergrey">
+
+                    <TextView
+                        android:id="@+id/laundryInfotxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/transparent"
+                        android:text="무료 추가 선택"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="25sp"
+                        android:gravity="center"
+                        />
+
+
+                    <LinearLayout
+                        android:id="@+id/laudryLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+
+                        <TextView
+                            android:id="@+id/laundryInfo2txt"
+                            android:layout_width="320dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:text="세탁"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:gravity="center_vertical"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginLeft="20dp" />
+
+                        <CheckBox
+                            android:id="@+id/checkbox_laundry"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:background="@drawable/checkbox"
+                            android:button="@android:color/transparent"
+                            android:checked="false"
+                            tools:layout_editor_absoluteX="33dp"
+                            tools:layout_editor_absoluteY="42dp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bordergrey">
+
+                    <LinearLayout
+                        android:id="@+id/timeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:id="@+id/time1Txt"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:text="시작 시간"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            />
+
+
+                        <TextView
+                            android:id="@+id/time2Txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:text="3시간 30분 / 10:00~13:30"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textAlignment="viewEnd"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:gravity="end|center_vertical" />
+
+                    </LinearLayout>
+
+
+
+                    <TextView
+                        android:id="@+id/regulartimeTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="서비스 시간"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_marginStart="10dp"
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp" />
+
+
+                    <LinearLayout
+                        android:id="@+id/regulartimeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:weightSum="2"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bordergrey"
+                        android:layout_marginLeft="10dp">
+
+                        <TextView
+                            android:id="@+id/regulartimeChanTxt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="3시간 30분"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginStart="10dp"
+                            tools:layout_editor_absoluteX="23dp"
+                            tools:layout_editor_absoluteY="-83dp"
+                            android:layout_marginLeft="10dp" />
+                        <Button
+                            android:id="@+id/regulartimeChanBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="30dp"
+                            android:textSize="15sp"
+                            android:text="변경"
+                            android:background="@drawable/bordergrey"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginLeft="10dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/regulartimeChoTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="방문 시간"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:padding="10dp"
+                        android:layout_marginLeft="10dp" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/timeDetailConst"
+                        android:layout_width="match_parent"
+                        android:layout_height="404dp"
+                        >
+
+                        <Button
+                            android:id="@+id/time8Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="8:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time9Btn"
+                            app:layout_constraintEnd_toStartOf="@+id/time830Btn"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/time830Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="8:30"
+
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time930Btn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/time8Btn"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <Button
+                            android:id="@+id/time9Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="8dp"
+
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="9:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time10Btn"
+                            app:layout_constraintEnd_toStartOf="@+id/time930Btn"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/time8Btn" />
+
+                        <Button
+                            android:id="@+id/time930Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+
+                            android:text="9:30"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/timeblanBtn1"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/time9Btn"
+                            app:layout_constraintTop_toBottomOf="@+id/time830Btn" />
+
+                        <Button
+                            android:id="@+id/time10Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/color_change"
+                            android:text="10:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time14Btn"
+                            app:layout_constraintEnd_toStartOf="@+id/timeblanBtn1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/time9Btn" />
+
+                        <Button
+                            android:id="@+id/timeblanBtn1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="invisible"
+
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@drawable/color_change"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time1430Btn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/time10Btn"
+                            app:layout_constraintTop_toBottomOf="@+id/time930Btn" />
+
+                        <Button
+                            android:id="@+id/time14Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="14:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time15Btn"
+                            app:layout_constraintEnd_toStartOf="@+id/time1430Btn"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/time10Btn" />
+
+                        <Button
+                            android:id="@+id/time1430Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="14:30"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time1530Btn"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/time14Btn"
+                            app:layout_constraintTop_toBottomOf="@+id/timeblanBtn1" />
+
+                        <Button
+                            android:id="@+id/time15Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="15:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/time16Btn"
+                            app:layout_constraintEnd_toStartOf="@+id/time1530Btn"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/time14Btn" />
+
+                        <Button
+                            android:id="@+id/time1530Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="15:30"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@+id/timeblanBtn2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/time15Btn"
+                            app:layout_constraintTop_toBottomOf="@+id/time1430Btn" />
+
+                        <Button
+                            android:id="@+id/timeblanBtn2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="15:30"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.494"
+                            app:layout_constraintStart_toEndOf="@+id/time16Btn"
+                            app:layout_constraintTop_toBottomOf="@+id/time1530Btn"
+                            app:layout_constraintVertical_bias="0.454" />
+
+                        <Button
+                            android:id="@+id/time16Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:background="@drawable/color_change"
+                            android:text="16:00"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/timeblanBtn2"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/time15Btn"
+                            app:layout_constraintVertical_bias="0.0" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bordergrey">
+
+
+                    <LinearLayout
+                        android:id="@+id/regularstartdateLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="2dp">
+
+                        <TextView
+                            android:id="@+id/regularstartdate1Txt"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparent"
+                            android:text="시작일"
+                            android:textStyle="bold"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:gravity="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/regularstartdate2Txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="5dp"
+                            android:layout_marginRight="5dp"
+                            android:background="@color/transparent"
+                            android:gravity="end|center_vertical"
+                            android:text="10.28(수)"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <CalendarView
+                        android:id="@+id/regularstartdateCalendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/nextBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="다음"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/background"
+                    android:enabled="false"
+                    />
+
+
+            </LinearLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+</LinearLayout>

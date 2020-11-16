@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -218,7 +219,7 @@ public class Placeinput2Activity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int index) {
 
                 //Toast.makeText(getApplicationContext(), items[index], Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "=== CreateListDialog === items[index] :" +items[index] );
+                Log.d(TAG, "=== CreateListDialog === items[index] :" + items[index] );
                 
                 sizeStr = items[index];
                 Log.d(TAG, "=== sizeStr ===" + sizeStr);
@@ -228,6 +229,9 @@ public class Placeinput2Activity extends AppCompatActivity {
                 
                 size2Btn.setText(sizeStr);
                 Log.d(TAG, "=== sizeStr에 값 입력  ===" );
+
+                size2Btn.setTextColor(getResources().getColor(R.color.white));
+                Log.d(TAG, "=== size2Btn 텍스트 색상 변경 ===" );
 
                 dialog.dismiss();
                 Log.d(TAG, "=== 다이얼로그 닫음 ===" );

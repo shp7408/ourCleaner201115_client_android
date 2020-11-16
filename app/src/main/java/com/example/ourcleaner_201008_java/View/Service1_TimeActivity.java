@@ -30,6 +30,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.ourcleaner_201008_java.Adapter.MyPlaceAdapter;
 import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
 import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
+import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 
@@ -80,7 +81,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     //매니저 선택 관련 변수 -> 지정안해도 되므로 ㅇㅇㅇ 그냥 넘어감 불린 필요없음
     // TODO: 2020-10-23 매니저 부분 더 고민해야 함. 매니저 등록하면서
     Button managerChoBtn;
-    String managerChoStr; //매니저 선택 후, 스트링 담는 변수
+    String managerChoStr="매니저미지정"; //매니저 선택 후, 스트링 담는 변수
 
     //청소 주기 관련 변수
     LinearLayout regularTermLayout; //정기 예약시에만 보임
@@ -92,7 +93,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     //방문 날짜 관련 변수
     LinearLayout dateLayout; //클릭하면 캘린더 뷰 나타남
     TextView date2Txt;
-    String date2Str;
+    String date2Str, date3Str; // 날짜, 요일
     CalendarView dateCalendar;
 
     //시간 관련 변수(얼마나 하고, 언제 시작하는지)
@@ -143,6 +144,12 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     /* 캘린더 관련 변수 */
     private long currentMinLong, currentMaxLong;
 
+    /* 현재 엑티비티의 정보 담는 객체 */
+    ServiceDTO serviceDTO;
+
+    Boolean regularBool; //원래 String이었는데, Boolean이 더 직관적임. 변경할 것.
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,8 +164,74 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         serviceRegularStr = intent.getStringExtra("serviceRegularStr");
         Log.d(TAG, "홈프래그먼트에서 인텐트 받음 intent.serviceRegularStr : "+ serviceRegularStr);
 
+        if(serviceRegularStr.equals("no")){
+
+            Log.d(TAG, "=== 정기 결제 no인 경우 === regularBool : " + regularBool );
+
+            regularTerm2Str ="none";
+            Log.d(TAG, "=== regularTerm2Str 없는 경우. 정기결제만 있음 ===" );
+            regularBool = false;
+
+        }else{
+
+            Log.d(TAG, "=== 정기 결제 yes인 경우 === regularBool : " + regularBool );
+            regularBool = true;
+
+        }
 
 
+        nextBtn = (Button) findViewById(R.id.nextBtn);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                    Log.d(TAG, "=== nextBtn 클릭 : === ");
+
+                    if(myplaceDTOChoose==null){
+                        Log.d(TAG, "=== myplaceDTOChoose 널인 경우 예외처리 ===" );
+                        myplaceDTOChoose= myplaceDTORecent;
+                    }
+
+                    if(date2Str.equals(null) && regularTerm2Str.equals(null) &&  serTimeStr.equals(null)){
+                       Log.d(TAG, "=== visitDate 널인경우 ===" );
+
+                    }
+                    serTimeStr = "3시간 30분";
+                    Log.d(TAG, "=== 기존 serTimeStr ===" +serTimeStr );
+
+                    serviceDTO = new ServiceDTO(GlobalApplication.currentUser, "신청중", myplaceDTOChoose, managerChoStr,
+                            regularBool, date2Str, date3Str, serTimeStr);
+
+                    Log.d(TAG, "=== serviceDTO currentUser === "+ serviceDTO.getCurrentUser() );
+                    Log.d(TAG, "=== serviceDTO serviceState === "+ serviceDTO.getServiceState() );
+                    Log.d(TAG, "=== serviceDTO myplaceDTO ===" + serviceDTO.getMyplaceDTO().getAddress());
+                    Log.d(TAG, "=== serviceDTO managerName === "+ serviceDTO.getManagerName() );
+                    Log.d(TAG, "=== serviceDTO regularBool === "+ serviceDTO.getRegularBool() );
+                    Log.d(TAG, "=== serviceDTO visitDate === "+ serviceDTO.getVisitDate() );
+                    Log.d(TAG, "=== serviceDTO visitDay === "+ serviceDTO.getVisitDate() );
+                    Log.d(TAG, "=== serviceDTO estimatedTime === "+ serviceDTO.getEstimatedTime() );
+
+                    Log.d(TAG, "=== 객체 넣고 다음 화면으로 이동 ===" );
+
+                    //있으면 넘어감
+                    Intent intent = new Intent(getApplicationContext(), Service2_InfoActivity.class);
+                    intent.putExtra("serviceDTO", serviceDTO);
+                    startActivity(intent);
+
+                    //finish();
+
+
+
+
+
+//                myplaceDTO = new MyplaceDTO(currentUser, placeNameStr, address, detailAddress, sizeStr, sizeIndexint);
+//                Log.d(TAG, "=== myplaceDTO 객체 생성 ===");
+
+
+                    }
+
+            });
 
 
 
@@ -375,6 +448,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 Log.d(TAG, "=== 방문날짜 캘린더 사라짐 ===" );
 
                 //date2Str = String.format("%d / %d / %d",year,month+1,dayOfMonth);
+                date2Str = String.format("%d.%d",month+1,dayOfMonth);
 
                 String dayofWeek = getDayOfweek(String.format("%d%d%d",year,month+1,dayOfMonth)); //요일 가져오기 위한 형식
 
@@ -382,6 +456,9 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
                 date2Txt.setVisibility(View.VISIBLE);
                 date2Txt.setText(String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
+
+                date2Str = String.format("%d.%d",month+1,dayOfMonth);
+                Log.d(TAG, "=== date2Strdate2Strdate2Str 1회 서비스 ===" +date2Str);
 
                 Log.d(TAG, "=== 셋텍스트 ===" +String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
@@ -417,13 +494,19 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 regularstartdate2Txt.setVisibility(View.VISIBLE);
                 regularstartdate2Txt.setText(String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
+                date2Str = String.format("%d.%d",month+1,dayOfMonth);
+                Log.d(TAG, "=== date2Strdate2Strdate2Str === 정기결제" +date2Str);
+
+
+
+                regularstartdate2Str = String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth);
+
                 Log.d(TAG, "=== 셋텍스트 ===" +String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
                 // TODO: 2020-10-24 저장하기 위한 날짜 포맷 확인할 것. date2Str 비어있음
 
                 regularstartdateBool = true;
                 Log.d(TAG, "=== regularstartdateBool === "+ regularstartdateBool );
-
 
                 nextBtn.setEnabled(true);
 
@@ -437,11 +520,11 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             @Override
             public void onClick(View view) {
 
-                    Log.d(TAG, "=== dateLayout 클릭 : 데이트 캘린더 등장 === ");
-                    dateCalendar.setVisibility(View.VISIBLE);
-                    timeDetailConst.setVisibility(View.GONE);
-                    time2Txt.setText("");
-                    time2Str="";
+                Log.d(TAG, "=== dateLayout 클릭 : 데이트 캘린더 등장 === ");
+                dateCalendar.setVisibility(View.VISIBLE);
+                timeDetailConst.setVisibility(View.GONE);
+                time2Txt.setText("");
+                time2Str="";
 
                 time8Btn.setSelected(false);
                 time830Btn.setSelected(false);
@@ -478,9 +561,11 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                                 time16Btn.setSelected(false);
 
                                 time2Str = time8Btn.getText().toString();
+                                Log.d(TAG, "=== time2Str === :" +time2Str );
 
                                 time2Txt.setVisibility(View.VISIBLE);
                                 time2Txt.setText(time2Str);
+
                                 timeDetailConst.setVisibility(View.GONE);
 
                                 nextBtn.setEnabled(true);
@@ -1010,8 +1095,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 regularTerm2Str="";
 
 
-
-
                     }
 
             });
@@ -1112,6 +1195,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         GlobalApplication.getInstance().addToRequestQueue(req);
     }
 
+    /* 나의 장소 리사이클러뷰에서 장소 아이템 선택 */
     @Override
     public void onItemSelected(View v, int position) {
         Log.d(TAG, "=== onItemSelected 아이템 하나 클릭 ===" );
@@ -1130,8 +1214,12 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
         //가장 최근 장소 데이터 객체의 값을 넣기
         myplaceChoTxt.setText(myplaceDTOChoose.getPlaceNameStr()+"("+myplaceDTOChoose.getSizeStr()+")\n"+myplaceDTOChoose.getAddress()+" "+myplaceDTOChoose.getDetailAddress());
+        Log.d(TAG, "=== 가장 최근 장소 데이터 객체의 값을 넣기 ===" );
 
         ChoLayoutall2.setVisibility(View.GONE);
+
+        serTimeStr = "3시간 30분";
+        Log.d(TAG, "=== 리사이클러 뷰 클릭 serTimeStr ===" +serTimeStr );
 
 
     }
