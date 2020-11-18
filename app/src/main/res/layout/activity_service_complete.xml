@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <ImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
+                    />
+
+            </LinearLayout>
+
+
+            <TextView
+                    android:id="@+id/serTimePriTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:background="@drawable/border"
+                    android:text="11.26(목)\n예약을 완료해주세요."
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bordergrey"
+                android:orientation="vertical"
+                android:padding="10dp"
+                >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="주의사항"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="10dp"
+                        />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="입실 후, 주의 사항"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        />
+                    <EditText
+                        android:id="@+id/serCautionEdit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:hint="예)식탁 위에 서류들은 그대로 놓아주세요."
+                        android:textColorHint="@color/grey2"/>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="* 무리한 요청사항이 있을 경우, 매칭이 지연될 수 있습니다."
+                        android:textColor="@color/red"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="미포함 업무"
+                        android:layout_marginTop="20dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:text="- 손빨래 및 빨래 삶기\n- 사무실 및 사업장 청소\n- 바닥전체 무릎 꿇고 손걸래질\n- 음식 조리 및 상차리기\n- 이사 및 입주청소"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+
+
+            </LinearLayout>
+            <Button
+                    android:id="@+id/nextBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="다음"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/background"
+                    android:enabled="false"
+                    />
+
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
