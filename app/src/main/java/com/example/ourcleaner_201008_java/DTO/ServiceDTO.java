@@ -27,6 +27,7 @@ package com.example.ourcleaner_201008_java.DTO;
 *                    */
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class ServiceDTO implements Serializable {
 
@@ -43,17 +44,19 @@ public class ServiceDTO implements Serializable {
     String estimatedTime; //소요시간
 
     /* Service2_InfoActivity */
-    String reqRoom; //집중 청소 구역
+    HashMap servicefocusedhashMap; //집중 청소 구역
     Boolean laundryBool; //세탁 선택 여부
     String laundryCaution; //세탁시 주의사항
-    String garbage1; //재활용
-    String garbage2; //일반쓰레기
-    String garbage3; //음식물쓰레기
+    Boolean garbagerecycleBool; //재활용
+    Boolean garbagenormalBool; //일반쓰레기
+    Boolean garbagefoodBool; //음식물쓰레기
     String garbagehowto; //쓰레기 배출 방법
 
     /* Service3_CautionActivity */
+    HashMap serviceplus; //유료 서비스 선택
     String serviceCaution;
 
+    /* Service1_TimeActivity -> Service2_InfoActivity */
     public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime) {
         this.currentUser = currentUser;
         this.serviceState = serviceState;
@@ -65,8 +68,45 @@ public class ServiceDTO implements Serializable {
         this.estimatedTime = estimatedTime;
     }
 
+    /* Service2_TimeActivity -> Service3_InfoActivity */
+    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto) {
+        this.currentUser = currentUser;
+        this.serviceState = serviceState;
+        this.myplaceDTO = myplaceDTO;
+        this.managerName = managerName;
+        this.regularBool = regularBool;
+        this.visitDate = visitDate;
+        this.visitDay = visitDay;
+        this.estimatedTime = estimatedTime;
+        this.servicefocusedhashMap = servicefocusedhashMap;
+        this.laundryBool = laundryBool;
+        this.laundryCaution = laundryCaution;
+        this.garbagerecycleBool = garbagerecycleBool;
+        this.garbagenormalBool = garbagenormalBool;
+        this.garbagefoodBool = garbagefoodBool;
+        this.garbagehowto = garbagehowto;
+    }
 
-
+    /* Service3_InfoActivity ->  저장할 때, */
+    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto, HashMap serviceplus, String serviceCaution) {
+        this.currentUser = currentUser;
+        this.serviceState = serviceState;
+        this.myplaceDTO = myplaceDTO;
+        this.managerName = managerName;
+        this.regularBool = regularBool;
+        this.visitDate = visitDate;
+        this.visitDay = visitDay;
+        this.estimatedTime = estimatedTime;
+        this.servicefocusedhashMap = servicefocusedhashMap;
+        this.laundryBool = laundryBool;
+        this.laundryCaution = laundryCaution;
+        this.garbagerecycleBool = garbagerecycleBool;
+        this.garbagenormalBool = garbagenormalBool;
+        this.garbagefoodBool = garbagefoodBool;
+        this.garbagehowto = garbagehowto;
+        this.serviceplus = serviceplus;
+        this.serviceCaution = serviceCaution;
+    }
 
     public String getCurrentUser() {
         return currentUser;
@@ -132,12 +172,12 @@ public class ServiceDTO implements Serializable {
         this.estimatedTime = estimatedTime;
     }
 
-    public String getReqRoom() {
-        return reqRoom;
+    public HashMap getServicefocusedhashMap() {
+        return servicefocusedhashMap;
     }
 
-    public void setReqRoom(String reqRoom) {
-        this.reqRoom = reqRoom;
+    public void setServicefocusedhashMap(HashMap servicefocusedhashMap) {
+        this.servicefocusedhashMap = servicefocusedhashMap;
     }
 
     public Boolean getLaundryBool() {
@@ -156,28 +196,29 @@ public class ServiceDTO implements Serializable {
         this.laundryCaution = laundryCaution;
     }
 
-    public String getGarbage1() {
-        return garbage1;
+
+    public Boolean getGarbagerecycleBool() {
+        return garbagerecycleBool;
     }
 
-    public void setGarbage1(String garbage1) {
-        this.garbage1 = garbage1;
+    public void setGarbagerecycleBool(Boolean garbagerecycleBool) {
+        this.garbagerecycleBool = garbagerecycleBool;
     }
 
-    public String getGarbage2() {
-        return garbage2;
+    public Boolean getGarbagenormalBool() {
+        return garbagenormalBool;
     }
 
-    public void setGarbage2(String garbage2) {
-        this.garbage2 = garbage2;
+    public void setGarbagenormalBool(Boolean garbagenormalBool) {
+        this.garbagenormalBool = garbagenormalBool;
     }
 
-    public String getGarbage3() {
-        return garbage3;
+    public Boolean getGarbagefoodBool() {
+        return garbagefoodBool;
     }
 
-    public void setGarbage3(String garbage3) {
-        this.garbage3 = garbage3;
+    public void setGarbagefoodBool(Boolean garbagefoodBool) {
+        this.garbagefoodBool = garbagefoodBool;
     }
 
     public String getGarbagehowto() {
@@ -186,6 +227,14 @@ public class ServiceDTO implements Serializable {
 
     public void setGarbagehowto(String garbagehowto) {
         this.garbagehowto = garbagehowto;
+    }
+
+    public HashMap getServiceplus() {
+        return serviceplus;
+    }
+
+    public void setServiceplus(HashMap serviceplus) {
+        this.serviceplus = serviceplus;
     }
 
     public String getServiceCaution() {

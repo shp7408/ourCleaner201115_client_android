@@ -76,8 +76,6 @@ public class Placeinput2Activity extends AppCompatActivity {
                             Log.d(TAG, "=== CreateListDialog(); 메서드 종료 ===" );
 
 
-
-
                             }
                     });
 

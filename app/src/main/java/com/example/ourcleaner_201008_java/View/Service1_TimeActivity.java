@@ -220,24 +220,13 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                     startActivity(intent);
 
                     //finish();
-
-
-
-
-
+                
 //                myplaceDTO = new MyplaceDTO(currentUser, placeNameStr, address, detailAddress, sizeStr, sizeIndexint);
 //                Log.d(TAG, "=== myplaceDTO 객체 생성 ===");
-
 
                     }
 
             });
-
-
-
-
-
-
     }
 
     @Override
@@ -247,7 +236,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
         makeStringRequestGet();
         Log.d(TAG, "=== makeJsonArrayRequest() 메서드 종료 ===" );
-
 
         /* 현재 내 장소 정보를 모두 가져온 상태. 추가한 후에도 가져온 상태임. 이제는 리사이클러 뷰에 내 장소 목록을 보여줄 것임 */
         //리사이클러 뷰가 있는 엑티비티의 리사이클러 뷰 id 연결
@@ -283,6 +271,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         plusPlaceBtn = findViewById(R.id.plusPlaceBtn);
         close_btn2 = findViewById(R.id.close_btn2);
 
+        // TODO: 2020-11-18 매니저 어플만든 후, 매니저 목록 띄우는 다이얼로그 생성하기 
         managerChoBtn = findViewById(R.id.managerChoBtn);
 
         //청소 주기 관련 변수
@@ -422,7 +411,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 Log.d(TAG, "=== myplaceChoTxt 텍스트 뷰 값 변경 ===" );
 
-
             }
 
             @Override
@@ -433,7 +421,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
 
         settingdateCalendar();
-
         settingregularstartdateCalendar();
 
 
@@ -451,7 +438,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 date2Str = String.format("%d.%d",month+1,dayOfMonth);
 
                 String dayofWeek = getDayOfweek(String.format("%d%d%d",year,month+1,dayOfMonth)); //요일 가져오기 위한 형식
-
                 Log.d(TAG, "=== 선택한 날짜의 요일 가져오기 ===" + dayofWeek);
 
                 date2Txt.setVisibility(View.VISIBLE);
@@ -536,341 +522,339 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 time15Btn.setSelected(false);
                 time1530Btn.setSelected(false);
                 time16Btn.setSelected(false);
+            }
+
+        });
+
+
+        Button.OnClickListener onClickListener = new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    //time8Btn 버튼 행동
+                    case R.id.time8Btn:
+                        time8Btn.setSelected(true);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time8Btn.getText().toString();
+                        Log.d(TAG, "=== time2Str === :" +time2Str );
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
 
-
-                    }
-
-            });
-
-
-                Button.OnClickListener onClickListener = new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (v.getId()){
-                            //time8Btn 버튼 행동
-                            case R.id.time8Btn:
-                                time8Btn.setSelected(true);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time8Btn.getText().toString();
-                                Log.d(TAG, "=== time2Str === :" +time2Str );
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-
-                                break;
-                            //time830Btn 버튼 행동
-                            case R.id.time830Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(true);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time830Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time9Btn 버튼 행동
-                            case R.id.time9Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(true);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time9Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time930Btn 버튼 행동
-                            case R.id.time930Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(true);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time930Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-                            //time10Btn 버튼 행동
-                            case R.id.time10Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(true);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time10Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time14Btn 버튼 행동
-                            case R.id.time14Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(true);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time14Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-
-                                nextBtn.setEnabled(true);
-                                break;
-                            //time1430Btn 버튼 행동
-                            case R.id.time1430Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(true);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time1430Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time15Btn 버튼 행동
-                            case R.id.time15Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(true);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time15Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time1530Btn 버튼 행동
-                            case R.id.time1530Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(true);
-                                time16Btn.setSelected(false);
-
-                                time2Str = time1530Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-                                }
-                                break;
-
-                            //time16Btn 버튼 행동
-                            case R.id.time16Btn:
-                                time8Btn.setSelected(false);
-                                time830Btn.setSelected(false);
-                                time9Btn.setSelected(false);
-                                time930Btn.setSelected(false);
-                                time10Btn.setSelected(false);
-                                time14Btn.setSelected(false);
-                                time1430Btn.setSelected(false);
-                                time15Btn.setSelected(false);
-                                time1530Btn.setSelected(false);
-                                time16Btn.setSelected(true);
-
-                                time2Str = time16Btn.getText().toString();
-
-                                time2Txt.setVisibility(View.VISIBLE);
-                                time2Txt.setText(time2Str);
-                                timeDetailConst.setVisibility(View.GONE);
-
-                                nextBtn.setEnabled(true);
-
-                                if(serviceRegularStr.equals("yes")){
-                                    Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
-                                    regulartimeTxt.setVisibility(View.GONE);
-                                    regulartimeLayout.setVisibility(View.GONE);
-                                    regulartimeChoTxt.setVisibility(View.GONE);
-
-                                    nextBtn.setEnabled(false);
-                                    regularstartdateCalendar.setVisibility(View.VISIBLE);
-
-
-                                }
-                                break;
                         }
-                    }
-                };
+
+                        break;
+                    //time830Btn 버튼 행동
+                    case R.id.time830Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(true);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time830Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time9Btn 버튼 행동
+                    case R.id.time9Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(true);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time9Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time930Btn 버튼 행동
+                    case R.id.time930Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(true);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time930Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+                    //time10Btn 버튼 행동
+                    case R.id.time10Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(true);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time10Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time14Btn 버튼 행동
+                    case R.id.time14Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(true);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time14Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+
+                        nextBtn.setEnabled(true);
+                        break;
+                    //time1430Btn 버튼 행동
+                    case R.id.time1430Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(true);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time1430Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time15Btn 버튼 행동
+                    case R.id.time15Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(true);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time15Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time1530Btn 버튼 행동
+                    case R.id.time1530Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(true);
+                        time16Btn.setSelected(false);
+
+                        time2Str = time1530Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 8시 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+                        }
+                        break;
+
+                    //time16Btn 버튼 행동
+                    case R.id.time16Btn:
+                        time8Btn.setSelected(false);
+                        time830Btn.setSelected(false);
+                        time9Btn.setSelected(false);
+                        time930Btn.setSelected(false);
+                        time10Btn.setSelected(false);
+                        time14Btn.setSelected(false);
+                        time1430Btn.setSelected(false);
+                        time15Btn.setSelected(false);
+                        time1530Btn.setSelected(false);
+                        time16Btn.setSelected(true);
+
+                        time2Str = time16Btn.getText().toString();
+
+                        time2Txt.setVisibility(View.VISIBLE);
+                        time2Txt.setText(time2Str);
+                        timeDetailConst.setVisibility(View.GONE);
+
+                        nextBtn.setEnabled(true);
+
+                        if(serviceRegularStr.equals("yes")){
+                            Log.d(TAG, "=== 요일 버튼 클릭 정기결제 텍스트뷰, 레이아웃, 텍스트뷰 사라짐===" );
+                            regulartimeTxt.setVisibility(View.GONE);
+                            regulartimeLayout.setVisibility(View.GONE);
+                            regulartimeChoTxt.setVisibility(View.GONE);
+
+                            nextBtn.setEnabled(false);
+                            regularstartdateCalendar.setVisibility(View.VISIBLE);
+
+
+                        }
+                        break;
+                }
+            }
+        };
 
         time8Btn.setOnClickListener(onClickListener);
         time830Btn.setOnClickListener(onClickListener);
@@ -883,188 +867,186 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         time1530Btn.setOnClickListener(onClickListener);
         time16Btn.setOnClickListener(onClickListener);
 
+        Button.OnClickListener onClickListener2 = new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()){
+                    //MonDBtn 버튼 행동
+                    case R.id.MonDBtn:
+                        MonDBtn.setSelected(true);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(false);
 
 
-                Button.OnClickListener onClickListener2 = new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (v.getId()){
-                            //MonDBtn 버튼 행동
-                            case R.id.MonDBtn:
-                                MonDBtn.setSelected(true);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(false);
+                        regularTerm2Str=MonDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
 
 
-                                regularTerm2Str=MonDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+
+                        break;
+                    //TueDBtn 버튼 행동
+                    case R.id.TueDBtn:
+                        MonDBtn.setSelected(false);
+                        TueDBtn.setSelected(true);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(false);
+
+                        regularTerm2Str=TueDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+
+                    //WendDBtn 버튼 행동
+                    case R.id.WendDBtn:
+                        MonDBtn.setSelected(true);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(true);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(false);
+
+                        regularTerm2Str=WendDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+
+                    //ThursDBtn 버튼 행동
+                    case R.id.ThursDBtn:
+                        MonDBtn.setSelected(false);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(true);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(false);
+
+                        regularTerm2Str=ThursDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+
+                    //FriDBtn 버튼 행동
+                    case R.id.FriDBtn:
+
+                        MonDBtn.setSelected(false);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(true);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(false);
+
+                        regularTerm2Str=FriDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+
+                    //SatDBtn 버튼 행동
+                    case R.id.SatDBtn:
+                        MonDBtn.setSelected(false);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(true);
+                        SunDBtn.setSelected(false);
+
+                        regularTerm2Str=SatDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+
+                    //SunDBtn 버튼 행동
+                    case R.id.SunDBtn:
+                        MonDBtn.setSelected(false);
+                        TueDBtn.setSelected(false);
+                        WendDBtn.setSelected(false);
+                        ThursDBtn.setSelected(false);
+                        FriDBtn.setSelected(false);
+                        SatDBtn.setSelected(false);
+                        SunDBtn.setSelected(true);
+
+                        regularTerm2Str=SunDBtn.getText().toString();
+                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+
+                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setVisibility(View.VISIBLE);
+
+                        regulardaysBtnsLayout.setVisibility(View.GONE);
+
+                        regulartimeTxt.setVisibility(View.VISIBLE);
+                        regulartimeLayout.setVisibility(View.VISIBLE);
+                        regulartimeChoTxt.setVisibility(View.VISIBLE);
+                        timeDetailConst.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        };
 
 
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-
-                                break;
-                            //TueDBtn 버튼 행동
-                            case R.id.TueDBtn:
-                                MonDBtn.setSelected(false);
-                                TueDBtn.setSelected(true);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(false);
-
-                                regularTerm2Str=TueDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-
-                            //WendDBtn 버튼 행동
-                            case R.id.WendDBtn:
-                                MonDBtn.setSelected(true);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(true);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(false);
-
-                                regularTerm2Str=WendDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-
-                            //ThursDBtn 버튼 행동
-                            case R.id.ThursDBtn:
-                                MonDBtn.setSelected(false);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(true);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(false);
-
-                                regularTerm2Str=ThursDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-
-                            //FriDBtn 버튼 행동
-                            case R.id.FriDBtn:
-
-                                MonDBtn.setSelected(false);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(true);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(false);
-
-                                regularTerm2Str=FriDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-
-                            //SatDBtn 버튼 행동
-                            case R.id.SatDBtn:
-                                MonDBtn.setSelected(false);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(true);
-                                SunDBtn.setSelected(false);
-
-                                regularTerm2Str=SatDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-
-                            //SunDBtn 버튼 행동
-                            case R.id.SunDBtn:
-                                MonDBtn.setSelected(false);
-                                TueDBtn.setSelected(false);
-                                WendDBtn.setSelected(false);
-                                ThursDBtn.setSelected(false);
-                                FriDBtn.setSelected(false);
-                                SatDBtn.setSelected(false);
-                                SunDBtn.setSelected(true);
-
-                                regularTerm2Str=SunDBtn.getText().toString();
-                                Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
-                                regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
-                                regularTerm2Txt.setVisibility(View.VISIBLE);
-
-                                regulardaysBtnsLayout.setVisibility(View.GONE);
-
-                                regulartimeTxt.setVisibility(View.VISIBLE);
-                                regulartimeLayout.setVisibility(View.VISIBLE);
-                                regulartimeChoTxt.setVisibility(View.VISIBLE);
-                                timeDetailConst.setVisibility(View.VISIBLE);
-                                break;
-                        }
-                    }
-                };
-
-
-                MonDBtn.setOnClickListener(onClickListener2);
+        MonDBtn.setOnClickListener(onClickListener2);
         TueDBtn.setOnClickListener(onClickListener2);
         WendDBtn.setOnClickListener(onClickListener2);
         ThursDBtn.setOnClickListener(onClickListener2);
@@ -1078,9 +1060,8 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             @Override
             public void onClick(View view) {
 
-                    Log.d(TAG, "=== regularTerm2Txt 클릭 : === ");
-
-                    regulardaysBtnsLayout.setVisibility(View.VISIBLE);
+                Log.d(TAG, "=== regularTerm2Txt 클릭 : === ");
+                regulardaysBtnsLayout.setVisibility(View.VISIBLE);
 
                 // TODO: 2020-10-24 장소별 기본 시간 세팅해야 함.
                 MonDBtn.setSelected(false);
@@ -1093,13 +1074,8 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
                 regularTerm2Txt.setText("");
                 regularTerm2Str="";
-
-
                     }
-
             });
-
-
     }
 
     private void makeStringRequestGet() {

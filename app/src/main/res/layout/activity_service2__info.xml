@@ -22,13 +22,14 @@
                 android:layout_height="35dp">
 
                 <ImageButton
-                    android:id="@+id/close_btn"
+                    android:id="@+id/back_btn"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/close"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
                     />
 
             </LinearLayout>
+
 
 
             <LinearLayout
@@ -145,6 +146,7 @@
                             android:layout_width="340dp"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="세탁" />
 
@@ -155,6 +157,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -167,6 +170,7 @@
                         android:visibility="gone">
 
                         <TextView
+                            android:paddingTop="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/laundryCautionTxt"
@@ -182,7 +186,8 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/laundryCautionEdit"
                             android:hint="예) 베란다 건조대에 넣어 주세요."
-                            android:textColorHint="@color/grey"/>
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/grey2"/>
 
 
                     </LinearLayout>
@@ -200,6 +205,7 @@
                             android:layout_width="340dp"
                             android:background="@color/transparent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="실내 창틀 먼지" />
 
@@ -210,6 +216,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -228,6 +235,7 @@
                             android:layout_width="340dp"
                             android:background="@color/transparent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="베란다 바닥" />
 
@@ -238,6 +246,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -268,7 +277,7 @@
 
 
                     <LinearLayout
-                        android:id="@+id/garbageLayout"
+                        android:id="@+id/garbagerecycleLayout"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:gravity="center_vertical"
@@ -280,6 +289,7 @@
                             android:layout_width="340dp"
                             android:layout_height="wrap_content"
                             android:background="@color/transparent"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="재활용 쓰레기" />
 
@@ -290,6 +300,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -309,6 +320,7 @@
                             android:layout_width="340dp"
                             android:background="@color/transparent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="일반 쓰레기" />
 
@@ -319,6 +331,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -337,6 +350,7 @@
                             android:layout_width="340dp"
                             android:background="@color/transparent"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
                             android:drawableLeft="@drawable/baseline_local_laundry_service_black_18dp"
                             android:text="음식물 쓰레기" />
 
@@ -347,6 +361,7 @@
                             android:background="@drawable/checkbox"
                             android:button="@android:color/transparent"
                             android:checked="false"
+                            android:clickable="false"
                             tools:layout_editor_absoluteX="33dp"
                             tools:layout_editor_absoluteY="42dp" />
                     </LinearLayout>
@@ -359,6 +374,7 @@
                         android:visibility="gone">
 
                         <TextView
+                            android:paddingTop="10dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/garbageCautionTxt"
@@ -373,8 +389,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/garbageCautionEdit"
+                            android:textColor="@color/black"
                             android:hint="예) 종량제 봉투에 담아 1층에 버려주세요."
-                            android:textColorHint="@color/grey"/>
+                            android:textColorHint="@color/grey2"/>
 
                     </LinearLayout>
 

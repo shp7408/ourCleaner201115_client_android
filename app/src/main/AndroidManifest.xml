@@ -19,7 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Service2_InfoActivity"></activity>
+        <activity android:name=".View.Service_completeActivity"></activity>
+        <activity android:name=".View.Service3_Activity" />
+        <activity android:name=".View.Service2_InfoActivity" />
         <activity android:name=".View.Placeinput3Activity" />
         <activity android:name=".View.Placeinput2Activity" />
         <activity android:name=".View.DaumWebViewActivity" />

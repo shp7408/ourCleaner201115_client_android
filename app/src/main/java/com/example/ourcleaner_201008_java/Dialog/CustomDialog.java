@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.ourcleaner_201008_java.R;
 
 /**
- * Created by Administrator on 2017-08-07.
+안쓰는 클래스임... 문제없으면 삭제하자..
  */
 
 public class CustomDialog {
