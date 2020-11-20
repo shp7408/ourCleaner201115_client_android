@@ -6,7 +6,6 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="홈"
-
         />
     <item
     android:id="@+id/myreservationItem"
@@ -17,7 +16,7 @@
         android:id="@+id/mychatItem"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_chat_24"
-        android:title="내 예약" />
+        android:title="채팅" />
     <item
         android:id="@+id/moreItem"
         android:enabled="true"

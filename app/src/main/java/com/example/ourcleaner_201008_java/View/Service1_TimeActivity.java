@@ -39,12 +39,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.out;
 
@@ -59,20 +61,13 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     /* 화면에서 쓰는 변수 선언 */
 
     TextView serTimePriTxt; //
-    String serTimeStr, serPriceStr; //서비스 제공 시간, 서비스 가격 <- 집의 평 수에 따라서 정해짐.
+    int startTime, needDefTime, needDefCost; //시작 시간, 필요한 기본 시간 분의 형태로, 평 수에 따라 책정된 시간(분), 가격
 
     //우리집 선택 관련 변수
     LinearLayout myplaceChoLayout1;
     LinearLayout ChoLayoutall1;
     TextView myplaceChoTxt;
     String myplaceChoStr;
-
-    //리사이클러뷰에서 선택한 데이터를 담을 변수 -> 이걸로, myplaceChoTxt를 구성함
-    String placeNameChoStr;
-    String addressCho;
-    String detailAddressCho;
-    String sizeChoStr;
-    int sizeIndexChoint;
 
     LinearLayout ChoLayoutall2; //리사이클러 뷰 있는 레이아웃 myplaceChoLayout1 클릭시, visible
     Button plusPlaceBtn;
@@ -165,24 +160,18 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         Log.d(TAG, "홈프래그먼트에서 인텐트 받음 intent.serviceRegularStr : "+ serviceRegularStr);
 
         if(serviceRegularStr.equals("no")){
-
             Log.d(TAG, "=== 정기 결제 no인 경우 === regularBool : " + regularBool );
 
             regularTerm2Str ="none";
             Log.d(TAG, "=== regularTerm2Str 없는 경우. 정기결제만 있음 ===" );
             regularBool = false;
-
         }else{
-
             Log.d(TAG, "=== 정기 결제 yes인 경우 === regularBool : " + regularBool );
             regularBool = true;
-
         }
-
 
         nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
 
@@ -193,24 +182,24 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         myplaceDTOChoose= myplaceDTORecent;
                     }
 
-                    if(date2Str.equals(null) && regularTerm2Str.equals(null) &&  serTimeStr.equals(null)){
+                    if(date2Str.equals(null) && regularTerm2Str.equals(null) &&  startTime==0){
                        Log.d(TAG, "=== visitDate 널인경우 ===" );
-
                     }
-                    serTimeStr = "3시간 30분";
-                    Log.d(TAG, "=== 기존 serTimeStr ===" +serTimeStr );
 
                     serviceDTO = new ServiceDTO(GlobalApplication.currentUser, "신청중", myplaceDTOChoose, managerChoStr,
-                            regularBool, date2Str, date3Str, serTimeStr);
+                            regularBool, date2Str, date3Str, startTime, needDefTime, needDefCost );
 
                     Log.d(TAG, "=== serviceDTO currentUser === "+ serviceDTO.getCurrentUser() );
                     Log.d(TAG, "=== serviceDTO serviceState === "+ serviceDTO.getServiceState() );
-                    Log.d(TAG, "=== serviceDTO myplaceDTO ===" + serviceDTO.getMyplaceDTO().getAddress());
+                    Log.d(TAG, "=== serviceDTO myplaceDTO === "+ serviceDTO.getMyplaceDTO() );
                     Log.d(TAG, "=== serviceDTO managerName === "+ serviceDTO.getManagerName() );
                     Log.d(TAG, "=== serviceDTO regularBool === "+ serviceDTO.getRegularBool() );
                     Log.d(TAG, "=== serviceDTO visitDate === "+ serviceDTO.getVisitDate() );
-                    Log.d(TAG, "=== serviceDTO visitDay === "+ serviceDTO.getVisitDate() );
-                    Log.d(TAG, "=== serviceDTO estimatedTime === "+ serviceDTO.getEstimatedTime() );
+                    Log.d(TAG, "=== serviceDTO visitDay === "+ serviceDTO.getVisitDay() );
+                    Log.d(TAG, "=== serviceDTO startTime === "+ serviceDTO.getStartTime() );
+                    Log.d(TAG, "=== serviceDTO needDefTime === "+ serviceDTO.getNeedDefTime() );
+                    Log.d(TAG, "=== serviceDTO needDefCost === "+ serviceDTO.getNeedDefCost() );
+
 
                     Log.d(TAG, "=== 객체 넣고 다음 화면으로 이동 ===" );
 
@@ -220,9 +209,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                     startActivity(intent);
 
                     //finish();
-                
-//                myplaceDTO = new MyplaceDTO(currentUser, placeNameStr, address, detailAddress, sizeStr, sizeIndexint);
-//                Log.d(TAG, "=== myplaceDTO 객체 생성 ===");
 
                     }
 
@@ -260,7 +246,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         recyclerView.setAdapter(mAdapter);
 
         Log.d(TAG, "=== 리사이클러 뷰 생성 ===" );
-
 
         serTimePriTxt = findViewById(R.id.serTimePriTxt);
         myplaceChoLayout1 = findViewById(R.id.myplaceChoLayout1);
@@ -443,13 +428,16 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 date2Txt.setVisibility(View.VISIBLE);
                 date2Txt.setText(String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
+                //월.일
                 date2Str = String.format("%d.%d",month+1,dayOfMonth);
                 Log.d(TAG, "=== date2Strdate2Strdate2Str 1회 서비스 ===" +date2Str);
+
+                // 요일
+                date3Str = dayofWeek;
 
                 Log.d(TAG, "=== 셋텍스트 ===" +String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
                 // TODO: 2020-10-24 저장하기 위한 날짜 포맷 확인할 것. date2Str 비어있음
-
                 dateBool = true;
                 Log.d(TAG, "=== dateBool === "+ dateBool );
 
@@ -480,10 +468,12 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 regularstartdate2Txt.setVisibility(View.VISIBLE);
                 regularstartdate2Txt.setText(String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth));
 
+                //월.일
                 date2Str = String.format("%d.%d",month+1,dayOfMonth);
-                Log.d(TAG, "=== date2Strdate2Strdate2Str === 정기결제" +date2Str);
+                Log.d(TAG, "=== date2Strdate2Strdate2Str 1회 서비스 ===" +date2Str);
 
-
+                // 요일
+                date3Str = dayofWeek;
 
                 regularstartdate2Str = String.format("%d.%d("+dayofWeek+")",month+1,dayOfMonth);
 
@@ -510,7 +500,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                 dateCalendar.setVisibility(View.VISIBLE);
                 timeDetailConst.setVisibility(View.GONE);
                 time2Txt.setText("");
-                time2Str="";
+                startTime=0;
 
                 time8Btn.setSelected(false);
                 time830Btn.setSelected(false);
@@ -544,11 +534,11 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time8Btn.getText().toString();
+                        startTime =480; //8시간 * 60분
                         Log.d(TAG, "=== time2Str === :" +time2Str );
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time8Btn.getText().toString());
 
                         timeDetailConst.setVisibility(View.GONE);
 
@@ -578,10 +568,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time830Btn.getText().toString();
+                        startTime = 510;
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time830Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -610,10 +600,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time9Btn.getText().toString();
+                        startTime = 540;
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time9Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -642,10 +632,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time930Btn.getText().toString();
+                        startTime = 570; //570분 - 9.5시간 - 9시 30분
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time930Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -673,10 +663,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time10Btn.getText().toString();
+                        startTime = 600; //600분 10시
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time10Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -705,10 +695,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time14Btn.getText().toString();
+                        startTime = 840; //840 - 14시
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time14Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         if(serviceRegularStr.equals("yes")){
@@ -736,10 +726,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time1430Btn.getText().toString();
+                        startTime = 870; //870분 14.5시간 14시 30분
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time1430Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -768,10 +758,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(false);
 
-                        time2Str = time15Btn.getText().toString();
+                        startTime = 900;
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time15Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -800,10 +790,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(true);
                         time16Btn.setSelected(false);
 
-                        time2Str = time1530Btn.getText().toString();
+                        startTime = 930;
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time1530Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -832,10 +822,10 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         time1530Btn.setSelected(false);
                         time16Btn.setSelected(true);
 
-                        time2Str = time16Btn.getText().toString();
+                        startTime = 960;
 
                         time2Txt.setVisibility(View.VISIBLE);
-                        time2Txt.setText(time2Str);
+                        time2Txt.setText(time16Btn.getText().toString());
                         timeDetailConst.setVisibility(View.GONE);
 
                         nextBtn.setEnabled(true);
@@ -848,7 +838,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
                             nextBtn.setEnabled(false);
                             regularstartdateCalendar.setVisibility(View.VISIBLE);
-
 
                         }
                         break;
@@ -881,10 +870,8 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         SatDBtn.setSelected(false);
                         SunDBtn.setSelected(false);
 
-
-                        regularTerm2Str=MonDBtn.getText().toString();
+                        regularTerm2Str = MonDBtn.getText().toString();
                         Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
-
 
                         regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
                         regularTerm2Txt.setVisibility(View.VISIBLE);
@@ -908,9 +895,9 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                         SunDBtn.setSelected(false);
 
                         regularTerm2Str=TueDBtn.getText().toString();
-                        Log.d(TAG, "=== regularTerm2Str ===" +regularTerm2Str);
+                        Log.d(TAG, "=== regularTerm2Str ===" + regularTerm2Str);
 
-                        regularTerm2Txt.setText("매주 "+regularTerm2Str+" 요일");
+                        regularTerm2Txt.setText("매주 " + regularTerm2Str + " 요일");
                         regularTerm2Txt.setVisibility(View.VISIBLE);
 
                         regulardaysBtnsLayout.setVisibility(View.GONE);
@@ -1045,7 +1032,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             }
         };
 
-
         MonDBtn.setOnClickListener(onClickListener2);
         TueDBtn.setOnClickListener(onClickListener2);
         WendDBtn.setOnClickListener(onClickListener2);
@@ -1053,7 +1039,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         FriDBtn.setOnClickListener(onClickListener2);
         SatDBtn.setOnClickListener(onClickListener2);
         SunDBtn.setOnClickListener(onClickListener2);
-
 
         regularTerm2Txt.setOnClickListener(new View.OnClickListener() {
 
@@ -1122,6 +1107,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                                     myplaceDTOArrayList.add(myplaceDTO);
                                     Log.d(TAG, "=== myplaceDTOArrayList.add(myplaceDTO)에 더함 ===");
 
+                                // TODO: 2020-11-19 가장 최근 추가한 데이터로 책정한 가격과 시간을 setText 할 것
                                     if(i==(response.length()-1)){
                                         Log.d(TAG, "=== 가장 최근 추가한 데이터 집의 이름 ===placeNameStr : " +placeNameStr);
 
@@ -1130,10 +1116,45 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                                         //가장 최근 장소 데이터 객체의 값을 넣기
                                         myplaceChoTxt.setText(myplaceDTORecent.getPlaceNameStr()+"("+myplaceDTORecent.getSizeStr()+")\n"+myplaceDTORecent.getAddress()+" "+myplaceDTORecent.getDetailAddress());
 
+                                        if(myplaceDTORecent.getSizeIndexint()>=0 && myplaceDTORecent.getSizeIndexint()<=4){
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 8평이하 ~ 12평 까지. ==="+ myplaceDTORecent.getSizeStr());
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 0 ~ 인덱스 4 ==="+ myplaceDTORecent.getSizeIndexint());
 
+                                            needDefTime = 210;
+                                            needDefCost = 45000;
+
+                                            //숫자 천 자리에 콤마 찍기
+                                            DecimalFormat formatter = new DecimalFormat("###,###");
+
+                                            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
+
+
+                                        }else if(myplaceDTORecent.getSizeIndexint()>=5 && myplaceDTORecent.getSizeIndexint()<=38){
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 13평 ~ 50평 까지. ==="+ myplaceDTORecent.getSizeStr());
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 5 ~ 인덱스 38 ==="+ myplaceDTORecent.getSizeIndexint());
+
+                                            needDefTime = 270;
+                                            needDefCost = 55000;
+
+                                            //숫자 천 자리에 콤마 찍기
+                                            DecimalFormat formatter = new DecimalFormat("###,###");
+
+                                            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
+
+                                        }else{
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 51평 ~ 101평 이상 까지. ==="+ myplaceDTORecent.getSizeStr());
+                                            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 39 ~ 인덱스 93 ==="+ myplaceDTORecent.getSizeIndexint());
+
+                                            needDefTime = 330;
+                                            needDefCost = 65000;
+
+                                            //숫자 천 자리에 콤마 찍기
+                                            DecimalFormat formatter = new DecimalFormat("###,###");
+
+                                            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
+
+                                        }
                                     }
-
-
                             }
 
                             if(jsonResponse.isEmpty()){
@@ -1194,10 +1215,75 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
 
         ChoLayoutall2.setVisibility(View.GONE);
 
-        serTimeStr = "3시간 30분";
-        Log.d(TAG, "=== 리사이클러 뷰 클릭 serTimeStr ===" +serTimeStr );
+        if(myplaceDTOChoose.getSizeIndexint()>=0 && myplaceDTOChoose.getSizeIndexint()<=4){
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 8평이하 ~ 12평 까지. ==="+ myplaceDTOChoose.getSizeStr());
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 0 ~ 인덱스 4 ==="+ myplaceDTOChoose.getSizeIndexint());
+
+            needDefTime = 210;
+            needDefCost = 45000;
+
+            //숫자 천 자리에 콤마 찍기
+            DecimalFormat formatter = new DecimalFormat("###,###");
+
+            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
 
 
+        }else if(myplaceDTOChoose.getSizeIndexint()>=5 && myplaceDTOChoose.getSizeIndexint()<=38){
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 13평 ~ 50평 까지. ==="+ myplaceDTOChoose.getSizeStr());
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 5 ~ 인덱스 38 ==="+ myplaceDTOChoose.getSizeIndexint());
+
+            needDefTime = 270;
+            needDefCost = 55000;
+
+            //숫자 천 자리에 콤마 찍기
+            DecimalFormat formatter = new DecimalFormat("###,###");
+
+            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
+
+        }else{
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수가 51평 ~ 101평 이상 까지. ==="+ myplaceDTOChoose.getSizeStr());
+            Log.d(TAG, "=== 리사이클러 뷰 클릭 -> 평 수 인덱스 39 ~ 인덱스 93 ==="+ myplaceDTOChoose.getSizeIndexint());
+
+            needDefTime = 330;
+            needDefCost = 65000;
+
+            //숫자 천 자리에 콤마 찍기
+            DecimalFormat formatter = new DecimalFormat("###,###");
+
+            serTimePriTxt.setText(timeIntToHourMin(needDefTime)+"에\n" + formatter.format(needDefCost)+"원 예상됩니다.");
+
+        }
+
+
+    }
+
+    //int 형태의 정수 -> "3시간 30분" String으로 나타내는 메서드
+    public String timeIntToHourMin(int plusTimeInt){
+
+        long hour = TimeUnit.MINUTES.toHours(plusTimeInt); // 분을 시간으로 변경
+        Log.d(TAG, "=== hour ===" +hour);
+
+        long minutes = TimeUnit.MINUTES.toMinutes(plusTimeInt) - TimeUnit.HOURS.toMinutes(hour); // 시간으로 변경하고, 나머지 분
+        Log.d(TAG, "=== minutes ==="+minutes );
+
+        //이거 추가 해야 함.
+        String plusTimeStr;
+
+        if(hour==0){
+            Log.d(TAG, "=== hour==0  ===" );
+            plusTimeStr = minutes + "분";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }else if(minutes==0){
+            Log.d(TAG, "=== minutes==0 ===" );
+            plusTimeStr = hour + "시간";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }else{
+            Log.d(TAG, "=== hour 랑 minutes 둘 다 0이 아닌, 경우 ===" );
+            plusTimeStr = hour +"시간 "+ minutes + "분";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }
+
+        return plusTimeStr;
     }
 
     /** * 날짜로 요일 구하기 * @param date - 요일 구할 날짜 yyyyMMdd*/
@@ -1328,5 +1414,6 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         Log.d(TAG, "=== 자바 날짜 예약날짜 범위 지정 완료 ===");
 
     }
+
 
 }

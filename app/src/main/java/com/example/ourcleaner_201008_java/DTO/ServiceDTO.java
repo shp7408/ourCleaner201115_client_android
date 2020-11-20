@@ -39,9 +39,11 @@ public class ServiceDTO implements Serializable {
     MyplaceDTO myplaceDTO;
     String managerName;
     Boolean regularBool; //참이면, 정기 결제, 거짓이면, 1회 서비스
-    String visitDate; // 정기결제인 경우엔, 첫 날짜
+    String visitDate; // 월.일(요일)
     String visitDay; // 1회 서비스인 경우엔, 그냥 요일
-    String estimatedTime; //소요시간
+    int startTime; // 시작 시간 분으로 계산해서 사용함
+    int needDefTime; // 소요시간 -> 필요한 전체 시간 아님.
+    int needDefCost; // 필요한 가격
 
     /* Service2_InfoActivity */
     HashMap servicefocusedhashMap; //집중 청소 구역
@@ -57,7 +59,8 @@ public class ServiceDTO implements Serializable {
     String serviceCaution;
 
     /* Service1_TimeActivity -> Service2_InfoActivity */
-    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime) {
+
+    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, int startTime, int needDefTime, int needDefCost) {
         this.currentUser = currentUser;
         this.serviceState = serviceState;
         this.myplaceDTO = myplaceDTO;
@@ -65,11 +68,15 @@ public class ServiceDTO implements Serializable {
         this.regularBool = regularBool;
         this.visitDate = visitDate;
         this.visitDay = visitDay;
-        this.estimatedTime = estimatedTime;
+        this.startTime = startTime;
+        this.needDefTime = needDefTime;
+        this.needDefCost = needDefCost;
     }
 
+
     /* Service2_TimeActivity -> Service3_InfoActivity */
-    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto) {
+
+    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, int startTime, int needDefTime, int needDefCost, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto) {
         this.currentUser = currentUser;
         this.serviceState = serviceState;
         this.myplaceDTO = myplaceDTO;
@@ -77,7 +84,9 @@ public class ServiceDTO implements Serializable {
         this.regularBool = regularBool;
         this.visitDate = visitDate;
         this.visitDay = visitDay;
-        this.estimatedTime = estimatedTime;
+        this.startTime = startTime;
+        this.needDefTime = needDefTime;
+        this.needDefCost = needDefCost;
         this.servicefocusedhashMap = servicefocusedhashMap;
         this.laundryBool = laundryBool;
         this.laundryCaution = laundryCaution;
@@ -88,7 +97,8 @@ public class ServiceDTO implements Serializable {
     }
 
     /* Service3_InfoActivity ->  저장할 때, */
-    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, String estimatedTime, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto, HashMap serviceplus, String serviceCaution) {
+
+    public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, int startTime, int needDefTime, int needDefCost, HashMap servicefocusedhashMap, Boolean laundryBool, String laundryCaution, Boolean garbagerecycleBool, Boolean garbagenormalBool, Boolean garbagefoodBool, String garbagehowto, HashMap serviceplus, String serviceCaution) {
         this.currentUser = currentUser;
         this.serviceState = serviceState;
         this.myplaceDTO = myplaceDTO;
@@ -96,7 +106,9 @@ public class ServiceDTO implements Serializable {
         this.regularBool = regularBool;
         this.visitDate = visitDate;
         this.visitDay = visitDay;
-        this.estimatedTime = estimatedTime;
+        this.startTime = startTime;
+        this.needDefTime = needDefTime;
+        this.needDefCost = needDefCost;
         this.servicefocusedhashMap = servicefocusedhashMap;
         this.laundryBool = laundryBool;
         this.laundryCaution = laundryCaution;
@@ -164,12 +176,28 @@ public class ServiceDTO implements Serializable {
         this.visitDay = visitDay;
     }
 
-    public String getEstimatedTime() {
-        return estimatedTime;
+    public int getStartTime() {
+        return startTime;
     }
 
-    public void setEstimatedTime(String estimatedTime) {
-        this.estimatedTime = estimatedTime;
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public int getNeedDefTime() {
+        return needDefTime;
+    }
+
+    public void setNeedDefTime(int needDefTime) {
+        this.needDefTime = needDefTime;
+    }
+
+    public int getNeedDefCost() {
+        return needDefCost;
+    }
+
+    public void setNeedDefCost(int needDefCost) {
+        this.needDefCost = needDefCost;
     }
 
     public HashMap getServicefocusedhashMap() {

@@ -58,8 +58,7 @@ public class Service3_Activity extends AppCompatActivity {
         Log.d(TAG, "Service1_TimeActivity에서 인텐트 받음 intent :"+intent);
 
         serviceDTO2 = (ServiceDTO) intent.getSerializableExtra("serviceDTO2");
-        Log.d(TAG, "=== serviceDTO2 ===" + serviceDTO2.getCurrentUser() );
-
+        Log.d(TAG, "=== serviceDTO2 ===" + serviceDTO2.getRegularBool() );
 
         // 레이아웃 연결 -> 클릭 시, 체크박스에 체크
         ironingLayout = findViewById(R.id.ironingLayout);
@@ -75,6 +74,8 @@ public class Service3_Activity extends AppCompatActivity {
 
         serCautionEdit = findViewById(R.id.serCautionEdit);
         nextBtn = findViewById(R.id.nextBtn);
+
+        plusServicehashMap = new HashMap();
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
@@ -102,8 +103,7 @@ public class Service3_Activity extends AppCompatActivity {
 
                         }else{
                             // 체크 안 된 상태 -> 체크 상태로 변경
-                            ironingCheckbox.setChecked(true);
-                            ironingLayout.setBackgroundResource(R.drawable.border);
+
 
                             Log.d(TAG, "=== plusTimeInt ===" +plusTimeInt); //plusTimeInt은 분으로만 나타냄
 
@@ -115,6 +115,9 @@ public class Service3_Activity extends AppCompatActivity {
                                 @Override
                                 public void onPositiveClick() {
                                     Log.d(TAG, "=== onPositiveClick ===" );
+
+                                    ironingCheckbox.setChecked(true);
+                                    ironingLayout.setBackgroundResource(R.drawable.border);
 
                                     plusTimeInt = plusTimeInt+30; //30분 더하기
                                     Log.d(TAG, "=== plusTimeInt 30분 더하고난 후, ===" +plusTimeInt);
@@ -161,8 +164,7 @@ public class Service3_Activity extends AppCompatActivity {
 
                         }else{
                             // 체크 안 된 상태 -> 체크 상태로 변경
-                            fridgeCheckbox.setChecked(true);
-                            fridgeLayout.setBackgroundResource(R.drawable.border);
+
 
                             Log.d(TAG, "=== plusTimeInt ===" + plusTimeInt); //plusTimeInt은 분으로만 나타냄
 
@@ -173,6 +175,9 @@ public class Service3_Activity extends AppCompatActivity {
                                 @Override
                                 public void onPositiveClick() {
                                     Log.d(TAG, "=== onPositiveClick ===" );
+
+                                    fridgeCheckbox.setChecked(true);
+                                    fridgeLayout.setBackgroundResource(R.drawable.border);
 
                                     plusTimeInt = plusTimeInt+120; //120분 더하기
                                     Log.d(TAG, "=== plusTimeInt 120분 더하고난 후, ===" +plusTimeInt);
@@ -237,15 +242,38 @@ public class Service3_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d(TAG, "=== nextBtn 클릭 ===" );
 
-                serviceDTO3 = new ServiceDTO(serviceDTO2.getCurrentUser(), serviceDTO2.getServiceState(), serviceDTO2.getMyplaceDTO(),
-                        serviceDTO2.getManagerName(), serviceDTO2.getRegularBool(), serviceDTO2.getVisitDate(), serviceDTO2.getVisitDay(),
-                        serviceDTO2.getEstimatedTime(), serviceDTO2.getServicefocusedhashMap(), serviceDTO2.getLaundryBool(),
-                        serviceDTO2.getLaundryCaution(), serviceDTO2.getGarbagerecycleBool(), serviceDTO2.getGarbagenormalBool(),
-                        serviceDTO2.getGarbagefoodBool(), serviceDTO2.getGarbagehowto(), plusServicehashMap, serCautionEdit.getText().toString());
+                serviceDTO3 = new ServiceDTO(serviceDTO2.getCurrentUser(), serviceDTO2.getServiceState(),
+                        serviceDTO2.getMyplaceDTO(), serviceDTO2.getManagerName(), serviceDTO2.getRegularBool(),
+                        serviceDTO2.getVisitDate(), serviceDTO2.getVisitDay(), serviceDTO2.getStartTime(),
+                        serviceDTO2.getNeedDefTime(), serviceDTO2.getNeedDefCost(), serviceDTO2.getServicefocusedhashMap(),
+                        serviceDTO2.getLaundryBool(), serviceDTO2.getLaundryCaution(), serviceDTO2.getGarbagerecycleBool(),
+                        serviceDTO2.getGarbagenormalBool(), serviceDTO2.getGarbagefoodBool(), serviceDTO2.getGarbagehowto(),
+                        plusServicehashMap, serCautionEdit.getText().toString());
+
+                Log.d(TAG, "=== serviceDTO3 getCurrentUser ===" + serviceDTO2.getCurrentUser());
+                Log.d(TAG, "=== serviceDTO3 getServiceState ===" + serviceDTO2.getServiceState());
+                Log.d(TAG, "=== serviceDTO3 getMyplaceDTO ===" + serviceDTO2.getMyplaceDTO());
+                Log.d(TAG, "=== serviceDTO3 getRegularBool ===" + serviceDTO2.getRegularBool());
+                Log.d(TAG, "=== serviceDTO3 getVisitDate ===" + serviceDTO2.getVisitDate());
+                Log.d(TAG, "=== serviceDTO3 getVisitDay ===" + serviceDTO2.getVisitDay());
+                Log.d(TAG, "=== serviceDTO3 getStartTime ===" + serviceDTO2.getStartTime());
+                Log.d(TAG, "=== serviceDTO3 getNeedDefTime ===" + serviceDTO2.getNeedDefTime());
+                Log.d(TAG, "=== serviceDTO3 getNeedDefCost ===" + serviceDTO2.getNeedDefCost());
+                Log.d(TAG, "=== serviceDTO3 getServicefocusedhashMap ===" + serviceDTO2.getServicefocusedhashMap());
+                Log.d(TAG, "=== serviceDTO3 getLaundryBool ===" + serviceDTO2.getLaundryBool());
+                Log.d(TAG, "=== serviceDTO3 getLaundryCaution ===" + serviceDTO2.getLaundryCaution());
+                Log.d(TAG, "=== serviceDTO3 getGarbagerecycleBool ===" + serviceDTO2.getGarbagerecycleBool());
+                Log.d(TAG, "=== serviceDTO3 getGarbagenormalBool ===" + serviceDTO2.getGarbagenormalBool());
+                Log.d(TAG, "=== serviceDTO3 getGarbagefoodBool ===" + serviceDTO2.getGarbagefoodBool());
+                Log.d(TAG, "=== serviceDTO3 getGarbagehowto ===" + serviceDTO2.getGarbagehowto());
+                Log.d(TAG, "=== serviceDTO3 getServiceplus ===" + serviceDTO3.getServiceplus());
+                Log.d(TAG, "=== serviceDTO3 getServiceCaution ===" + serviceDTO3.getServiceCaution());
+
+
 
                 Log.d(TAG, "=== 객체 담고 다음 화면으로 이동 ===" );
 
-                Intent intent = new Intent(getApplicationContext(), Service3_Activity.class);
+                Intent intent = new Intent(getApplicationContext(), Service_completeActivity.class);
                 intent.putExtra("serviceDTO3", serviceDTO3);
                 startActivity(intent);
 
@@ -255,7 +283,13 @@ public class Service3_Activity extends AppCompatActivity {
 
     }
 
-    //int 형태의 정수를 "3시간 30분" String으로 나타내는 메서드
+    //String 형태의 "3시간 30분" -> int 분 형태 로 나타내는 메서드
+//    public int hourMinToTimeInt(String hourMinStr){
+//
+//        return
+//    }
+
+    //int 분 형태의 정수를 "3시간 30분" String으로 나타내는 메서드
     public String timeIntToHourMin(int plusTimeInt){
 
         long hour = TimeUnit.MINUTES.toHours(plusTimeInt); // 분을 시간으로 변경
@@ -263,8 +297,6 @@ public class Service3_Activity extends AppCompatActivity {
 
         long minutes = TimeUnit.MINUTES.toMinutes(plusTimeInt) - TimeUnit.HOURS.toMinutes(hour); // 시간으로 변경하고, 나머지 분
         Log.d(TAG, "=== minutes ==="+minutes );
-
-
         if(hour==0){
             Log.d(TAG, "=== hour==0  ===" );
             plusTimeStr = "+ "+ minutes + "분";

@@ -19,7 +19,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Service_completeActivity"></activity>
+        <activity android:name=".View.MoreService_MyPlace_Activity"></activity>
+        <activity android:name=".View.MoreService_Acount_Activity" />
+        <activity android:name=".View.MoreService_Payment_Activity" />
+        <activity android:name=".View.MoreService_Area_Activity" />
+        <activity android:name=".View.Service_completeActivity" />
         <activity android:name=".View.Service3_Activity" />
         <activity android:name=".View.Service2_InfoActivity" />
         <activity android:name=".View.Placeinput3Activity" />

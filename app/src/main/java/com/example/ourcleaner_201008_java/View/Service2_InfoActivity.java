@@ -18,6 +18,7 @@ import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class Service2_InfoActivity extends AppCompatActivity {
 
@@ -44,9 +45,6 @@ public class Service2_InfoActivity extends AppCompatActivity {
     HashMap<String, Boolean> servicefocusedhashMap; //집중받고싶은 서비스 클릭 여부 저장하는 해쉬맵
 
     boolean roomfocusBool, bathRoomfocusBool, livingRoomfocusBool, kitchenfocusBool;
-
-
-    HashMap<String, Boolean> nexthashMap; //전체 클릭 여부 저장하는 해쉬맵
 
     /* 현재 엑티비티의 정보 담는 객체 */
     ServiceDTO serviceDTO1, serviceDTO2; //이전 엑티비티에서 객체 받아오기 위한 객체, 다음 엑티비티로 객체 보내기 위한 객체
@@ -313,37 +311,6 @@ public class Service2_InfoActivity extends AppCompatActivity {
         laundryCautionEdit = findViewById(R.id.laundryCautionEdit);
 
 
-        //무료 추가 선택의 체크박스 연결
-
-//        Button.OnClickListener onClickListener3 = new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switch (v.getId()){
-//                    //laundryCheckbox 클릭 이벤트
-//                    case R.id.laundryCheckbox:
-//                        Log.d(TAG, "=== laundryCheckbox 클릭 : === ");
-//                        break;
-//                    //windowdustCheckbox 클릭 이벤트
-//                    case R.id.windowdustCheckbox:
-//                        Log.d(TAG, "=== windowdustCheckbox 클릭 : === ");
-//                        break;
-//
-//                    //verandaCheckbox 클릭 이벤트
-//                    case R.id.verandaCheckbox:
-//                        Log.d(TAG, "=== verandaCheckbox 클릭 : === ");
-//                        break;
-//
-//
-//                }
-//            }
-//        };
-//
-//        laundryCheckbox.setOnClickListener(onClickListener3);
-//        windowdustCheckbox.setOnClickListener(onClickListener3);
-//        verandaCheckbox.setOnClickListener(onClickListener3);
-
-
-
         //쓰레기 배출 선택의 레이아웃 연결
         garbagerecycleLayout = findViewById(R.id.garbagerecycleLayout);
         garbageCautionLayout = findViewById(R.id.garbageCautionLayout);
@@ -436,42 +403,9 @@ public class Service2_InfoActivity extends AppCompatActivity {
         garbageCautionEdit = findViewById(R.id.garbageCautionEdit);
 
 
-        //쓰레기 배출 선택의 체크박스 연결
-
-//        Button.OnClickListener onClickListener5 = new Button.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                switch (v.getId()){
-//                    //garbagerecycleCheckbox 클릭 이벤트
-//                    case R.id.garbagerecycleCheckbox:
-//                        Log.d(TAG, "=== garbagerecycleCheckbox 클릭 : === ");
-//                        break;
-//                    //garbagenormalCheckbox 클릭 이벤트
-//                    case R.id.garbagenormalCheckbox:
-//                        Log.d(TAG, "=== garbagenormalCheckbox 클릭 : === ");
-//                        break;
-//
-//                    //garbagefoodCheckbox 클릭 이벤트
-//                    case R.id.garbagefoodCheckbox:
-//                        Log.d(TAG, "=== garbagefoodCheckbox 클릭 : === ");
-//                        break;
-//
-//
-//                }
-//            }
-//        };
-//
-//        garbagerecycleCheckbox.setOnClickListener(onClickListener5);
-//        garbagenormalCheckbox.setOnClickListener(onClickListener5);
-//        garbagefoodCheckbox.setOnClickListener(onClickListener5);
-
         // TODO: 2020-11-17  다음 버튼, 구간에 1개 이상이라도, 입력하면, 다음 버튼 활성화
         // 다음 버튼, 구간에 1개 이상이라도, 입력하면, 다음 버튼 활성화
         nextBtn = (Button) findViewById(R.id.nextBtn);
-//        if(roomfocusBool || bathRoomfocusBool || livingRoomfocusBool || kitchenfocusBool) {
-//            Log.d(TAG, "=== 네개의 집중 청소 구간 중 하나라도 클릭한 경우, 다음 버튼 활성화 ===" );
-//            nextBtn.setEnabled(true);
-//        }
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -495,7 +429,8 @@ public class Service2_InfoActivity extends AppCompatActivity {
                     serviceDTO2 = new ServiceDTO(serviceDTO1.getCurrentUser(), serviceDTO1.getServiceState(),
                             serviceDTO1.getMyplaceDTO(), serviceDTO1.getManagerName(),
                             serviceDTO1.getRegularBool(), serviceDTO1.getVisitDate(),
-                            serviceDTO1.getVisitDate(), serviceDTO1.getEstimatedTime(),
+                            serviceDTO1.getVisitDay(), serviceDTO1.getStartTime(),
+                            serviceDTO1.getNeedDefTime(),serviceDTO1.getNeedDefCost(),
                             servicefocusedhashMap, laundryCheckbox.isChecked(),
                             laundryCautionStr, garbagerecycleCheckbox.isChecked(),
                             garbagenormalCheckbox.isChecked(),
@@ -503,7 +438,24 @@ public class Service2_InfoActivity extends AppCompatActivity {
                             garbageCautionStr
                             );
 
-                    Log.d(TAG, "=== 객체 담고 다음 화면으로 이동 ===" );
+                    Log.d(TAG, "=== serviceDTO2 객체 담고 다음 화면으로 이동 ===" );
+                    Log.d(TAG, "=== serviceDTO2 getCurrentUser ===" + serviceDTO2.getCurrentUser());
+                    Log.d(TAG, "=== serviceDTO2 getServiceState ===" + serviceDTO2.getServiceState());
+                    Log.d(TAG, "=== serviceDTO2 getMyplaceDTO ===" + serviceDTO2.getMyplaceDTO());
+                    Log.d(TAG, "=== serviceDTO2 getRegularBool ===" + serviceDTO2.getRegularBool());
+                    Log.d(TAG, "=== serviceDTO2 getVisitDate ===" + serviceDTO2.getVisitDate());
+                    Log.d(TAG, "=== serviceDTO2 getVisitDay ===" + serviceDTO2.getVisitDay());
+                    Log.d(TAG, "=== serviceDTO2 getStartTime ===" + serviceDTO2.getStartTime());
+                    Log.d(TAG, "=== serviceDTO2 getNeedDefTime ===" + serviceDTO2.getNeedDefTime());
+                    Log.d(TAG, "=== serviceDTO2 getNeedDefCost ===" + serviceDTO2.getNeedDefCost());
+                    Log.d(TAG, "=== serviceDTO2 servicefocusedhashMap ===" + servicefocusedhashMap);
+                    Log.d(TAG, "=== serviceDTO2 laundryCheckbox.isChecked() ===" + laundryCheckbox.isChecked());
+                    Log.d(TAG, "=== serviceDTO2 laundryCautionStr ===" + laundryCautionStr);
+                    Log.d(TAG, "=== serviceDTO2 garbagerecycleCheckbox.isChecked() ===" + garbagerecycleCheckbox.isChecked());
+                    Log.d(TAG, "=== serviceDTO2 garbagenormalCheckbox.isChecked() ===" + garbagenormalCheckbox.isChecked());
+                    Log.d(TAG, "=== serviceDTO2 garbagefoodCheckbox.isChecked() ===" + garbagefoodCheckbox.isChecked());
+                    Log.d(TAG, "=== serviceDTO2 garbagefoodCheckbox.isChecked() ===" + garbagefoodCheckbox.isChecked());
+                    Log.d(TAG, "=== serviceDTO2 garbageCautionStr ===" + garbageCautionStr);
 
                     Intent intent = new Intent(getApplicationContext(), Service3_Activity.class);
                     intent.putExtra("serviceDTO2", serviceDTO2);
@@ -513,8 +465,6 @@ public class Service2_InfoActivity extends AppCompatActivity {
 
             });
 
-
-
-
     }
+
 }

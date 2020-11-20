@@ -71,6 +71,8 @@ private static final String TAG = "FragmentHome";
             }
         });
 
+
+
         return rootview;
 
 
