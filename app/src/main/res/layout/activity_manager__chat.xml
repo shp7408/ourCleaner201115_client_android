@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Manager.Manager_MainActivity"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:weightSum="20">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatList_recycle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="18"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:layout_weight="2"
+        android:weightSum="4">
+        <TextView
+            android:id="@+id/waitingTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="매칭 대기\n서비스"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/bordergrey"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            />
+        <TextView
+            android:id="@+id/myWorkListTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="업무 목록"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bordergrey"
+            android:textSize="20sp"
+
+            />
+        <TextView
+            android:id="@+id/chatListTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="고객과\n대화"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@color/black"
+            android:textSize="20sp"
+
+            />
+        <TextView
+            android:id="@+id/moreTxt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="더보기"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bordergrey"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

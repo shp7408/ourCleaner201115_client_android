@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".View.TermsActivity"
+    tools:context=".View.Service_completeActivity"
     android:padding="5dp"
     android:orientation="vertical">
 
@@ -47,10 +47,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bordergrey"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:layout_marginTop="5dp"
+                android:background="@drawable/bordergrey"
                 >
                 <TextView
                     android:id="@+id/serTimeTxt"
@@ -61,7 +61,6 @@
                     android:textSize="18sp"
                     android:layout_marginBottom="10dp"
                     android:padding="5dp"
-                    android:background="@drawable/bordergrey"
                     />
                 <TextView
                     android:id="@+id/serPlaceTxt"
@@ -71,7 +70,6 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:padding="5dp"
-                    android:background="@drawable/bordergrey"
                     android:layout_marginBottom="10dp"
                     />
                 <TextView
@@ -82,63 +80,9 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:padding="5dp"
-                    android:background="@drawable/bordergrey"
                     />
             </LinearLayout>
 
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:background="@drawable/bordergrey"-->
-<!--                android:orientation="vertical"-->
-<!--                android:padding="10dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                >-->
-<!--                -->
-<!--                <TextView-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textSize="25sp"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:text="서비스 선택"-->
-<!--                    android:layout_marginBottom="10dp"-->
-<!--                    />-->
-<!--                -->
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="거실 꼼꼼히 / 세탁"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="20sp"-->
-<!--                    android:layout_marginBottom="10dp"-->
-<!--                    android:padding="5dp"-->
-<!--                    android:background="@drawable/bordergrey"-->
-<!--                    />-->
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="일반 쓰레기 / 음식물 쓰레기"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="20sp"-->
-<!--                    android:padding="5dp"-->
-<!--                    android:background="@drawable/bordergrey"-->
-<!--                    android:layout_marginBottom="10dp"-->
-<!--                    />-->
-<!--                <TextView-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="(유료) 다림질"-->
-<!--                    android:textStyle="bold"-->
-<!--                    android:textColor="@color/black"-->
-<!--                    android:textSize="20sp"-->
-<!--                    android:padding="5dp"-->
-<!--                    android:background="@drawable/bordergrey"-->
-<!--                    />-->
-<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -155,11 +99,45 @@
                     android:textStyle="bold"
                     android:textSize="25sp"
                     android:textColor="@color/black"
-                    android:text="결제 수단 선택"
+                    android:text="서비스 내용"
                     android:layout_marginBottom="10dp"
                     />
 
 
+
+                <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="3"
+                    android:layout_gravity="center_vertical"
+                    android:padding="5dp"
+                    android:text="기본"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:background="@drawable/border"
+                    tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/serviceDetailTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:padding="5dp"
+                        android:text="거실 꼼꼼히 / 세탁"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+
+                        />
+
+
+                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -170,29 +148,119 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="30dp"
-                        android:layout_weight="2"
+                        android:layout_weight="3"
                         android:layout_gravity="center_vertical"
                         android:padding="5dp"
-                        android:background="@drawable/payment_icon_yellow_small"/>
+                        android:text="쓰레기 배출"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:background="@drawable/border"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/serviceGarbageTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:text="일반 쓰레기 / 음식물 쓰레기"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:padding="5dp"
+
+                        />
+
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    >
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="3"
+                        android:layout_gravity="center_vertical"
+                        android:padding="5dp"
+                        android:text="유료"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:background="@drawable/border"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:id="@+id/servicePlusTxt"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="7"
+                        android:padding="5dp"
+                        android:text="다림질"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+
+                        />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bordergrey"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:text="결제 수단 선택"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2"
+                        android:background="@drawable/border"
+                        android:padding="5dp"
+                        android:text="카드"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        tools:ignore="RtlCompat" />
 
                     <TextView
                         android:id="@+id/paymentTxt"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
-                        android:text="현대카드"
                         android:padding="5dp"
+                        android:text="등록된 카드가 없습니다."
                         android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/paymentBtn"
                         android:layout_width="15dp"
                         android:layout_height="30dp"
                         android:layout_weight="2"
-                        android:background="@drawable/border"
-                        android:text="변경"
+                        android:background="@drawable/background"
+                        android:text="등록"
+                        android:textColor="@color/white"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -356,6 +424,52 @@
                 </LinearLayout>
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_marginTop="5dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:text="매니저가 결정되면 결제가 진행됩니다."
+                    android:layout_marginBottom="10dp"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorSecondary2"
+                    android:text="취소 수수료 안내"
+                    android:layout_marginBottom="10dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textStyle="bold"
+                    android:textSize="15sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textColor="@color/grey"
+                    android:text="서비스 전날 6시 이후 부터는 30%\n시작 후에는 100%의 취소 수수료가 발생합니다."
+                    android:layout_marginBottom="10dp"
+                    />
+            </LinearLayout>
+
+
             <Button
                     android:id="@+id/reserveBtn"
                     android:layout_width="match_parent"
@@ -365,8 +479,10 @@
                     android:textColor="@color/white"
                     android:layout_marginTop="30dp"
                     android:background="@drawable/background"
-                    android:enabled="false"
                     />
         </LinearLayout>
+
+
+
     </ScrollView>
 </LinearLayout>

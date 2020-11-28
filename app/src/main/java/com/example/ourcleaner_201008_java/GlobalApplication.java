@@ -23,6 +23,10 @@ public class GlobalApplication extends Application {
 
     //현재 사용자 가져오기 위한 변수
     public static String currentUser;
+    public static String currentManager;
+    public static String currentManagerName;
+    public static String currentManagerPhonNum;
+
 
 
     //volley 사용을 위한 코드
@@ -171,5 +175,31 @@ public class GlobalApplication extends Application {
         return currentUser;
     }
 
+    public String getCurrentManager(){
+        return currentManager;
+    }
 
+    public static void setCurrentUser(String currentUser) {
+        GlobalApplication.currentUser = currentUser;
+    }
+
+    public static void setCurrentManager(String currentManager) {
+        GlobalApplication.currentManager = currentManager;
+    }
+
+    public static String getCurrentManagerName() {
+        return currentManagerName;
+    }
+
+    public static void setCurrentManagerName(String currentManagerName) {
+        GlobalApplication.currentManagerName = currentManagerName;
+    }
+
+    public static String getCurrentManagerPhonNum() {
+        return currentManagerPhonNum;
+    }
+
+    public static void setCurrentManagerPhonNum(String currentManagerPhonNum) {
+        GlobalApplication.currentManagerPhonNum = currentManagerPhonNum;
+    }
 }

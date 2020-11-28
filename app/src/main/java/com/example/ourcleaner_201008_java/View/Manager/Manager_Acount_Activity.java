@@ -1,4 +1,4 @@
-package com.example.ourcleaner_201008_java.View;
+package com.example.ourcleaner_201008_java.View.Manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,26 +9,27 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
+import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
+import com.example.ourcleaner_201008_java.View.LoginActivity;
+import com.example.ourcleaner_201008_java.View.MoreService_Acount_Activity;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
-public class MoreService_Acount_Activity extends AppCompatActivity {
+public class Manager_Acount_Activity extends AppCompatActivity {
 
-    private static final String TAG = "계정 정보";
+    private static final String TAG = "매니저용더보기계정관리";
 
-    ImageButton back_btn;
     TextView profileTxt, phonNumTxt, logoutTxt, accountDeleteTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_more_service__acount_);
+        setContentView(R.layout.activity_manager__acount_);
         Log.d(TAG, "=== onCreate ===" );
 
         //각버튼 아이디 매칭
@@ -41,19 +42,20 @@ public class MoreService_Acount_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
-                    //profileTxt 클릭 이벤트
+                    //profileTxt 버튼 행동
                     case R.id.profileTxt:
-//                    Ex)Intent intent = new Intent(MainActivity.this,SubActivity.class);
-//                       startActivity(intent);
+                        Log.d(TAG, "=== profileTxt ===" );
                         break;
-                    //phonNumTxt 클릭 이벤트
+                    //phonNumTxt 버튼 행동
                     case R.id.phonNumTxt:
+                        Log.d(TAG, "=== phonNumTxt ===" );
                         break;
 
-                    //logoutTxt 클릭 이벤트
+                    //logoutTxt 버튼 행동
                     case R.id.logoutTxt:
+                        Log.d(TAG, "=== logoutTxt ===" );
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(MoreService_Acount_Activity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(Manager_Acount_Activity.this);
                         builder.setMessage("정말 로그아웃 하시겠습니까?");
                         builder.setPositiveButton("확인",
                                 new DialogInterface.OnClickListener() {
@@ -69,12 +71,14 @@ public class MoreService_Acount_Activity extends AppCompatActivity {
                                                     public void onCompleteLogout() {
                                                         Log.d(TAG, "=== onCompleteLogout : 로그아웃 되었습니다. ===");
                                                         //Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                                                        PreferenceManager_Auto.clear(getApplicationContext());
-                                                        GlobalApplication.currentUser=null;
+                                                        PreferenceManager_Manager.clear(getApplicationContext());
+                                                        GlobalApplication.currentManager=null;
+                                                        GlobalApplication.currentManagerPhonNum=null;
+                                                        GlobalApplication.currentManagerName=null;
 
                                                         Log.d(TAG, "=== 자동로그인 해제 ===" );
 
-                                                        Intent intent = new Intent(MoreService_Acount_Activity.this, LoginActivity.class);
+                                                        Intent intent = new Intent(Manager_Acount_Activity.this, LoginActivity.class);
                                                         //            엑티비티 정리
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -95,8 +99,9 @@ public class MoreService_Acount_Activity extends AppCompatActivity {
 
                         break;
 
-                    //두번째 클릭 이벤트
+                    //accountDeleteTxt 버튼 행동
                     case R.id.accountDeleteTxt:
+                        Log.d(TAG, "=== accountDeleteTxt ===" );
                         break;
                 }
             }
@@ -106,7 +111,7 @@ public class MoreService_Acount_Activity extends AppCompatActivity {
         phonNumTxt.setOnClickListener(onClickListener);
         logoutTxt.setOnClickListener(onClickListener);
         accountDeleteTxt.setOnClickListener(onClickListener);
+
+
     }
-
-
 }

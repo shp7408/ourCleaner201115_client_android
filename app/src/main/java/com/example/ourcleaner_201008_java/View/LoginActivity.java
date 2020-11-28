@@ -1,31 +1,24 @@
 package com.example.ourcleaner_201008_java.View;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
+import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.Profile;
@@ -41,13 +34,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 //로그인 화면 엑티비티
 public class LoginActivity extends AppCompatActivity {
@@ -74,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
     String JsonEmail=null;
     private static final String TAG_JSON="ourCleaner";
     private static final String TAG_EMAIL = "email";
+
+    //매니저용 로그인
+    TextView managerLoginTxt;
 
 
     @Override
@@ -126,8 +117,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-
-
 //        ========== 로그인 버튼 클릭 시 -> 어떤 일이 발생? ==========
         btn_custom_login.setOnClickListener(new View.OnClickListener() {
 
@@ -146,6 +135,20 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
+        //매니저용 로그인 엑티비티로 이동하는 버튼
+        managerLoginTxt = (TextView) findViewById(R.id.managerLoginTxt);
+        managerLoginTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "=== managerLoginTxt 클릭 : === ");
+
+                //있으면 넘어감
+                Intent intent = new Intent(getApplicationContext(), Manager_LoginActivity.class);
+                startActivity(intent);
+
+                //finish();
+            }
+        });
 
 
     } //oncreate 끝남
@@ -249,42 +252,6 @@ public class LoginActivity extends AppCompatActivity {
 
                                         GetData task2 = new GetData();
                                         task2.execute( server_url, email);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                                        Intent intent = new Intent(getApplicationContext(), TermsActivity.class);
-//
-//                                        intent.putExtra("kakaoAccount", String.valueOf(kakaoAccount));
-//                                        intent.putExtra("email", email);
-//                                        intent.putExtra("nickname",  profile.getNickname());
-//
-//                                        Log.d(TAG, "=== 인텐트로 값 넘김 intent ===");
-//                                        Log.d(TAG, "intent.putExtra kakaoAccount : " + String.valueOf(kakaoAccount));
-//                                        Log.d(TAG, "intent.putExtra email : " + email);
-//                                        Log.d(TAG, "intent.putExtra nickname : " + profile.getNickname());
-//
-//                                        startActivity(intent);
-//
-//                                        finish();
-
 
 
                                     } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {

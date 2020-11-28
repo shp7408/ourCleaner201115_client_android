@@ -3,15 +3,22 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+    useLibrary  'org.apache.http.legacy'
 
     defaultConfig {
         applicationId "com.example.ourcleaner_201008_java"
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    //람다 부분 추가했을 때, 때문임.. 이거 추가하면, 빌드 에러 안 뜸.
+    compileOptions {
+        sourceCompatibility JavaVersion. VERSION_1_8
+        targetCompatibility JavaVersion. VERSION_1_8
     }
 
     buildTypes {
@@ -31,6 +38,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation project(path: ':commons-codec-1.15-tests')
+    implementation project(path: ':json-simple-1.1.1')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -46,8 +54,19 @@ dependencies {
 
     //recyclerview
     implementation 'com.android.support:recyclerview-v7:30.0.0'
+    implementation 'com.android.support:cardview-v7:30.0.0'
 
 
+    //부트 페이
+    implementation 'com.github.bootpay:client_android_java:3.3.63'
 
+    implementation group: 'com.google.code.gson', name: 'gson', version: '+'
+    implementation group: 'junit', name: 'junit', version: '4.12'
+    //implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '+'
+//    implementation group: 'commons-io', name: 'commons-io', version: '+'
+//    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
+    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
+
+    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
 
 }

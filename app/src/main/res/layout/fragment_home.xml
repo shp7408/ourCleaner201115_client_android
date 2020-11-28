@@ -50,7 +50,7 @@
             android:background="@drawable/border"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="1회\n예약하기"
+            android:text="예약하기"
             android:textSize="30dp"
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="461dp"
@@ -62,6 +62,7 @@
             android:layout_height="match_parent"
             android:text="정기\n예약하기"
             android:textSize="30dp"
+            android:visibility="gone"
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="461dp"
             android:layout_weight="1"/>

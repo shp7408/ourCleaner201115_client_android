@@ -17,9 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="100dp"
-        android:text="우리집 청소는\n
-'우리집 청소'에\n
-맡기세요."
+        android:text="우리집 청소는\n'우리집 청소'에\n맡기세요."
         android:padding="20dp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -53,6 +51,18 @@
         android:layout_height="wrap_content"
         android:text="카카오 로그아웃"
         tools:ignore="MissingConstraints" />
+
+
+    <TextView
+        android:id="@+id/managerLoginTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="매니저로 로그인 하기"
+        android:textAlignment="center"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textStyle="italic|bold" />
 
 
 

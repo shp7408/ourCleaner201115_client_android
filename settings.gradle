@@ -1,3 +1,4 @@
+include ':json-simple-1.1.1'
 include ':commons-codec-1.15-tests'
 include ':app'
 rootProject.name = "ourCleaner_201008_java"

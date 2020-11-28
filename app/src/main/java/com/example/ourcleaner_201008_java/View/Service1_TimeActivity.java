@@ -1063,6 +1063,8 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             });
     }
 
+
+    // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드
     private void makeStringRequestGet() {
 
         String url = "http://52.79.179.66/checkMyPlace.php?currentUser="+ GlobalApplication.currentUser;
@@ -1165,10 +1167,14 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                                 // 장소 정보가 있으면, 현재 엑티비티 진행.
                                 // 없으면, 장소 입력하는 엑티비티로 이동.
 
-                                Log.d(TAG, "=== 가져온 장소 정보에 장소가 없는 경우, 장소 입력 엑티비티로 이동 ===" );
-                                Intent intent = new Intent(getApplicationContext(), PlaceinputActivity.class);
-                                startActivity(intent);
-                            }
+                                try{
+                                    Log.d(TAG, "=== 가져온 장소 정보에 장소가 없는 경우, 장소 입력 엑티비티로 이동 ===" );
+                                    Intent intent = new Intent(getApplicationContext(), PlaceinputActivity.class);
+                                    startActivity(intent);
+                                }catch (Exception e){
+                                    Log.e(TAG, "=== 에러코드 ===" +e);
+                                }
+                             }
 
 
                             Log.d(TAG, "=== jsonResponse 반복문 이후 ===" +jsonResponse);
@@ -1191,6 +1197,11 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         // Adding request to request queue
         GlobalApplication.getInstance().addToRequestQueue(req);
     }
+
+
+
+
+
 
     /* 나의 장소 리사이클러뷰에서 장소 아이템 선택 */
     @Override
@@ -1286,7 +1297,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
         return plusTimeStr;
     }
 
-    /** * 날짜로 요일 구하기 * @param date - 요일 구할 날짜 yyyyMMdd*/
+    /** * 날짜로 요일 구하기 * @param date - 요일 구할 날짜 yyyyMMdd */
     public String getDayOfweek(String date){
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");

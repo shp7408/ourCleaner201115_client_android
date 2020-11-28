@@ -39,8 +39,8 @@ public class ServiceDTO implements Serializable {
     MyplaceDTO myplaceDTO;
     String managerName;
     Boolean regularBool; //참이면, 정기 결제, 거짓이면, 1회 서비스
-    String visitDate; // 월.일(요일)
-    String visitDay; // 1회 서비스인 경우엔, 그냥 요일
+    String visitDate; // 월.일
+    String visitDay; // (요일)
     int startTime; // 시작 시간 분으로 계산해서 사용함
     int needDefTime; // 소요시간 -> 필요한 전체 시간 아님.
     int needDefCost; // 필요한 가격
@@ -58,8 +58,18 @@ public class ServiceDTO implements Serializable {
     HashMap serviceplus; //유료 서비스 선택
     String serviceCaution;
 
-    /* Service1_TimeActivity -> Service2_InfoActivity */
+    public ServiceDTO(String serviceState, String visitDate, int startTime) {
+        this.serviceState = serviceState;
+        this.visitDate = visitDate;
+        this.startTime = startTime;
+    }
 
+    public ServiceDTO(String serviceState, String visitDate) {
+        this.serviceState = serviceState;
+        this.visitDate = visitDate;
+    }
+
+    /* Service1_TimeActivity -> Service2_InfoActivity */
     public ServiceDTO(String currentUser, String serviceState, MyplaceDTO myplaceDTO, String managerName, Boolean regularBool, String visitDate, String visitDay, int startTime, int needDefTime, int needDefCost) {
         this.currentUser = currentUser;
         this.serviceState = serviceState;

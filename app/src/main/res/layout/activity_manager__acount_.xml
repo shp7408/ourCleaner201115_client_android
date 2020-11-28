@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Manager.Manager_Acount_Activity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <ImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
+                    />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:text="계정정보"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/profileTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="프로필"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="@drawable/bordergrey"
+                />
+            <TextView
+                android:id="@+id/phonNumTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="전화번호"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="@drawable/bordergrey"
+                />
+            <TextView
+                android:id="@+id/logoutTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="로그아웃"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="@drawable/bordergrey"
+                />
+            <TextView
+                android:id="@+id/accountDeleteTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="탈퇴"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:padding="5dp"
+                android:background="@drawable/bordergrey"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

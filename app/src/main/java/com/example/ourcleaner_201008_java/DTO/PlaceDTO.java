@@ -1,5 +1,7 @@
 package com.example.ourcleaner_201008_java.DTO;
 
+
+/* 안 쓰는 클래스임.. */
 public class PlaceDTO {
 
     String doromyeongJuso; //도로명주소

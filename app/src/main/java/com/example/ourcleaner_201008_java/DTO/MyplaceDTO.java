@@ -39,6 +39,13 @@ public class MyplaceDTO  implements Serializable {
         this.sizeIndexint = sizeIndexint;
     }
 
+    public MyplaceDTO(String currentUser, String address, String detailAddress, String sizeStr) {
+        this.currentUser = currentUser;
+        this.address = address;
+        this.detailAddress = detailAddress;
+        this.sizeStr = sizeStr;
+    }
+
     public String getCurrentUser() {
         return currentUser;
     }
