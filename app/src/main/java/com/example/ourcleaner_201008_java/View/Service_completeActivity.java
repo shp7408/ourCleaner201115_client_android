@@ -242,7 +242,7 @@ public class Service_completeActivity extends AppCompatActivity {
         }
 
         try{
-            if(serviceDTO3.getGarbagefoodBool()){
+            if((Boolean)serviceDTO3.getServiceplus().get("냉장고")){
                 serviceFridgeStr = "냉장고 정리";
             }
         }catch (Exception e){
@@ -251,6 +251,8 @@ public class Service_completeActivity extends AppCompatActivity {
         }
 
         allStr = serviceIronStr+" "+serviceFridgeStr+" "+" 추가";
+
+        Log.d(TAG, "=== 유료 선택 allStr ===" + allStr);
 
         servicePlusTxt.setText(allStr);
 
@@ -421,7 +423,7 @@ public class Service_completeActivity extends AppCompatActivity {
                                         Log.e(TAG, "=== parse 과정에서 에러코드드 ===" +e);
 
                                     }
-                                    JSONObject jsonObj = (JSONObject) obj;
+
 
                                 }
                             })
@@ -457,7 +459,7 @@ public class Service_completeActivity extends AppCompatActivity {
                     Log.e(TAG, "=== 버튼 텍스트가 그 외, 등록인 경우, 즉 내가 등록한 카드가 있는 경우, ===" );
                     // TODO: 2020-11-27 커스텀 다이얼로그로 리사이클러 뷰 넣어서 등록한 카드 보여주기 해야 함.
 
-                    postData3();
+
 
                 }
 
@@ -600,6 +602,57 @@ public class Service_completeActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e(TAG+"123", "=== stringRequest ===onResponse " +response);
 
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    if(jsonArray.length()>0){
+                        Log.e(TAG, "=== 아이디 비밀번호 맞는 경우 jsonArray 값이 있음 ===" );
+
+                        for(int i = 0 ; i<jsonArray.length(); i++){
+
+                            org.json.JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            int uid = jsonObject.getInt( "uid" );
+                            String currentUser = jsonObject.getString( "currentUser" );
+                            String billing_key = jsonObject.getString( "billing_key" );
+                            String pg_name = jsonObject.getString( "pg_name" );
+                            String pg = jsonObject.getString( "pg" );
+                            String card_name = jsonObject.getString( "card_name" );
+                            String c_at = jsonObject.getString( "c_at" );
+                            String receipt_id = jsonObject.getString( "receipt_id" );
+
+                            Log.e(TAG+"123", "=== uid ===" +uid);
+                            Log.e(TAG+"123", "=== currentUser ===" +currentUser);
+                            Log.e(TAG+"123", "=== billing_key ===" +billing_key);
+                            Log.e(TAG+"123", "=== pg_name ===" +pg_name);
+                            Log.e(TAG+"123", "=== pg ===" +pg);
+                            Log.e(TAG+"123", "=== card_name ===" +card_name);
+                            Log.e(TAG+"123", "=== c_at ===" +c_at);
+                            Log.e(TAG+"123", "=== receipt_id ===" +receipt_id);
+
+                            /* 등록한 카드 정보 가져오는 코드 */
+                            recentUid=uid;
+                            recentBilling_key= billing_key;
+                            recentCard_name=card_name;
+
+                            Log.e(TAG+"123", "=== recentUid ===" +recentUid);
+                            Log.e(TAG+"123", "=== recentBilling_key ===" +recentBilling_key);
+                            Log.e(TAG+"123", "=== recentCard_name ===" +recentCard_name);
+
+                            /* 받아온 데이터 setText 하는 코드임 */
+                            paymentTxt.setText(card_name);
+                            Log.e(TAG+"123", "=== paymentTxt 변경 ===" +recentUid);
+
+                        }
+
+                    }else{
+                        Log.e(TAG, "=== 아이디 비밀번호 틀린 경우 jsonArray 값이 없음===" );
+                        Toast.makeText( getApplicationContext(), "아이디 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT ).show();
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "=== response === 에러코드 : " +e);
+                }
 
             }
         }, new Response.ErrorListener() {
@@ -640,79 +693,7 @@ public class Service_completeActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    /* 최근 등록한 카드 정보 가져오는 코드 */
-    public void postData3(){
-        Log.e(TAG +"postData3", "=== postData2() ===" );
-        // Request를 보낼 queue를 생성한다. 필요시엔 전역으로 생성해 사용하면 된다.
-        RequestQueue queue = Volley.newRequestQueue(this);
-        // 대표적인 예로 androidhive의 테스트 url을 삽입했다. 이부분을 자신이 원하는 부분으로 바꾸면 될 터
-        String url = "http://52.79.179.66/selectMyCard.php";
 
-        final StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(TAG+"postData3", "=== response ===" +response);
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    if(jsonArray.length()>0){
-                        Log.e(TAG+"postData3", "=== 최근 등록 카드 jsonArray 값이 있음 ===" );
-
-                        /* 가장 최근 등록한 카드 보여줌 */
-
-//                        recentUid = uid;
-//                        recentBilling_key = billing_key;
-//                        recentCard_name = card_name;
-                            org.json.JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            recentUid = jsonObject.getInt( "uid" );
-                            recentBilling_key = jsonObject.getString( "billing_key" );
-                            recentCard_name = jsonObject.getString( "card_name" );
-
-
-                            Log.e(TAG+"postData3", "=== recentUid ===" +recentUid);
-                            Log.e(TAG+"postData3", "=== billing_key ===" +billing_key);
-                            Log.e(TAG+"postData3", "=== card_name ===" +card_name);
-
-                            paymentTxt.setText(card_name);
-                            Log.d(TAG+"postData3", "=== paymentTxt 변경 ===" );
-
-
-
-
-                    }else{
-                        Log.e(TAG+"postData3", "=== 아이디 비밀번호 틀린 경우 jsonArray 값이 없음===" );
-                        Toast.makeText( getApplicationContext(), "아이디 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT ).show();
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e(TAG+"postData3", "=== response === 에러코드 : " +e);
-                }
-
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG+"postData3", "=== stringRequest === error :" +error);
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("currentUser", GlobalApplication.currentUser);
-                Log.d(TAG+"postData3", "=== currentUser ===" +GlobalApplication.currentUser);
-                Log.d(TAG+"postData3", "=== params === : "+ params );
-
-                return params;
-            }
-        };
-
-        stringRequest.setTag(TAG);
-
-        queue.add(stringRequest);
-    }
 
     //int 형태의 정수를 "3시간 30분" String으로 나타내는 메서드
     public String timeIntToHourMin1(int plusTimeInt){

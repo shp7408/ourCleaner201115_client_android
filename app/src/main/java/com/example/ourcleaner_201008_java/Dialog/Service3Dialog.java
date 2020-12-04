@@ -35,13 +35,6 @@ public class Service3Dialog extends Dialog {
         this.optionGuidStr=optionGuidStr;
     }
 
-    public Service3Dialog(@NonNull Context context, Service3DialogClickListener service3DialogClickListener) {
-        super(context);
-        this.context = context;
-        this.service3DialogClickListener = service3DialogClickListener;
-
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

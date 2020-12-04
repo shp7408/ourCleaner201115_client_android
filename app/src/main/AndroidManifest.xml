@@ -19,7 +19,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.MyPlace_EditActivity"></activity>
+        <activity android:name=".View.Manager.Manager_SigninGuide2Activity"></activity>
+        <activity android:name=".View.Manager.Manager_SigninGuide1Activity" />
+        <activity android:name=".View.Manager.Manager_Signin3Activity" />
+        <activity android:name=".View.Manager.Manager_Signin2Activity" />
+        <activity android:name=".View.Manager.Manager_Signin1Activity" />
+        <activity android:name=".View.MyPlace_EditActivity" />
         <activity android:name=".View.Manager.Manager_Acount_Activity" />
         <activity android:name=".View.Service_DetailActivity" />
         <activity android:name=".View.Manager.Manager_Detail_MatchingPostActivity" />

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/close"
+            />
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/border"
+            android:text="회원가입을 위해\n정보를 입력해주세요."
+            android:textColor="@color/black"
+            android:textSize="25sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:text="휴대전화 번호"
+            android:textColor="@color/black" />
+
+
+        <EditText
+            android:id="@+id/phoneNumEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="본인의 휴대전화 번호 입력"
+            android:inputType="phone"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/bordergrey"
+            android:text="*인증 시, 입력한 전화번호는 업무 용도 이외에\n절대 사용되지 않습니다."
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/cetNumBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="인증번호 발송"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -68,7 +68,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
 
         if(PreferenceManager_Manager.getString(getApplicationContext(), "idStr").isEmpty()){
 
-            Log.d(TAG, "=== 매니저 쉐어드에 매니저 아이디 없는 경우 ===" );
+            Log.d(TAG, "=== 매니저 쉐어드에 매니저 아이디 없는 경우 현재 엑티비티 그대로 진행 ===" );
 
         }else{
 
@@ -212,7 +212,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "=== signinTxt 클릭 : === ");
 
                     //있으면 넘어감
-                    Intent intent = new Intent(getApplicationContext(), Manager_SigninActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), Manager_SigninGuide1Activity.class);
 
                     startActivity(intent);
 

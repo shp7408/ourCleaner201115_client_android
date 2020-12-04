@@ -82,7 +82,7 @@ public class Manager_SigninActivity extends AppCompatActivity {
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d(TAG, "=== stringRequest === onResponse" );
+                Log.d(TAG, "=== stringRequest === onResponse" +response);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Manager_SigninActivity.this);
                 builder.setMessage("매니저 가입이 완료 되었습니다.");

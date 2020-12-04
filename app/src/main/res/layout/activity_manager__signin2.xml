@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.TermsActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="35dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/close"
+            />
+
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:id="@+id/phonNumTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="20dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/border"
+            android:text="010-3051-7408로 받으신\n인증번호 4자리를 입력해주세요."
+            android:textColor="@color/black"
+            android:textSize="23sp" />
+
+
+        <EditText
+            android:id="@+id/certNumEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:hint="인증번호 4자리 입력"
+            android:inputType="number"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:focusable="false"/>
+
+        <TextView
+            android:id="@+id/timeLimitTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="1:00 내에 입력"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/timeAlertTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="입력 시간을 초과하였습니다."
+            android:textColor="@color/black"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/certResendTxt"
+            android:textStyle="italic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:text="인증번호 재발송"
+            android:textColor="@color/colorError"
+            android:visibility="gone"/>
+
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="다음"
+            android:textColor="@color/white"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background"
+            android:enabled="false"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

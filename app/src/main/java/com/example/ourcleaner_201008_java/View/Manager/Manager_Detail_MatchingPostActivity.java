@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
+import kr.co.bootpay.javaApache.BootpayApi;
+
 
 public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
 
@@ -420,13 +422,26 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
                                             .requestLogout(new LogoutResponseCallback() {
                                                 @Override
                                                 public void onCompleteLogout() {
-                                                    Log.d(TAG+"123", "=== onCompleteLogout : 해당 서비스를 수락했습니다. ===");
+                                                    Log.e(TAG+"ddd", "=== onCompleteLogout : 해당 서비스를 수락 버튼 클릭함. 그다음은 요청내용 받아와야 함. ===");
+                                                    /* 해당 서버 요청-응답에서 이루어져야 하는 일
+                                                    1. rest api로 엑세스 토큰 받아오기
+                                                    2. 해당 서비스 db의 빌링키로 자동 결제되어야 함.
+                                                    3. 해당 서비스 db에서 서비스 상태 변경
+                                                    4.  */
 
+                                                    Log.e(TAG+"ddd", "=== BootpayApi api ===" );
+                                                    BootpayApi api = new BootpayApi(
+                                                            "5fba1e488f075100207de721",
+                                                            "6hZhD2SuxKpuNWoIfYg3uCk+jyNQ4avv1GAspvVTK2I="
+                                                    );
+                                                    try {
+                                                        api.getAccessToken();
+                                                        Log.e(TAG+"ddd", "=== api.getAccessToken(); ===");
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        Log.e(TAG+"ddd", "=== 에러코드 ===" + e );
+                                                    }
 
-
-
-
-                                                    /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
 //                                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
 //                                                        @Override
 //                                                        public void onResponse(String response) {

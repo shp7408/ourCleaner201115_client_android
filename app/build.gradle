@@ -39,6 +39,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation project(path: ':commons-codec-1.15-tests')
     implementation project(path: ':json-simple-1.1.1')
+    implementation files('..\\.idea\\libraries\\javaSDK-2.2.jar')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -65,8 +66,10 @@ dependencies {
     //implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '+'
 //    implementation group: 'commons-io', name: 'commons-io', version: '+'
 //    implementation 'org.apache.httpcomponents:httpcore:4.4.1'
-    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5'
-
+    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    androidTestImplementation group: 'junit', name: 'junit', version: '4.12'
+//    implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 
 }
