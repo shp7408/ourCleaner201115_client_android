@@ -39,7 +39,7 @@
             android:padding="20dp"
             android:layout_margin="20dp"
             android:background="@drawable/border"
-            android:text="010-3051-7408로 받으신\n인증번호 4자리를 입력해주세요."
+            android:text="7408로 받으신\n인증번호 4자리를 입력해주세요."
             android:textColor="@color/black"
             android:textSize="23sp" />
 
@@ -54,7 +54,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:focusable="false"/>
+            />
 
         <TextView
             android:id="@+id/timeLimitTxt"
@@ -64,7 +64,6 @@
             android:layout_marginRight="20dp"
             android:padding="10dp"
             android:gravity="center"
-            android:text="1:00 내에 입력"
             android:textColor="@color/black"
             />
 

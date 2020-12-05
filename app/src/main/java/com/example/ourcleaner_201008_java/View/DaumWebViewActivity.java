@@ -24,7 +24,7 @@ public class DaumWebViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daum_web_view);
 
-        //daum_result = (TextView) findViewById(R.id.daum_result);
+//        daum_webview = (TextView) findViewById(R.id.daum_webview);
 
         // WebView 초기화
         init_webView();

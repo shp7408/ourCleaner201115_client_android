@@ -27,18 +27,20 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:padding="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="110dp"
             android:layout_marginBottom="60dp"
             android:background="@drawable/border"
             android:text="일반 가정집 생활청소로\n일 할 수 있어요."
             android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:textAlignment="center"
+            android:textSize="25sp"
+            tools:ignore="RtlCompat" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="일반 가정집 생활 청소를 하기 때문에\n\n누구나 할 수 있어요.\n"
+            android:text="일반 가정집 생활 청소를 하기 때문에\n누구나 할 수 있어요.\n\n* 30세 ~ 65세의 여성만 가능합니다."
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="18sp"

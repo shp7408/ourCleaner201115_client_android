@@ -1,8 +1,6 @@
 package com.example.ourcleaner_201008_java.View;
-import android.app.Activity;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -18,31 +16,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
-import com.example.ourcleaner_201008_java.DTO.PlaceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
-import com.google.gson.Gson;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.InputStream;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-import kr.co.bootpay.Bootpay;
-import kr.co.bootpay.BootpayAnalytics;
-import kr.co.bootpay.enums.PG;
-import kr.co.bootpay.enums.UX;
-import kr.co.bootpay.listener.ConfirmListener;
-import kr.co.bootpay.model.BootExtra;
-import kr.co.bootpay.model.BootUser;
 
 public class Placeinput3Activity extends AppCompatActivity {
 

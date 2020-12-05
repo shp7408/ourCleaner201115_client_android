@@ -38,23 +38,29 @@ public class PlaceinputActivity extends AppCompatActivity {
 
 
         placeEdit = (EditText)findViewById(R.id.placeEdit);
-        placeEdit.setOnTouchListener(new View.OnTouchListener() {
+//        placeEdit.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+//                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+//                    //클릭했을 경우 발생할 이벤트 작성
+//                    Log.e(TAG, "=== placeEdit.setOnTouchListener ===" );
+//                    Intent intent = new Intent(getApplicationContext(), DaumWebViewActivity.class);
+//                    //데이터 넘겨받기 위함
+//                    startActivityForResult(intent, REQUEST_CODE_PLACE_INPUT );
+//                }
+//
+//                return false;
+//
+//            }
+//        });
+
+        placeEdit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-
-                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
-                    //클릭했을 경우 발생할 이벤트 작성
-                    Log.d(TAG, "=== placeEdit.setOnTouchListener ===" );
-                    Intent intent = new Intent(getApplicationContext(), DaumWebViewActivity.class);
-                    //데이터 넘겨받기 위함
-                    startActivityForResult(intent, REQUEST_CODE_PLACE_INPUT );
-                }
-
-                return false;
-
+            public void onClick(View view) {
+                
             }
         });
-
 
 
 

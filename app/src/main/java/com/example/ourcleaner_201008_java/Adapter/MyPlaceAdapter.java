@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
-import com.example.ourcleaner_201008_java.DTO.PlaceDTO;
 import com.example.ourcleaner_201008_java.R;
 
 import java.util.ArrayList;

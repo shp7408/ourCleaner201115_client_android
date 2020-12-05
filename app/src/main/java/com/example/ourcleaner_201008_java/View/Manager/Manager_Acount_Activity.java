@@ -45,6 +45,13 @@ public class Manager_Acount_Activity extends AppCompatActivity {
                     //profileTxt 버튼 행동
                     case R.id.profileTxt:
                         Log.d(TAG, "=== profileTxt ===" );
+
+                        //있으면 넘어감
+                        Intent intent = new Intent(getApplicationContext(), Manager_ProfileActivity.class);
+                        startActivity(intent);
+
+                        //finish();
+
                         break;
                     //phonNumTxt 버튼 행동
                     case R.id.phonNumTxt:

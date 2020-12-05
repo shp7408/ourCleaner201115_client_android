@@ -27,18 +27,20 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:padding="20dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="110dp"
             android:layout_marginBottom="60dp"
             android:background="@drawable/border"
             android:text="원하는 장소에서\n원하는 시간만큼 일하세요."
+            android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            tools:ignore="RtlCompat" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="단기 알바, 파트 타임, 투잡\n\n내가 원하는 지역과 시간에 \n업무를 선택할수 있어요."
+            android:text="단기 알바, 파트 타임, 투잡\n\n내가 원하는 지역과 시간에 \n업무를 선택할수 있어요.\n"
             android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="18sp"
