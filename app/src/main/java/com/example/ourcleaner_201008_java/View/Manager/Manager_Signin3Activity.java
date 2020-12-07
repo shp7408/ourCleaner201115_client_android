@@ -60,7 +60,7 @@ public class Manager_Signin3Activity extends AppCompatActivity implements Compou
                 Log.d(TAG, "=== btn_all 클릭 : === ");
 
                 //있으면 넘어감
-                Intent intent = new Intent(getApplicationContext(), TermsMoreActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Manager_TermsMoreActivity.class);
 
                 startActivity(intent);
 

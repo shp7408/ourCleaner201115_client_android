@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.PlaceSearchActivity"></activity>
+        <activity android:name=".View.Manager.Manager_TermsMoreActivity"></activity>
+        <activity android:name=".View.PlaceSearchActivity" />
         <activity android:name=".View.Manager.Manager_ProfileActivity" />
         <activity android:name=".View.Manager.Manager_Signin4Activity" />
         <activity android:name=".View.Manager.Manager_SigninGuide2Activity" />

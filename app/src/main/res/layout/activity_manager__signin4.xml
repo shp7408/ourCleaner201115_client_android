@@ -82,7 +82,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey2"
                     android:hint="이름을 입력하세요."
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="30dp"
                     />
 
 
@@ -119,7 +119,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey2"
                     android:hint="이메일을 입력하세요."
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="30dp"
                     android:inputType="textEmailAddress"
                     />
 
@@ -156,8 +156,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey2"
-                    android:hint="이메일을 입력하세요."
-                    android:layout_marginBottom="20dp"
+                    android:hint="문자, 숫자, 영문을 포함한 8~20 자리의 비밀번호를 입력해주세요."
+                    android:layout_marginBottom="30dp"
                     android:inputType="textPassword"
                     />
 
@@ -195,7 +195,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey2"
                     android:hint="비밀번호를 다시 입력하세요."
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="30dp"
                     android:inputType="textPassword"
                     />
                 <TextView

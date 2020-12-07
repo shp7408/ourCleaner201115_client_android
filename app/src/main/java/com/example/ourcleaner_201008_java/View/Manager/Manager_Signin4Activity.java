@@ -360,11 +360,13 @@ public class Manager_Signin4Activity extends AppCompatActivity {
                                                 // 쉐어드에 저장 -> 나중에 다시 들어왔을 때 자동 로그인 위함
                                                 PreferenceManager_Manager.setString(getApplicationContext(),"idStr",emailStr);
                                                 PreferenceManager_Manager.setString(getApplicationContext(),"nameStr",nameStr);
+                                                PreferenceManager_Manager.setString(getApplicationContext(),"passwordStr",passwordStr);
 
                                                 // 글로벌어플리케이션에 저장 -> 로그인 상태 저장을 위함
                                                 GlobalApplication.currentManager = emailStr;
                                                 GlobalApplication.currentManagerName = nameStr;
                                                 GlobalApplication.currentManagerPhonNum = phoneNumStr;
+
 
                                                 Intent intent = new Intent(Manager_Signin4Activity.this, Manager_MainActivity.class);
                                                 //            엑티비티 정리

@@ -106,6 +106,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
 
                                 PreferenceManager_Manager.setString(getApplicationContext(),"idStr", idStr);
                                 PreferenceManager_Manager.setString(getApplicationContext(),"nameStr",nameStr);
+                                PreferenceManager_Manager.setString(getApplicationContext(),"passwordStr",passwordStr);
 
                                 Toast.makeText( getApplicationContext(), nameStr+" 매니저님 안녕하세요.", Toast.LENGTH_SHORT ).show();
                                 Intent intent = new Intent( Manager_LoginActivity.this, Manager_MainActivity.class );
@@ -125,7 +126,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
                     }
                 }
             };
-            LoginRequest loginRequest = new LoginRequest(PreferenceManager_Manager.getString(getApplicationContext(), "idStr"), "auto", responseListener);
+            LoginRequest loginRequest = new LoginRequest(PreferenceManager_Manager.getString(getApplicationContext(), "idStr"), PreferenceManager_Manager.getString(getApplicationContext(), "passwordStr"), responseListener);
             RequestQueue queue = Volley.newRequestQueue( Manager_LoginActivity.this );
             queue.add( loginRequest );
 
@@ -175,6 +176,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
 
                                     PreferenceManager_Manager.setString(getApplicationContext(),"idStr", idStr);
                                     PreferenceManager_Manager.setString(getApplicationContext(),"nameStr",nameStr);
+                                    PreferenceManager_Manager.setString(getApplicationContext(),"passwordStr",passwordStr);
 
                                     Toast.makeText( getApplicationContext(), nameStr+" 매니저님 안녕하세요.", Toast.LENGTH_SHORT ).show();
                                     Intent intent = new Intent( Manager_LoginActivity.this, Manager_MainActivity.class );

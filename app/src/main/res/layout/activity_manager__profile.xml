@@ -41,7 +41,7 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_local_laundry_service_24"/>
+                    android:src="@drawable/ic_baseline_person_24"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -236,7 +236,18 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="반포 2동"
+                            android:paddingEnd="5dp"
+                            android:paddingStart="10dp"
+                            android:layout_marginEnd="5dp"
+                            android:drawableRight="@drawable/close"
+                            android:background="@drawable/bordercircle60"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:text="신림동"
+                            android:paddingStart="10dp"
                             android:paddingEnd="5dp"
                             android:layout_marginEnd="5dp"
                             android:drawableRight="@drawable/close"
@@ -245,8 +256,9 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="서초 1동"
                             android:paddingEnd="5dp"
+                            android:paddingStart="10dp"
                             android:layout_marginEnd="5dp"
                             android:drawableRight="@drawable/close"
                             android:background="@drawable/bordercircle60"/>
@@ -254,8 +266,9 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="방배본동"
                             android:paddingEnd="5dp"
+                            android:paddingStart="10dp"
                             android:layout_marginEnd="5dp"
                             android:drawableRight="@drawable/close"
                             android:background="@drawable/bordercircle60"/>
@@ -263,16 +276,9 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
-                            android:paddingEnd="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
+                            android:text="신사동"
+                            android:paddingStart="10dp"
 
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="화성시"
                             android:paddingEnd="5dp"
                             android:layout_marginEnd="5dp"
                             android:drawableRight="@drawable/close"
@@ -336,7 +342,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="화장실 청소 전문"
                             android:paddingEnd="5dp"
                             android:layout_marginEnd="5dp"
                             android:paddingStart="10dp"
@@ -346,7 +352,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="공기 청정기 필터 청소"
                             android:paddingEnd="5dp"
                             android:paddingStart="10dp"
                             android:layout_marginEnd="5dp"
@@ -356,7 +362,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="에어컨 필터 청소"
                             android:paddingEnd="5dp"
                             android:paddingStart="10dp"
                             android:layout_marginEnd="5dp"
@@ -366,7 +372,7 @@
                         <Button
                             android:layout_width="wrap_content"
                             android:layout_height="35dp"
-                            android:text="화성시"
+                            android:text="손이 빨라요/"
                             android:paddingEnd="5dp"
                             android:paddingStart="10dp"
                             android:layout_marginEnd="5dp"
