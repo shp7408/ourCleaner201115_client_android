@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -47,7 +47,7 @@ dependencies {
 // 카카오톡 자동 로그인 위함
     implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 // 볼리 사용
-    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.volley:volley:1.1.0'
 // gson
     implementation 'com.google.code.gson:gson:2.8.5'
 
@@ -75,5 +75,40 @@ dependencies {
     /* 이미지 저장 및 불러오기 위한 라이브러리 글라이드 */
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+
+    // build.gradle (app) - dependency 추가
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation files('libs/libDaumMapAndroid.jar')
+
+    /* 프로필 둥근모양 사용하기 위함 */
+//    implementation 'jp.wasabeef:glide-transformations:4.9.0'
+    implementation 'jp.wasabeef:glide-transformations:1.0.6@aar'
+
+    // If you want to use the GPU Filters
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
+
+
+    /* retrofit paging-recyclerview */
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'jp.wasabeef:picasso-transformations:2.2.1'
+
+    /* paging-recyclerview */
+    def paging_version = "2.1.2"
+    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
+    // alternatively - without Android dependencies for testing
+    testImplementation "androidx.paging:paging-common:$paging_version" // For Kotlin use paging-common-ktx
+    // optional - RxJava support
+    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
+
+    /* 파이어베이스 */
+    implementation platform('com.google.firebase:firebase-bom:26.1.1')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.android.gms:play-services-basement:17.4.0' //
+    implementation 'com.google.firebase:firebase-messaging:20.0.1'
+
+    implementation 'com.squareup.okhttp3:okhttp:3.2.0'
+
 
 }

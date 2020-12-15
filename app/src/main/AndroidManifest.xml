@@ -9,18 +9,28 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 이미지 작업 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 이미지 작업 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 현재 위치 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Manager.Manager_TermsMoreActivity"></activity>
-        <activity android:name=".View.PlaceSearchActivity" />
+        <activity android:name=".View.Service_SelectManager_DetailActivity"></activity>
+        <activity android:name=".View.Service_SelectManagersActivity" />
+        <activity android:name=".View.Manager.Manager_InputActivePlaceActivity" />
+        <activity android:name=".View.Manager.Manager_InputMyPlaceActivity" />
+        <activity android:name=".View.Manager.Manager_TermsMoreActivity" />
         <activity android:name=".View.Manager.Manager_ProfileActivity" />
         <activity android:name=".View.Manager.Manager_Signin4Activity" />
         <activity android:name=".View.Manager.Manager_SigninGuide2Activity" />
@@ -67,23 +77,28 @@
             </intent-filter>
         </activity>
         <activity android:name=".View.MainActivity" />
+        <activity android:name=".View.Manager.MapViewActivity" />
+        <activity android:name=".View.Manager.demos.CameraDemoActivity" />
+        <activity android:name=".View.Manager.demos.EventsDemoActivity" />
+        <activity android:name=".View.Manager.demos.LocationDemoActivity" />
+        <activity android:name=".View.Manager.demos.MapViewDemoActivity" />
+        <activity android:name=".View.Manager.demos.MarkerDemoActivity" />
+        <activity android:name=".View.Manager.demos.PolygonDemoActivity" />
+        <activity android:name=".View.Manager.demos.runtimePermissions.AppPermissionHandlerActivity" />
 
-        <receiver
-            android:name=".Receiver.Broadcast"
-            android:enabled="true"
-            android:exported="true">
 
-            <!-- 오레오 이전 버전에서는 intent-filter 없애야함. -->
-            <!-- <intent-filter android:priority="9999"> -->
-            <!-- <action android:name="android.intent.action.BOOT_COMPLETED"/> -->
-            <!-- <action android:name="android.provider.Telephony.SMS_RECEIVED" /> -->
-            <!-- </intent-filter> -->
+        <!--아래 두개의 서비스 태그를 추가한다.-->
+        <service
+            android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
-        </receiver>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id"/>
     </application>
 
 </manifest>

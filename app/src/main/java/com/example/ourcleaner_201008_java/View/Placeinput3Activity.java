@@ -83,6 +83,7 @@ public class Placeinput3Activity extends AppCompatActivity {
         bActivity = (Placeinput2Activity)Placeinput2Activity.BActivity;
 
 
+
         //intent로 받을 때 사용하는 코드
         Intent intent = getIntent();
         Log.d(TAG, "주소 입력 엑티비티에서 인텐트 받음 intent :" + intent);
@@ -135,6 +136,10 @@ public class Placeinput3Activity extends AppCompatActivity {
         Log.d(TAG, "=== pethashMap 클리어함 ===" );
         pethashMap.clear();
 
+        /* 클릭여부 저장하는 해쉬맵 초기화 */
+        pethashMap.put("개",false);
+        pethashMap.put("고양이",false);
+        pethashMap.put("기타",false);
 
 
         //반려동물 클릭 여부 저장하는 해쉬맵
@@ -143,6 +148,8 @@ public class Placeinput3Activity extends AppCompatActivity {
 
         Log.d(TAG, "=== nexthashMap 클리어함 ===" );
         nexthashMap.clear();
+        /* 클릭여부 저장하는 해쉬맵 초기화 */
+        nexthashMap.put("반려동물", false);
 
 
 

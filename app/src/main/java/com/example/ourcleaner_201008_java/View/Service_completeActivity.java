@@ -13,7 +13,6 @@ import com.android.volley.toolbox.Volley;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,13 +31,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ourcleaner_201008_java.DTO.MyCardDTO;
-import com.example.ourcleaner_201008_java.DTO.MyReservationDTO;
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
-import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_MainActivity;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -121,6 +117,17 @@ public class Service_completeActivity extends AppCompatActivity {
         serviceDTO3 = (ServiceDTO) intent.getSerializableExtra("serviceDTO3");
         Log.d(TAG, "=== serviceDTO3 ===" + serviceDTO3.getCurrentUser() );
 
+
+
+
+
+
+
+
+
+
+
+
         serReqTxt = findViewById(R.id.serReqTxt);
         serReqTxt.setText(serviceDTO3.getVisitDate()+"("+serviceDTO3.getVisitDay()+")"+"\n예약을 완료해주세요.");
         Log.d(TAG, "=== serReqTxt ===" + serReqTxt.getText());
@@ -136,6 +143,15 @@ public class Service_completeActivity extends AppCompatActivity {
         serviceDetailTxt = findViewById(R.id.serviceDetailTxt);
         serviceGarbageTxt = findViewById(R.id.serviceGarbageTxt);
         servicePlusTxt = findViewById(R.id.servicePlusTxt);
+
+
+        String serManagerNameStr = serviceDTO3.getManagerName();
+        // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
+        int idx = serManagerNameStr.indexOf(",");
+        serManagerNameStr = serManagerNameStr.substring(0, idx);
+
+        serManagerTxt.setText(serManagerNameStr+" 매니저님");
+        Log.e(TAG, "=== getManagerName ==="+serviceDTO3.getManagerName() );
 
         Log.d(TAG, "=== 불린확인 ===" +serviceDTO3.getServicefocusedhashMap());
         /* 서비스 기본 내용 보여주는 내용 setText하는 코드 */
@@ -504,15 +520,19 @@ public class Service_completeActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     Log.d(TAG, "=== 확인 클릭  ===" );
 
-
                                     //UserManagement API 요청을 담당
                                     UserManagement.getInstance()
-                                            //requestLogout : 로그아웃 요청
-                                            //파라미터 : logout 요청 결과에 대한 callback
                                             .requestLogout(new LogoutResponseCallback() {
                                                 @Override
                                                 public void onCompleteLogout() {
-                                                    Log.d(TAG, "=== onCompleteLogout : 예약이 완료되었습니다. ===");
+                                                    Log.e(TAG, "=== onCompleteLogout : 예약이 완료되었습니다. ===");
+
+                                                    // TODO: 2020-12-15 fcm 보내는 부분
+
+
+
+
+
 
                                                     //있으면 넘어감
                                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -724,35 +744,7 @@ public class Service_completeActivity extends AppCompatActivity {
         return plusTimeStr;
     }
 
-    public String timeIntToHourMin2(int plusTimeInt){
 
-        long hour = TimeUnit.MINUTES.toHours(plusTimeInt); // 분을 시간으로 변경
-        Log.d(TAG, "=== hour ===" +hour);
-
-        long minutes = TimeUnit.MINUTES.toMinutes(plusTimeInt) - TimeUnit.HOURS.toMinutes(hour); // 시간으로 변경하고, 나머지 분
-        Log.d(TAG, "=== minutes ==="+minutes );
-
-        //이거 추가 해야 함.
-        String plusTimeStr;
-
-        if(hour==0){
-            Log.d(TAG, "=== hour==0  ===" );
-            plusTimeStr =  minutes + "분";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }else if(minutes==0){
-            Log.d(TAG, "=== minutes==0 ===" );
-            plusTimeStr = hour + "시간";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }else{
-            Log.d(TAG, "=== hour 랑 minutes 둘 다 0이 아닌, 경우 ===" );
-            plusTimeStr = hour +"시간 "+ minutes + "분";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }
-
-        return plusTimeStr;
-    }
-
-    // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드
     private void makeStringRequestGet() {
 
         String url = "http://52.79.179.66/myCardCheck.php?currentUser="+ GlobalApplication.currentUser;
@@ -861,6 +853,9 @@ public class Service_completeActivity extends AppCompatActivity {
         // Adding request to request queue
         GlobalApplication.getInstance().addToRequestQueue(req);
     }
+
+
+
 
 
 }

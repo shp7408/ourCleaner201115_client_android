@@ -1,16 +1,22 @@
 package com.example.ourcleaner_201008_java.View.Manager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -49,6 +55,11 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
     /* 서버에서 내 장소 정보 받아오기 위한 변수 */
     String jsonResponse;
 
+
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,8 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
 
         makeStringRequestGet();
         Log.d(TAG, "=== makeJsonArrayRequest() 메서드 종료 ===" );
+
+
 
 
         /* 현재 내 장소 정보를 모두 가져온 상태. 추가한 후에도 가져온 상태임. 이제는 리사이클러 뷰에 내 장소 목록을 보여줄 것임 */
@@ -253,5 +266,14 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
 
 
     }
+
+
+
+
+
+
+
+
+
 
 }

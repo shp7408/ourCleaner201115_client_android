@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Manager.Manager_LoginActivity"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+
+                <ImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/circle" />
+
+                <TextView
+                    android:id="@+id/nameTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5dp"
+                    android:text="박서현 매니저님"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/phoneNumTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/bordercircle602"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="5dp"
+                    android:text="010-3051-7408"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:rating="3.5"
+                        android:stepSize="0.5" />
+
+                    <TextView
+                        android:id="@+id/reviewScoreNumTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10dp"
+                        android:text="(3.5 / 5)  5 건"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reviewMoreTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="15dp"
+                        android:text="리뷰 보기 > "
+                        android:textColor="@color/colorName"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bordergrey"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="11"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="활동 지역"
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="주로 활동하는 지역입니다."
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp">
+
+
+                        <Button
+                            android:id="@+id/place1Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/bordercircle60"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="반포 2동" />
+
+                        <Button
+                            android:id="@+id/place2Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/bordercircle60"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="신림동" />
+
+                        <Button
+                            android:id="@+id/place3Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/bordercircle60"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="서초 1동" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:paddingStart="10dp">
+
+
+                        <Button
+                            android:id="@+id/place4Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/bordercircle60"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="반포 2동" />
+
+                        <Button
+                            android:id="@+id/place5Btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="5dp"
+                            android:background="@drawable/bordercircle60"
+                            android:paddingStart="5dp"
+                            android:paddingEnd="5dp"
+                            android:text="신림동" />
+
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <!--
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bordergrey"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="11"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="전문 분야"
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="상위 5개 분야의 전문 분야입니다."
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <HorizontalScrollView
+                        android:id="@+id/scrollview2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fadeScrollbars="false"
+                        android:layout_marginBottom="10dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:paddingBottom="10dp"
+                            android:padding="10dp">
+
+                            <Button
+                                android:id="@+id/mungiBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="먼지 제거 금메달"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+                            <Button
+                                android:id="@+id/semyundaeBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="세면대 반짝 반짝하게"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/gasCleanBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="가스레인지 찌든 때 말끔하게"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+
+
+                            <Button
+                                android:id="@+id/hasuguBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="싱크대 하수구 말끔하게"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/laundryBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="세탁 예술이야"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+                            <Button
+                                android:id="@+id/windowBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="실내 창틀 반짝"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+                            <Button
+                                android:id="@+id/verandaBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="베란다 바닥 반짝"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/garbageBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="쓰레기 및 분리수거 정리 완벽하게"
+                                android:paddingEnd="10dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/ironBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="다림질 예술"
+                                android:paddingEnd="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:paddingStart="10dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/fridgeBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="냉장고 내부 정리 완벽"
+                                android:paddingEnd="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:paddingStart="10dp"
+                                android:background="@drawable/bordercircle60"/>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+                </LinearLayout>
+-->
+
+
+                <Button
+                    android:id="@+id/chooseBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/background"
+                    android:text="선택하기"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

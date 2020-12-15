@@ -81,14 +81,11 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
         mRecyclerView.setAdapter(myReservationAdapter);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        //        // 기본 구분선 추가
+        // 기본 구분선 추가
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(mRecyclerView.getContext(),new LinearLayoutManager(mainActivity).getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        // 아이템 간격 처리
-        RecyclerDecoration spaceDecoration = new RecyclerDecoration(20);
-        mRecyclerView.addItemDecoration(spaceDecoration);
 
         mRecyclerView.setNestedScrollingEnabled(true);
 

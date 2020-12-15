@@ -38,54 +38,43 @@
                 android:layout_marginHorizontal="10dp">
 
                 <ImageView
+                    android:id="@+id/profileImage"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_person_24"/>
+                    android:background="@drawable/circle"
+                    android:layout_marginBottom="20dp"
+                    />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
-
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bordergrey"
+                    android:padding="10dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:text="이름"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textStyle="bold"
                         />
 
                     <TextView
+                        android:id="@+id/nameTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
                         android:padding="5dp"
-                        android:text=""
-                        android:textAlignment="textEnd"
+                        android:text="이름"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
                         android:textColor="@color/black"
+                        android:layout_marginBottom="20dp"
 
                         />
-                </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="박서현"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -93,294 +82,418 @@
                         android:layout_weight="1"
                         android:padding="5dp"
                         android:text="내 이메일"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey"
                         android:textStyle="bold"
                         />
-
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
-                        android:padding="5dp"
-                        android:text=""
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/black"
-
-                        />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="shp7408@naver.com"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:padding="5dp"
-                        android:text="내 휴대폰 번호"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:text="변경하기 >"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorName"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="010-3051-7408"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
-                    <TextView
+                        android:id="@+id/emailTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="5dp"
-                        android:text="내 주소"
+                        android:text="이메일"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
                         android:textColor="@color/black"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-
+                        android:layout_marginBottom="20dp"
                         />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:text="변경하기 >"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorName"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
-                    android:text="경기도 화성시 효행로"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:layout_marginBottom="10dp"
-                    />
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="5dp"
-                        android:text="내 활동 지역 설정"
-                        android:textColor="@color/black"
-                        android:layout_weight="1"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:text="추가하기 +"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorName"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fadeScrollbars="false"
-                    android:layout_marginBottom="10dp"
-
-                    >
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="5dp"
-                        android:padding="10dp">
+                        android:layout_weight="3"
+                        >
 
-
-                        <Button
+                        <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="반포 2동"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:padding="5dp"
+                            android:text="내 휴대폰 번호"
+                            android:textColor="@color/grey"
+                            android:textStyle="bold" />
 
-                        <Button
+                        <TextView
+                            android:id="@+id/phoneNumChangeTxt"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="신림동"
-                            android:paddingStart="10dp"
-                            android:paddingEnd="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="서초 1동"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="방배본동"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="신사동"
-                            android:paddingStart="10dp"
-
-                            android:paddingEnd="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:text="변경하기 >"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorName"
+                            android:textStyle="bold"
+                            android:visibility="gone"
+                            />
                     </LinearLayout>
-                </HorizontalScrollView>
+
+                    <TextView
+                        android:id="@+id/phoneNumTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="010-3051-7408"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        />
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_weight="3"
-                    >
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/bordergrey"
+                    android:padding="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_weight="3"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="내 주소"
+                            android:textColor="@color/grey"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/addressChangeTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:text="변경하기 >"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorName"
+                            android:textStyle="bold"
+                            />
+                    </LinearLayout>
 
                     <TextView
+                        android:id="@+id/addressTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_marginBottom="20dp"
                         android:padding="5dp"
-                        android:text="내 전문 분야"
+                        android:text="등록된 주소가 없습니다."
                         android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:padding="5dp"
-                        android:text="추가하기 +"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorName"
-                        android:textStyle="bold"
-                        />
-                </LinearLayout>
-                <HorizontalScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fadeScrollbars="false"
-                    android:layout_marginBottom="10dp"
-
-                    >
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="5dp"
-                        android:paddingBottom="10dp"
-                        android:padding="10dp">
-
-
-                        <Button
+                        android:layout_weight="11"
+                        >
+                        <TextView
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="냉장고 청소 잘해요."
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="내 활동 지역 설정"
+                            android:textColor="@color/grey"
+                            android:layout_weight="1"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/placeNumTxt"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="화장실 청소 전문"
-                            android:paddingEnd="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
+                            android:layout_height="wrap_content"
+                            android:padding="5dp"
+                            android:text="( 5/5 )"
+                            android:textColor="@color/grey"
+                            android:layout_weight="9"
+                            android:textStyle="bold"
+                            />
+                        <TextView
+                            android:id="@+id/placePlusTxt"
                             android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="공기 청정기 필터 청소"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="에어컨 필터 청소"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="35dp"
-                            android:text="손이 빨라요/"
-                            android:paddingEnd="5dp"
-                            android:paddingStart="10dp"
-                            android:layout_marginEnd="5dp"
-                            android:drawableRight="@drawable/close"
-                            android:background="@drawable/bordercircle60"/>
-
+                            android:layout_height="match_parent"
+                            android:padding="5dp"
+                            android:text="추가하기 +"
+                            android:textAlignment="textEnd"
+                            android:textColor="@color/colorName"
+                            android:textStyle="bold"
+                            />
                     </LinearLayout>
-                </HorizontalScrollView>
+                    <TextView
+                        android:id="@+id/placeBlankTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="5dp"
+                        android:text="등록된 활동 지역이 없습니다."
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        />
+                    <HorizontalScrollView
+                        android:id="@+id/scrollview1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fadeScrollbars="false"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="5dp"
+                            android:padding="10dp">
+
+
+                            <Button
+                                android:id="@+id/place1Btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="반포 2동"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:drawableRight="@drawable/close"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/place2Btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="신림동"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:drawableRight="@drawable/close"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/place3Btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="서초 1동"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:drawableRight="@drawable/close"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/place4Btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="방배본동"
+                                android:paddingEnd="5dp"
+                                android:paddingStart="10dp"
+                                android:layout_marginEnd="5dp"
+                                android:drawableRight="@drawable/close"
+                                android:background="@drawable/bordercircle60"/>
+
+                            <Button
+                                android:id="@+id/place5Btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:text="신사동"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:drawableRight="@drawable/close"
+                                android:background="@drawable/bordercircle60"/>
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+
+
+                </LinearLayout>
+
+
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:layout_marginBottom="20dp"-->
+<!--                    android:background="@drawable/bordergrey"-->
+<!--                    android:padding="10dp">-->
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:layout_weight="11"-->
+<!--                        >-->
+
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_weight="1"-->
+<!--                            android:padding="5dp"-->
+<!--                            android:text="내 전문 분야"-->
+<!--                            android:textColor="@color/grey"-->
+<!--                            android:textStyle="bold" />-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/profNumTxt"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:padding="5dp"-->
+<!--                            android:text="( 5/5 )"-->
+<!--                            android:textColor="@color/grey"-->
+<!--                            android:layout_weight="9"-->
+<!--                            android:textStyle="bold"-->
+<!--                            />-->
+<!--                        <TextView-->
+<!--                            android:id="@+id/profPlusTxt"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:padding="5dp"-->
+<!--                            android:text="추가하기 +"-->
+<!--                            android:textAlignment="textEnd"-->
+<!--                            android:textColor="@color/colorName"-->
+<!--                            android:textStyle="bold"-->
+<!--                            />-->
+<!--                    </LinearLayout>-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/profBlankTxt"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:padding="5dp"-->
+<!--                        android:text="등록된 전문 분야가 없습니다."-->
+<!--                        android:textSize="15sp"-->
+<!--                        android:textStyle="bold"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:layout_marginBottom="20dp"-->
+<!--                        />-->
+<!--                    <HorizontalScrollView-->
+<!--                        android:id="@+id/scrollview2"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:fadeScrollbars="false"-->
+<!--                        android:layout_marginBottom="20dp"-->
+<!--                        android:visibility="gone"-->
+<!--                        >-->
+<!--                        <LinearLayout-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:layout_marginBottom="5dp"-->
+<!--                            android:paddingBottom="10dp"-->
+<!--                            android:padding="10dp">-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/mungiBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="먼지 제거 금메달"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+<!--                            <Button-->
+<!--                                android:id="@+id/semyundaeBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="세면대 반짝 반짝하게"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/gasCleanBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="가스레인지 찌든 때 말끔하게"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+
+<!--                            <Button-->
+<!--                                android:id="@+id/hasuguBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="싱크대 하수구 말끔하게"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/laundryBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="세탁 예술이야"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+<!--                            <Button-->
+<!--                                android:id="@+id/windowBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="실내 창틀 반짝"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+<!--                            <Button-->
+<!--                                android:id="@+id/verandaBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="베란다 바닥 반짝"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/garbageBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="쓰레기 및 분리수거 정리 완벽하게"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/ironBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="다림질 예술"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                            <Button-->
+<!--                                android:id="@+id/fridgeBtn"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="35dp"-->
+<!--                                android:text="냉장고 내부 정리 완벽"-->
+<!--                                android:paddingEnd="5dp"-->
+<!--                                android:layout_marginEnd="5dp"-->
+<!--                                android:paddingStart="10dp"-->
+<!--                                android:drawableRight="@drawable/close"-->
+<!--                                android:background="@drawable/bordercircle60"/>-->
+
+<!--                        </LinearLayout>-->
+<!--                    </HorizontalScrollView>-->
+
+<!--                </LinearLayout>-->
 
                 <Button
                     android:id="@+id/modifyBtn"

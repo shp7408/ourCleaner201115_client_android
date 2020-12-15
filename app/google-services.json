@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "872701021649",
+    "project_id": "ourcleaner201008",
+    "storage_bucket": "ourcleaner201008.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872701021649:android:16b9ca314f9ad99ef064f0",
+        "android_client_info": {
+          "package_name": "com.example.ourcleaner_201008_java"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872701021649-luu1mch3oeuvjlokb4ki9u25u284b17c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWSJsdJ1n0Q9IKki5qfcib272VxvkK2xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "872701021649-luu1mch3oeuvjlokb4ki9u25u284b17c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

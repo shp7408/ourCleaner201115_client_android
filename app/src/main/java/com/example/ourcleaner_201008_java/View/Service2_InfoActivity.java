@@ -43,6 +43,7 @@ public class Service2_InfoActivity extends AppCompatActivity {
 
     /* 널체크 및 상태 가져오기 변수들 */
     HashMap<String, Boolean> servicefocusedhashMap; //집중받고싶은 서비스 클릭 여부 저장하는 해쉬맵
+    HashMap<String, Boolean> serviceFreeAddhashMap; //무료 추가 서비스 저장하는 해쉬맵
 
     boolean roomfocusBool, bathRoomfocusBool, livingRoomfocusBool, kitchenfocusBool;
 

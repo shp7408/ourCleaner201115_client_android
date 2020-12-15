@@ -26,6 +26,7 @@ public class GlobalApplication extends Application {
     public static String currentManager;
     public static String currentManagerName;
     public static String currentManagerPhonNum;
+    public static String currentManagerAddress;
 
 
 
@@ -201,5 +202,9 @@ public class GlobalApplication extends Application {
 
     public static void setCurrentManagerPhonNum(String currentManagerPhonNum) {
         GlobalApplication.currentManagerPhonNum = currentManagerPhonNum;
+    }
+
+    public static void setCurrentManagerAddress(String currentManagerAddress) {
+        GlobalApplication.currentManagerAddress = currentManagerAddress;
     }
 }

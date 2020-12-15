@@ -3,46 +3,67 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="20dp">
-    <LinearLayout
+    android:padding="5dp"
+    >
+
+
+
+
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="5">
-        <TextView
-            android:id="@+id/reserveDateTxt"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="28sp"
+        app:cardCornerRadius="5dp">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="10.12(월)"/>
+            android:orientation="vertical"
+            android:padding="10dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="5">
+                <TextView
+                    android:id="@+id/reserveDateTxt"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:text="10.12(월)"
+                    android:layout_marginBottom="10dp"/>
 
-        <TextView
-            android:id="@+id/reserveStateTxt"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/white"
-            android:layout_weight="2"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:padding="5dp"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/background"
-            android:text="매칭 대기 중"
-            tools:ignore="RtlCompat" />
+                <TextView
+                    android:id="@+id/reserveStateTxt"
+                    android:layout_width="170dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    android:layout_weight="2"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:padding="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/background"
+                    android:text="매칭 대기 중"
+                    tools:ignore="RtlCompat" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/reserveDetailTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="우리집 / 14:00 "
-        android:textColor="@color/colorSecondary1"
-        android:textStyle="bold"
-        android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/reserveDetailTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="우리집 / 14:00 "
+                android:textColor="@color/colorSecondary1"
+                android:textStyle="bold"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

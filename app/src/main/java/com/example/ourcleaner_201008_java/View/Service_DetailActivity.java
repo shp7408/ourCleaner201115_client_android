@@ -60,7 +60,7 @@ public class Service_DetailActivity extends AppCompatActivity {
 //    int resultNeedTimeInt=0, needDefTimeInt; //필요한 전체 시간. 총 시간에서 setText하기 위해 필요한 변수
     int ironPlusTimeInt=0, refridgeTimeInt=0, startTimeInt=0, resultNeedTimeInt=0, defaultTimeInt=0, endTimeInt=0;
     int ironCostInt, fridgeCostInt, resultCost;
-    String resultFocusedStr="", resultGarbageStr, resultPlusStr;
+    String resultFocusedStr="", resultGarbageStr, resultPlusStr="";
 
     //숫자 천 자리에 콤마 찍기
     DecimalFormat formatter = new DecimalFormat("###,###");

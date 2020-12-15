@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ourcleaner_201008_java.DTO.AddressDTO;
 import com.example.ourcleaner_201008_java.R;
 
 import java.util.ArrayList;
@@ -37,6 +38,8 @@ public class Placeinput2Activity extends AppCompatActivity {
     /* 저장 후, 현재 엑티비티 종료 위함 -> 1. static으로 엑티비티 선언 */
     public static Activity BActivity;
 
+    AddressDTO addressDTO2; //웹뷰에서 받아올 때, 저장할 때
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,34 +53,42 @@ public class Placeinput2Activity extends AppCompatActivity {
         Intent intent = getIntent();
         Log.d(TAG, "다음 주소 찾기 엑티비티에서 인텐트 받음 intent :" + intent);
 
-        address = intent.getStringExtra("address"); //onActivityResult메서드의 파라미터
+        addressDTO2 = (AddressDTO)intent.getSerializableExtra("addressDTO2 no detail"); //onActivityResult메서드의 파라미터
+
+        address = "["+addressDTO2.getZonecodeStr()+"] "+addressDTO2.getAddrStr(); //우편번호 포함시킴
+        Log.d(TAG, "다음 주소 찾기 getZonecodeStr : "+ addressDTO2.getZonecodeStr());
+        Log.d(TAG, "다음 주소 찾기 getAddrStr : "+ addressDTO2.getAddrStr());
         Log.d(TAG, "다음 주소 찾기 엑티비티에서 인텐트 받음 intent.address : "+ address);
 
-        placeText = (TextView) findViewById(R.id.placeText);
+
+        placeText = findViewById(R.id.placeText);
         placeText.setText(address);
         Log.d(TAG, "=== 받아온 주소 에디트 텍스트에 넣음 ===" );
 
-        size2Btn = (Button) findViewById(R.id.size2Btn);
-        nextBtn = (Button) findViewById(R.id.nextBtn);
-        detailPlaceEdit = (EditText)findViewById(R.id.detailPlaceEdit);
+        size2Btn = findViewById(R.id.size2Btn);
+        nextBtn = findViewById(R.id.nextBtn);
+        detailPlaceEdit = findViewById(R.id.detailPlaceEdit);
 
-                //sizeStr=null;
         // TODO: 2020-10-22 다이얼로그에서 평 수 선택안 한 경우 예외 처리 안함. -> 다이얼로그 콜백 메서드로 구현해야 함.
-
         //평 수 선택하는 다이얼로그 생성
-        size1Btn = (Button) findViewById(R.id.size1Btn);
+        size1Btn = findViewById(R.id.size1Btn);
 
-        size1Btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        size1Btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                    Log.d(TAG, "=== size1Btn 클릭 : === ");
+//                    CreateListDialog();
+//                    Log.d(TAG, "=== CreateListDialog(); 메서드 종료 ===" );
+//
+//
+//                    }
+//            });
 
-                    Log.d(TAG, "=== size1Btn 클릭 : === ");
-                    CreateListDialog();
-                    Log.d(TAG, "=== CreateListDialog(); 메서드 종료 ===" );
+        size1Btn.setOnClickListener(view ->
+                CreateListDialog()
+        );
 
-
-                    }
-            });
 
         size2Btn.addTextChangedListener(new TextWatcher() {
             @Override

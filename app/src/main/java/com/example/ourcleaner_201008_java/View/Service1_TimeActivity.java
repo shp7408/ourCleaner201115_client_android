@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,8 +29,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.bumptech.glide.Glide;
 import com.example.ourcleaner_201008_java.Adapter.MyPlaceAdapter;
 import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
+import com.example.ourcleaner_201008_java.DTO.AddressDTO;
+import com.example.ourcleaner_201008_java.DTO.BaddressDTO;
 import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
@@ -38,6 +43,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -54,6 +60,8 @@ import static java.lang.System.out;
 public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceAdapter.OnListItemSelectedInterface{
 
     private static final String TAG = "서비스 신청. 시간 정하기";
+
+    private static final int MANAGER_REQUEST =1 ;
 
     /* 1회 예약인지, 정기 예약인지 확인하는 변수. intent로 받아옴. yes면 정기 no면 1회 예약*/
     String serviceRegularStr;
@@ -77,6 +85,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     // TODO: 2020-10-23 매니저 부분 더 고민해야 함. 매니저 등록하면서
     Button managerChoBtn;
     String managerChoStr="매니저미지정"; //매니저 선택 후, 스트링 담는 변수
+    String managerNameEmailStr;
 
     //청소 주기 관련 변수
     LinearLayout regularTermLayout; //정기 예약시에만 보임
@@ -170,6 +179,24 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
             regularBool = true;
         }
 
+        managerChoBtn= findViewById(R.id.managerChoBtn);
+
+        managerChoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG, "=== managerChoBtn 클릭 ===" );
+
+                Intent intent = new Intent(getApplicationContext(), Service_SelectManagersActivity.class);
+                startActivityForResult(intent, MANAGER_REQUEST);
+
+
+            }
+        });
+
+
+
+
+
         nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +213,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                        Log.d(TAG, "=== visitDate 널인경우 ===" );
                     }
 
-                    serviceDTO = new ServiceDTO(GlobalApplication.currentUser, "신청중", myplaceDTOChoose, managerChoStr,
+                    serviceDTO = new ServiceDTO(GlobalApplication.currentUser, "신청중", myplaceDTOChoose, managerNameEmailStr,
                             regularBool, date2Str, date3Str, startTime, needDefTime, needDefCost );
 
                     Log.d(TAG, "=== serviceDTO currentUser === "+ serviceDTO.getCurrentUser() );
@@ -1062,6 +1089,31 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
                     }
             });
     }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "=== requestCode ===" +requestCode);
+        Log.d(TAG, "=== resultCode ===" +resultCode);
+        Log.d(TAG, "=== data ===" +data);
+
+        /* 1. 갤러리에서 이미지 받아오는 경우 */
+        if (resultCode == MANAGER_REQUEST && data != null ) {
+            Log.d(TAG, "=== MANAGER_REQUEST 받앙옴!!! ===" +MANAGER_REQUEST);
+            managerNameEmailStr = data.getStringExtra("managerNameEmailStr");
+            Log.d(TAG, "=== managerNameEmailStr ===" +managerNameEmailStr);
+
+            // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
+            int idx = managerNameEmailStr.indexOf(",");
+            managerChoStr = managerNameEmailStr.substring(0, idx);
+
+            managerChoBtn.setText(managerChoStr + " 매니저님");
+            Log.d(TAG, "=== managerChoStr ===" +managerChoStr);
+
+        }
+
+    }
+
 
 
     // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드

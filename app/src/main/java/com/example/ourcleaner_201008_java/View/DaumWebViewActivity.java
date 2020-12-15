@@ -46,7 +46,8 @@ public class DaumWebViewActivity extends AppCompatActivity {
         daum_webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
         // JavaScript이벤트에 대응할 함수를 정의 한 클래스를 붙여줌
-        daum_webView.addJavascriptInterface(new AndroidBridge(), "TestApp");
+        daum_webView.addJavascriptInterface(new AndroidBridge(), "OurCleaner");
+
 
         // web client 를 chrome 으로 설정
         daum_webView.setWebChromeClient(new WebChromeClient());
@@ -61,24 +62,35 @@ public class DaumWebViewActivity extends AppCompatActivity {
 
         private static final String TAG = "AndroidBridge";
 
-        @JavascriptInterface
-        public void setAddress(final String arg1, final String arg2, final String arg3) {
+        @JavascriptInterface //젤리빈 이상인 경우, 추가해야 함.
+        public void setAddress(final String arg1) {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
                     //daum_result.setText(String.format("(%s) %s %s", arg1, arg2, arg3));
 
                     // WebView를 초기화 하지않으면 재사용할 수 없음
-                    //init_webView();
+                    init_webView();
 
                     Log.d(TAG, "=== AndroidBridge ===" );
-                    Log.d(TAG, "=== 입력한 주소 ===" +String.format("(%s) %s %s", arg1, arg2, arg3));
+                    Log.d(TAG, "=== 입력한 주소 postcode ===" +String.format("%s", arg1));
+//                    Log.d(TAG, "=== 입력한 주소 address ===" +String.format("%s", arg2));
+//                    Log.d(TAG, "=== 입력한 주소 bcode ===" +String.format("%s", arg3));
+//                    Log.d(TAG, "=== 입력한 주소 bname ===" +String.format("%s", arg4));
+//                    Log.d(TAG, "=== 입력한 주소 bname1 ===" +String.format("%s", arg5));
+//                    Log.d(TAG, "=== 입력한 주소 bname2 ===" +String.format("%s", arg6));
+
 
                     //있으면 넘어감
-                    Intent intent = new Intent(getApplicationContext(), PlaceinputActivity.class);
-                    intent.putExtra("address", String.format("(%s) %s %s", arg1, arg2, arg3));
-                    setResult(RESULT_OK, intent);
-                    finish();
+//                    Intent intent = new Intent(getApplicationContext(), PlaceinputActivity.class);
+//                    intent.putExtra("postcode", String.format("%s", arg1));
+//                    intent.putExtra("address", String.format("%s", arg2));
+//                    intent.putExtra("bcode", String.format("%s", arg3));
+//                    intent.putExtra("bname", String.format("%s", arg4));
+//                    intent.putExtra("bname1", String.format("%s", arg5));
+//                    intent.putExtra("bname2", String.format("%s", arg6));
+//                    setResult(RESULT_OK, intent);
+//                    finish();
 
                 }
             });

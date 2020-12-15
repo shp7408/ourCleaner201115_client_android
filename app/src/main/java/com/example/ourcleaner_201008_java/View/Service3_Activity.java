@@ -77,6 +77,10 @@ public class Service3_Activity extends AppCompatActivity {
 
         plusServicehashMap = new HashMap();
 
+
+        plusServicehashMap.put("다림질", false);
+        plusServicehashMap.put("냉장고", false);
+
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +192,6 @@ public class Service3_Activity extends AppCompatActivity {
 
                                     plusServicehashMap.put("냉장고", fridgeCheckbox.isChecked());
 
-
                                 }
 
                                 @Override
@@ -201,10 +204,7 @@ public class Service3_Activity extends AppCompatActivity {
                             octDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
                             octDialog.show();
                         }
-
                         break;
-
-
                 }
             }
         };

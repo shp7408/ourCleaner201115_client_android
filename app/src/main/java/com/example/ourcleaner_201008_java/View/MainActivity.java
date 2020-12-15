@@ -6,24 +6,24 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.Service.MyFirebaseMessagingService;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentChat;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentReservation;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentHome;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentMore;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -46,8 +46,15 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Log.d(TAG, "=== onCreate 실행 ===");
+
+//        System.out.println("token : "+ FirebaseInstanceId.getInstance().getToken());
+
+        //추가한 라인
+        FirebaseApp.initializeApp(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseInstanceId.getInstance().getToken();
+
 
         btn_custom_login_out = (Button) findViewById(R.id.btn_custom_login_out);
         Log.d(TAG, "btn_custom_login_out 연결" + btn_custom_login_out);
