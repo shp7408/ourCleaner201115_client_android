@@ -7,13 +7,18 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.ManagerProfileInterface;
+import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.Service.FcmPushTest;
 import com.example.ourcleaner_201008_java.Service.MyFirebaseMessagingService;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentChat;
@@ -24,6 +29,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -48,12 +58,62 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "=== onCreate 실행 ===");
 
+
+
+        /* 이미 로그인된 상태임. 여기서 현재 사용자로 알람온것이 있는지 확인하기 */
+        
+
 //        System.out.println("token : "+ FirebaseInstanceId.getInstance().getToken());
 
         //추가한 라인
+        Log.e(TAG, "FirebaseApp.initializeApp(this)");
         FirebaseApp.initializeApp(this);
+
+        Log.e(TAG, "subscribeToTopic(\"news\")");
         FirebaseMessaging.getInstance().subscribeToTopic("news");
-        FirebaseInstanceId.getInstance().getToken();
+
+        Log.e(TAG, "getInstance().getToken();");
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.e(TAG, "getInstance().getToken();"+token);
+
+        /* 서버에 토큰 저장하는 코드 레트로핏 사용 */
+        postTokenInsert(token);
+
+
+
+        /* fcmpush 보내는 코드
+        * 1. 클래스 만들어야 함
+        * 2. fcmPushTest.pushFCMNotification 의 첫 번째 인자 : 메세지 내용 / 두 번째 인자 : 매니저인지, 고객인지 / 받는 사람 이메일 - 이걸로 찾음 */
+        FcmPushTest fcmPushTest = new FcmPushTest();
+
+        Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try  {
+                        Log.e(TAG, "=== fcmPushTest ==="+fcmPushTest.toString() );
+
+                        fcmPushTest.pushFCMNotification("받앙라ㅏㅏ",1,"");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "fcmPushTest 에러 코드 : "+ e);
+                    }
+                }
+        });
+
+        thread.start();
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "fcmPushTest : run");
+
+            }
+
+        }, 0);
+
+
+
+
 
 
         btn_custom_login_out = (Button) findViewById(R.id.btn_custom_login_out);
@@ -124,6 +184,50 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
+
+
+    /* 레트로핏으로 서버에 토큰 보내는 코드 - 서버에서 mysql에 저장 함*/
+    private void postTokenInsert(String token){
+
+        Log.e(TAG, "=== postManagerProfile 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TokenInsertInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        TokenInsertInterface api =retrofit.create(TokenInsertInterface.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.putTokenInsert(token, GlobalApplication.currentUser);
+
+        Log.e(TAG, "=== GlobalApplication.currentUser ===" +GlobalApplication.currentUser);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body().toString());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e("onSuccess", response.body().toString());
+
+                    } else {
+                        Log.e("onEmptyResponse", "Returned empty response");
+                        //Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+
+            }
+        });
+
+
+    }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
 

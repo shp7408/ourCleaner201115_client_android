@@ -27,13 +27,27 @@ import com.example.ourcleaner_201008_java.Adapter.MyPlaceAdapter;
 import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
 import com.example.ourcleaner_201008_java.DTO.ManagerWaitingDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface;
+import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface2;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.Service.FcmPushTest;
+import com.example.ourcleaner_201008_java.View.LoginActivity;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 
 public class Manager_MainActivity extends AppCompatActivity implements ManagerReservationAdapter.OnListItemSelectedInterface, MyPlaceAdapter.OnListItemSelectedInterface {
 
@@ -68,6 +82,22 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
 
         makeStringRequestGet();
         Log.d(TAG, "=== makeJsonArrayRequest() 메서드 종료 ===" );
+
+
+
+
+        //추가한 라인
+        Log.e(TAG, "FirebaseApp.initializeApp(this)");
+        FirebaseApp.initializeApp(this);
+
+        Log.e(TAG, "subscribeToTopic(\"news\")");
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.e(TAG, "getInstance().getToken();"+token);
+
+        /* 서버에 토큰 저장하는 코드 레트로핏 사용 */
+        postTokenInsert(token);
 
 
 
@@ -114,9 +144,9 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
                     case R.id.waitingTxt:
                         Log.d(TAG, "=== waitingTxt ===" );
                         //있으면 넘어감
-                        Intent intent = new Intent(getApplicationContext(), Manager_MainActivity.class);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(getApplicationContext(), Manager_MainActivity.class);
+//                        startActivity(intent);
+//                        finish();
 
                         break;
                     //myWorkListTxt 버튼 행동
@@ -159,7 +189,47 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
 
 
     }
+    /* 레트로핏으로 서버에 토큰 보내는 코드 - 서버에서 mysql에 저장 함*/
+    private void postTokenInsert(String token){
 
+        Log.e(TAG, "=== postManagerProfile 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TokenInsertInterface2.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        TokenInsertInterface2 api =retrofit.create(TokenInsertInterface2.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.putTokenInsert(token, GlobalApplication.currentManager);
+
+        Log.e(TAG, "=== GlobalApplication.currentUser ===" +GlobalApplication.currentManager);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body().toString());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e("onSuccess", response.body().toString());
+
+                    } else {
+                        Log.e("onEmptyResponse", "Returned empty response");
+                        //Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+
+            }
+        });
+
+    }
 
     // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드
     private void makeStringRequestGet() {
@@ -267,13 +337,18 @@ public class Manager_MainActivity extends AppCompatActivity implements ManagerRe
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.e(TAG, "=== onBackPressed ===" );
 
+        //메인 엑티비티가 왜 2번 호출 되는 것인가...
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
+        /* 엑티비티 모두 정리 위함 */
+        intent.addFlags(FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
 
-
-
-
-
-
-
+        //finish();
+    }
 }

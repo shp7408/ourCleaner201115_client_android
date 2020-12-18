@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.View.LoginActivity;
 import com.example.ourcleaner_201008_java.View.MoreService_Acount_Activity;
 import com.example.ourcleaner_201008_java.View.MoreService_Area_Activity;
 import com.example.ourcleaner_201008_java.View.MoreService_MyPlace_Activity;
 import com.example.ourcleaner_201008_java.View.MoreService_Payment_Activity;
+
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 
 public class Manager_MoreActivity extends AppCompatActivity {
 
@@ -88,9 +91,9 @@ public class Manager_MoreActivity extends AppCompatActivity {
                     case R.id.moreTxt:
                         Log.d(TAG, "=== moreTxt ===" );
                         //있으면 넘어감
-                        Intent intent4 = new Intent(getApplicationContext(), Manager_MoreActivity.class);
-                        startActivity(intent4);
-                        finish();
+//                        Intent intent4 = new Intent(getApplicationContext(), Manager_MoreActivity.class);
+//                        startActivity(intent4);
+//                        finish();
                         break;
                 }
             }
@@ -100,5 +103,20 @@ public class Manager_MoreActivity extends AppCompatActivity {
         myWorkListTxt.setOnClickListener(onClickListener);
         chatListTxt.setOnClickListener(onClickListener);
         moreTxt.setOnClickListener(onClickListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.e(TAG, "=== onBackPressed ===" );
+
+        //메인 엑티비티가 왜 2번 호출 되는 것인가...
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        /* 엑티비티 모두 정리 위함 */
+        intent.addFlags(FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+
+        //finish();
     }
 }

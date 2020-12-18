@@ -61,7 +61,6 @@ public class Test {
         subscribeBilling.price = 3000;
         subscribeBilling.order_id = "" + (System.currentTimeMillis() / 1000);
 
-
         try {
             HttpResponse res = api.subscribe_billing(subscribeBilling);
             String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");

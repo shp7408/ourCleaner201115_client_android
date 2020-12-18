@@ -7,12 +7,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.ourcleaner_201008_java.Adapter.SelectManagerAdapter;
+import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
+import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.AlarmManagerSelectInterface;
+import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface;
 import com.example.ourcleaner_201008_java.R;
 
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
+import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
+import com.example.ourcleaner_201008_java.View.Manager.Manager_AlarmActivity;
 import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
@@ -36,6 +45,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 //로그인 화면 엑티비티
 public class LoginActivity extends AppCompatActivity {
@@ -85,9 +100,46 @@ public class LoginActivity extends AppCompatActivity {
 
         if(emtx.isEmpty()){
             Log.d(TAG, "=== emtx에 값이 없을 때, 현재 엑티비티 진행 ===" );
+
+
+            String managerAuto = PreferenceManager_Manager.getString(getApplicationContext(),"idStr");
+            /* 여기에서 매니저 자동로그인 쉐어드 저장되어있는지 확인하기 */
+            Log.e(TAG, "=== 매니저 자동로그인 managerAuto ===" + managerAuto);
+
+            if(managerAuto.isEmpty()){
+                Log.e(TAG, "=== managerAuto.isEmpty() 비어 있음. 그냥 엑티비티 진행 ㄱㄱ ===" );
+            }else{
+                Log.e(TAG, "=== managerAuto 값 있음 " +
+                        "여기서 알람 확인할 것 managerAuto  ===" +managerAuto);
+                Log.d(TAG, "=== 백그라운드 알람 클릭 -> 로그인화면 -> 매니저 쉐어드에 저장되어 있으면, 알람 엑티비티로 이동함 ===" );
+
+                /* db에 해당 알람 있는지 없는지 확인해야 함. 없으면 해당 엑티비티 그대로 진행,
+                * 있으면, 알람 엑티비티로 이동하기 */
+
+                postEmailAlarm(managerAuto);
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }else {
 
             Log.d(TAG, "=== emtx에 값이 있을 때, 메인 엑티비티 연결 ===" );
+
+            GlobalApplication.currentUser = emtx;
 
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -157,7 +209,8 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-    //        ========== onDestroy : Activity 가 종료될 때 호출되는 콜백 API , 화면상의 activity가 사라지고 난 뒤 호출 됨!! -> 사용하지 않는 자원 해제하기 위함 ==========
+    //
+    // ========== onDestroy : Activity 가 종료될 때 호출되는 콜백 API , 화면상의 activity가 사라지고 난 뒤 호출 됨!! -> 사용하지 않는 자원 해제하기 위함 ==========
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -168,6 +221,86 @@ public class LoginActivity extends AppCompatActivity {
     } //onDestroy 끝남
 
 
+
+
+    /* 레트로핏으로 이메일 보내서 해당 매니저에게 알람 왔는지 확인하는 코드 */
+    private void postEmailAlarm(String email){
+
+        Log.e(TAG, "=== postEmailAlarm 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(AlarmManagerSelectInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        AlarmManagerSelectInterface api =retrofit.create(AlarmManagerSelectInterface.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.selectAlarmManager(email);
+
+        Log.e(TAG, "=== 매니저 email ===" + email);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body().toString());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e("onSuccess", response.body());
+
+                        String jsonresponse = response.body();
+                        writeAlarmInfo(jsonresponse);
+
+
+                    } else {
+                        Log.e("onEmptyResponse", "Returned empty response");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+
+            }
+        });
+    }
+
+    private void writeAlarmInfo(String response){
+
+        try {
+            //getting the whole json object from the response
+            JSONObject obj = new JSONObject(response);
+            Log.e(TAG, "=== response ===" +response);
+
+            if(obj.optString("status").equals("true")){
+
+                JSONArray dataArray  = obj.getJSONArray("data");
+
+                //status true 이면, 있으면 알람 엑티비티로 넘어감
+                Intent intent = new Intent(getApplicationContext(), Manager_AlarmActivity.class);
+                startActivity(intent);
+                finish();
+
+
+//                for (int i = 0; i < dataArray.length(); i++) {
+//
+//                    JSONObject dataobj = dataArray.getJSONObject(i);
+//                    dataobj.getInt("uid");
+//
+//
+//                }
+
+            }else {
+                Toast.makeText(LoginActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 

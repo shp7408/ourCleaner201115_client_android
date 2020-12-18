@@ -26,7 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".View.Service_SelectManager_DetailActivity"></activity>
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <activity android:name=".View.Manager.Manager_AlarmActivity"></activity>
+        <activity android:name=".View.Service_SelectManager_DetailActivity" />
         <activity android:name=".View.Service_SelectManagersActivity" />
         <activity android:name=".View.Manager.Manager_InputActivePlaceActivity" />
         <activity android:name=".View.Manager.Manager_InputMyPlaceActivity" />
@@ -84,21 +88,17 @@
         <activity android:name=".View.Manager.demos.MapViewDemoActivity" />
         <activity android:name=".View.Manager.demos.MarkerDemoActivity" />
         <activity android:name=".View.Manager.demos.PolygonDemoActivity" />
-        <activity android:name=".View.Manager.demos.runtimePermissions.AppPermissionHandlerActivity" />
-
-
-        <!--아래 두개의 서비스 태그를 추가한다.-->
-        <service
-            android:name=".Service.MyFirebaseMessagingService">
+        <activity android:name=".View.Manager.demos.runtimePermissions.AppPermissionHandlerActivity" /> <!-- 아래 두개의 서비스 태그를 추가한다. -->
+        <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/default_notification_channel_id"/>
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>

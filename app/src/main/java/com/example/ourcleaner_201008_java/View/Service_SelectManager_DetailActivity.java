@@ -44,12 +44,14 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
     int managerUidStr;
 
     ImageView profileImage;
-    TextView nameTxt,phoneNumTxt, reviewScoreNumTxt, reviewMoreTxt;
+    TextView nameTxt,phoneNumTxt, reviewScoreNumTxt, reviewMoreTxt, activateGuideTxt, managerAddressTxt;
     RatingBar ratingBar;
     Button place1Btn, place2Btn, place3Btn, place4Btn, place5Btn, chooseBtn;
 
 
     Service_SelectManagersActivity cActivity;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
         phoneNumTxt = findViewById(R.id.phoneNumTxt);
         reviewScoreNumTxt = findViewById(R.id.reviewScoreNumTxt);
         reviewMoreTxt = findViewById(R.id.reviewMoreTxt);
+        activateGuideTxt = findViewById(R.id.activateGuideTxt);
 
         ratingBar = findViewById(R.id.ratingBar);
 
@@ -84,11 +87,15 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
 
         chooseBtn = findViewById(R.id.chooseBtn);
 
+        managerAddressTxt = findViewById(R.id.managerAddressTxt);
+
         place1Btn.setVisibility(View.GONE);
         place2Btn.setVisibility(View.GONE);
         place3Btn.setVisibility(View.GONE);
         place4Btn.setVisibility(View.GONE);
         place5Btn.setVisibility(View.GONE);
+
+
 
         fetchJSON();
 
@@ -158,12 +165,20 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
                                     nameTxt.setText(dataobj.getString("nameStr"));
                                     phoneNumTxt.setText(dataobj.getString("phoneNumStr"));
 
+                                    activateGuideTxt.setText(dataobj.getString("nameStr")+" 매니저 님이 주로 활동하는 지역입니다.");
+
                                     Picasso.get()
                                             .load( dataobj.getString("profileImagePathStr"))
                                             .transform(new CircleTransform())
                                             .into(profileImage);
 
-                                    dataobj.getString("addressStr");
+                                    String addressStr = dataobj.getString("addressStr");
+
+                                    /* 경기 화성시 까지 입력해서 일반 유저 고객이 알 수 있도록 함 */
+                                    managerAddressTxt.setText(addressStr.substring(8,14));
+
+
+
                                     String string = dataobj.getString("desiredWorkAreaList");
                                     string = string.replace("[","");
                                     string = string.replace("]","");

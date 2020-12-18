@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,13 +34,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ourcleaner_201008_java.CircleTransform;
 import com.example.ourcleaner_201008_java.DTO.MyCardDTO;
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.TokenSelectInterface;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.Service.FcmPushTest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +54,10 @@ import kr.co.bootpay.BootpayAnalytics;
 import kr.co.bootpay.enums.Method;
 import kr.co.bootpay.enums.PG;
 import kr.co.bootpay.enums.UX;
+import kr.co.bootpay.javaApache.BootpayApi;
+import kr.co.bootpay.javaApache.model.request.Cancel;
+import kr.co.bootpay.javaApache.model.request.SubscribeBilling;
+import kr.co.bootpay.javaApache.model.request.User;
 import kr.co.bootpay.listener.CancelListener;
 import kr.co.bootpay.listener.CloseListener;
 import kr.co.bootpay.listener.ConfirmListener;
@@ -54,7 +66,15 @@ import kr.co.bootpay.listener.ErrorListener;
 import kr.co.bootpay.listener.ReadyListener;
 import kr.co.bootpay.model.BootExtra;
 import kr.co.bootpay.model.BootUser;
+import kr.co.bootpay.model.bio.BioPayload;
+import kr.co.bootpay.model.bio.BioPrice;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.simple.JSONObject;
@@ -83,7 +103,7 @@ public class Service_completeActivity extends AppCompatActivity {
     LinearLayout priceDefLayout, priceIronLayout, pricefridgeLayout, priceResultLayout;
     TextView priceDefTxt, priceDefNumTxt, priceIronTxt, priceIronNumTxt, pricefridgeTxt, pricefridgeNumTxt, priceResultTxt, priceResutNumTxt;
 
-    TextView serviceDetailTxt, serviceGarbageTxt, servicePlusTxt;
+    TextView serviceDetailTxt, serviceGarbageTxt, servicePlusTxt,cancelTxt;
     String focusRoomStr="", focusBathRoomStr="", focusLivingRoomStr="", focusKitchenStr=""; // 집중청소할구간 String. 서비스 내용에서 기본 부분에 넣을 String
     String laundryBoolStr=""; //세탁여부 보여주는 Str
     String garbagerecycleStr="", garbagenormalStr="", garbagefoodStr=""; //쓰레기선택여부 보여주는 Str
@@ -94,6 +114,8 @@ public class Service_completeActivity extends AppCompatActivity {
 
     Boolean isMyCardBool=true;
 
+    String serManagerNameStr="";
+
     /* 서버에서 내 장소 정보 받아오기 위한 변수 */
     String jsonResponse;
 
@@ -103,6 +125,13 @@ public class Service_completeActivity extends AppCompatActivity {
     //최근 등록한 카드 정보
     int recentUid;
     String recentBilling_key, recentCard_name;
+
+    String managerToken;
+
+    String easyUserToken2;
+
+    String application_id = "5fba1e488f075100207de71f";
+    String private_key = "GjaGT62Fxto9XyMBL835hRqDwz02QxdSmPo7GeAtfek=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,14 +148,80 @@ public class Service_completeActivity extends AppCompatActivity {
 
 
 
+        /* 이 부분 때문에 결제가 안되는 거였음..ㅠㅠㅠ */
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
 
+        }
 
+        /* 토큰 발행 시간 때문에 oncreate할 때 토큰 발행 미리 함 */
+        /* 예약하기 버틑 클릭 -> 결제화면 이동 -> 결제 완료 -> 매니저 에게 푸쉬 알람 -> 서비스 내용 저장   */
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    BootpayApi bootpayApi = new BootpayApi("5fba1e488f075100207de721",
+                            private_key);
+                    bootpayApi.getAccessToken();
 
+                    User user = new User();
+                    user.user_id = "shp7408@naver.com";
+                    user.email = "shp7408@naver.com";
+                    user.name = "박서현";
+                    user.gender = 0; //0:여자, 1:남자
+                    user.birth = "941220";
+                    user.phone = "01030517408";
 
+                    try {
+                        HttpResponse res = bootpayApi.getUserToken(user);
 
+                        /* 아래 파싱 코드에서 토큰만 남길 것 임임 */
+                        easyUserToken2 = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
 
+                        Log.e(TAG, "=== easyUserToken2 ===" +easyUserToken2);
+//{"status":200,"code":0,"message":"","data":{"user_token":"5fdbc3818f07510034d3dec8","expired_unixtime":1608241553,"expired_localtime":"2020-12-18 06:45:53 +0900"}}
+                        //부분을 파싱하는 코드
 
+                        try{
+                            JSONParser jsonParser = new JSONParser();
 
+                            //JSON데이터를 넣어 JSON Object 로 만들어 준다.
+                            JSONObject jsonObject = (JSONObject) jsonParser.parse(easyUserToken2);
+
+                            //data 도 JSON Object JSON형식 이기 때문에 JSON Object 로 추출
+                            JSONObject dataObject = (JSONObject) jsonObject.get("data");
+
+                            easyUserToken2 = (String) dataObject.get("user_token");
+                            Log.e(TAG, "=== easyUserToken2 파싱 완료 ===" +easyUserToken2);
+
+                        }catch (Exception e){
+                            Log.d(TAG, "=== 파싱 에러 코드 확인인 ===" + e);
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e(TAG, "=== HttpResponse res 에러코드 ===" +e);
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "postBillingKey 에러 코드 : "+ e);
+                }
+            }
+        });
+        thread.start();
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Log.e(TAG, "BootpayApi : run");
+            }
+
+        }, 0);
 
         serReqTxt = findViewById(R.id.serReqTxt);
         serReqTxt.setText(serviceDTO3.getVisitDate()+"("+serviceDTO3.getVisitDay()+")"+"\n예약을 완료해주세요.");
@@ -145,72 +240,113 @@ public class Service_completeActivity extends AppCompatActivity {
         servicePlusTxt = findViewById(R.id.servicePlusTxt);
 
 
-        String serManagerNameStr = serviceDTO3.getManagerName();
-        // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
-        int idx = serManagerNameStr.indexOf(",");
-        serManagerNameStr = serManagerNameStr.substring(0, idx);
+        cancelTxt=findViewById(R.id.cancelTxt);
 
-        serManagerTxt.setText(serManagerNameStr+" 매니저님");
-        Log.e(TAG, "=== getManagerName ==="+serviceDTO3.getManagerName() );
+        /* 취소 메서드 */
+        cancelTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e(TAG, "=== cancelTxt ===" );
+
+                BootpayApi api = new BootpayApi(application_id, private_key);
+
+                try {
+                    api.getAccessToken();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "=== cancelTxt 취소 취소  ==="+e );
+                }
+
+                Cancel cancel = new Cancel();
+                cancel.receipt_id = "5fdb88eb8f0751001dd3b448"; //영수증 번호 입력하는 곳!!!
+                cancel.name = "관리자 우리집 청소";
+                cancel.reason = "단순 변심으로 이한 결제 취소";
+
+                try {
+                    HttpResponse res = api.cancel(cancel);
+                    String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+                    System.out.println(str);
+                    Log.d(TAG, "=== cancelTxt 취소 취소 str === " +str );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        });
+
+
+
+        serManagerNameStr = serviceDTO3.getManagerName();
+
+        try{
+
+
+            if(serManagerNameStr.contains(",")){
+                // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
+                int idx = serManagerNameStr.indexOf(",");
+                serManagerNameStr = serManagerNameStr.substring(0, idx);
+
+                serManagerTxt.setText(serManagerNameStr+" 매니저님");
+                Log.d(TAG, "=== getManagerName ==="+serviceDTO3.getManagerName() );
+
+                String string = serviceDTO3.getManagerName().substring(idx+1);
+                Log.d(TAG, "=== ddddd ==="+string );
+
+                string = string.trim();
+
+                Log.d(TAG, "=== ddddd ==="+string );
+
+                /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
+                postSelectToken(string, 2);
+            }
+
+
+
+        }catch (Exception e){
+            Log.e(TAG, "=== 매니저 미지정 경우, 에러코드임 ===" +e );
+            Log.e(TAG, "=== 매니저 미지정 경우, serManagerNameStr ===" +serManagerNameStr );
+        }
+
+
+
 
         Log.d(TAG, "=== 불린확인 ===" +serviceDTO3.getServicefocusedhashMap());
+
         /* 서비스 기본 내용 보여주는 내용 setText하는 코드 */
-        try{
-            if((Boolean) serviceDTO3.getServicefocusedhashMap().get("roomBtn")){
-                Log.d(TAG, "=== roomBtn ===" );
-                focusRoomStr="방";
-                Log.d(TAG, "=== focusRoomStr ===" +focusRoomStr);
-            }
-
-        }catch (Exception e){
-            //홈페이지에서 더 많은 컨텐츠를 확인하세요,  https://stickode.com/
-            Log.e(TAG, "=== 불린확인 roomBtn 널인 경우임. ==="+e );
+        if((Boolean) serviceDTO3.getServicefocusedhashMap().get("roomBtn")){
+            Log.d(TAG, "=== roomBtn ===" );
+            focusRoomStr="방";
+            Log.d(TAG, "=== focusRoomStr ===" +focusRoomStr);
         }
 
-        try{
-            if((Boolean) serviceDTO3.getServicefocusedhashMap().get("bathRoomBtn")){
-                Log.d(TAG, "=== bathRoomBtn ===" );
-                focusBathRoomStr="화장실";
-                Log.d(TAG, "=== focusBathRoomStr ===" +focusBathRoomStr);
-            }
-
-        }catch (Exception e){
-            //홈페이지에서 더 많은 컨텐츠를 확인하세요,  https://stickode.com/
-            Log.e(TAG, "=== 불린확인 bathRoomBtn 널인 경우임. ==="+e );
+        if((Boolean) serviceDTO3.getServicefocusedhashMap().get("bathRoomBtn")){
+            Log.d(TAG, "=== bathRoomBtn ===" );
+            focusBathRoomStr="화장실";
+            Log.d(TAG, "=== focusBathRoomStr ===" +focusBathRoomStr);
         }
 
-        try{
-            if((Boolean) serviceDTO3.getServicefocusedhashMap().get("livingRoomBtn")){
-                Log.d(TAG, "=== livingRoomBtn ===" );
-                focusLivingRoomStr="거실";
-                Log.d(TAG, "=== focusLivingRoomStr ===" +focusLivingRoomStr);
-            }
-        }catch (Exception e){
-            //홈페이지에서 더 많은 컨텐츠를 확인하세요,  https://stickode.com/
-            Log.e(TAG, "=== 불린확인 livingRoomBtn 널인 경우임. ==="+e );
+        if((Boolean) serviceDTO3.getServicefocusedhashMap().get("livingRoomBtn")){
+            Log.d(TAG, "=== livingRoomBtn ===" );
+            focusLivingRoomStr="거실";
+            Log.d(TAG, "=== focusLivingRoomStr ===" +focusLivingRoomStr);
         }
 
-        try{
-            if((Boolean) serviceDTO3.getServicefocusedhashMap().get("kitchenBtn")){
-                Log.d(TAG, "=== kitchenBtn ===" );
-                focusKitchenStr="주방";
-                Log.d(TAG, "=== focusKitchenStr ===" +focusKitchenStr);
+        if((Boolean) serviceDTO3.getServicefocusedhashMap().get("kitchenBtn")){
+            Log.d(TAG, "=== kitchenBtn ===" );
+            focusKitchenStr="주방";
+            Log.d(TAG, "=== focusKitchenStr ===" +focusKitchenStr);
 
-            }
-
-        }catch (Exception e){
-            //홈페이지에서 더 많은 컨텐츠를 확인하세요,  https://stickode.com/
-            Log.e(TAG, "=== 불린확인 kitchenBtn 널인 경우임. ==="+e );
+        }
+        if(serviceDTO3.getLaundryBool()){
+            Log.d(TAG, "=== getLaundryBool ===" );
+            laundryBoolStr="/ 세탁 추가";
         }
 
-        try{
-            if((Boolean) serviceDTO3.getLaundryBool()){
-                Log.d(TAG, "=== getLaundryBool ===" );
-                laundryBoolStr="/ 세탁 추가";
-            }
-        }catch (Exception e){
-            Log.e(TAG, "=== 불린확인 getLaundryBool 널인 경우임. ==="+e );
-        }
+
+
+
+
 
         String allStr = focusRoomStr +""+ focusBathRoomStr+""+focusLivingRoomStr+""+focusKitchenStr+" 꼼꼼히 "+laundryBoolStr;
 
@@ -219,64 +355,70 @@ public class Service_completeActivity extends AppCompatActivity {
         serviceDetailTxt.setText(allStr);
 
         /* 쓰레기 배출 방법 보여주는 텍스트뷰에 setText하는 코드 */
-        try{
-            if(serviceDTO3.getGarbagerecycleBool()){
-                garbagerecycleStr = "재활용";
-            }
-        }catch (Exception e){
-          Log.d(TAG, "=== 에러코드 널인 경우임 getGarbagerecycleBool ===" +e);
+        if(serviceDTO3.getGarbagerecycleBool()){
+            garbagerecycleStr = "재활용";
         }
 
-        try{
-            if(serviceDTO3.getGarbagenormalBool()){
-                garbagenormalStr = "일반";
-            }
-        }catch (Exception e){
-            Log.d(TAG, "=== 에러코드 널인 경우임 getGarbagenormalBool ===" +e);
+        if(serviceDTO3.getGarbagenormalBool()){
+            garbagenormalStr = "일반";
         }
 
-        try{
-            if(serviceDTO3.getGarbagefoodBool()){
-                garbagefoodStr = "음식물";
-            }
-        }catch (Exception e){
-            Log.d(TAG, "=== 에러코드 널인 경우임 getGarbagefoodBool ===" +e);
+        if(serviceDTO3.getGarbagefoodBool()){
+            garbagefoodStr = "음식물";
         }
 
         allStr = garbagerecycleStr+" "+garbagenormalStr+" "+garbagefoodStr+" 쓰레기 배출";
-
         serviceGarbageTxt.setText(allStr);
+
+        /* 20201218 추가함.. ㅎㅎ */
+        if(serviceDTO3.getGarbagerecycleBool() && !serviceDTO3.getGarbagenormalBool() && !serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("재활용 분리수거 선택");
+        }else if(!serviceDTO3.getGarbagerecycleBool() && serviceDTO3.getGarbagenormalBool() && !serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("일반 쓰레기 배출 선택");
+        }else if(!serviceDTO3.getGarbagerecycleBool() && !serviceDTO3.getGarbagenormalBool() && serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("음식물 쓰레기 배출 선택");
+        }else if(serviceDTO3.getGarbagerecycleBool() && serviceDTO3.getGarbagenormalBool() && !serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("분리 수거 / 일반 쓰레기 배출 선택");
+        }else if(serviceDTO3.getGarbagerecycleBool() && !serviceDTO3.getGarbagenormalBool() && serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("분리 수거 / 음식물 쓰레기 배출 선택");
+        }else if(!serviceDTO3.getGarbagerecycleBool() && serviceDTO3.getGarbagenormalBool() && serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("일반 / 음식물 쓰레기 배출 선택");
+        }else if(!serviceDTO3.getGarbagerecycleBool() && !serviceDTO3.getGarbagenormalBool() && !serviceDTO3.getGarbagefoodBool()){
+            serviceGarbageTxt.setText("쓰레기 배출 미선택");
+        }
+
+
+
+
+
+
 
 
         /* 유료 선택 추가 보여주는 텍스트뷰에 setText하는 코드 */
-        try{
-            if((Boolean)serviceDTO3.getServiceplus().get("다림질")){
-                serviceIronStr = "다림질";
-            }
-        }catch (Exception e){
-            Log.d(TAG, "=== 에러코드 널인 경우임 getServiceplus 다림질 ===" +e);
+        if((Boolean)serviceDTO3.getServiceplus().get("다림질")){
+            serviceIronStr = "다림질";
         }
-
-        try{
-            if((Boolean)serviceDTO3.getServiceplus().get("냉장고")){
-                serviceFridgeStr = "냉장고 정리";
-            }
-        }catch (Exception e){
-            Log.d(TAG, "=== 에러코드 널인 경우임 getServiceplus 냉장고 정리 ===" +e);
-
+        if((Boolean)serviceDTO3.getServiceplus().get("냉장고")){
+            serviceFridgeStr = "냉장고 정리";
         }
 
         allStr = serviceIronStr+" "+serviceFridgeStr+" "+" 추가";
-
         Log.d(TAG, "=== 유료 선택 allStr ===" + allStr);
-
         servicePlusTxt.setText(allStr);
 
+        /* 20201218 추가함. 이게 더 간단한데..ㅎㅎ 앞에서 삽질함. */
+        if((Boolean)serviceDTO3.getServiceplus().get("다림질") && !(Boolean)serviceDTO3.getServiceplus().get("냉장고")){
+            servicePlusTxt.setText("다림질 추가");
+        }else if(! (Boolean)serviceDTO3.getServiceplus().get("다림질") && (Boolean)serviceDTO3.getServiceplus().get("냉장고")){
+            servicePlusTxt.setText("냉장고 정리 추가");
+        }else if((Boolean)serviceDTO3.getServiceplus().get("다림질") && (Boolean)serviceDTO3.getServiceplus().get("냉장고")){
+            servicePlusTxt.setText("다림질  / 냉장고 정리 추가");
+        }
 
 
-        /*
-        * 결제 수단 보여주는 코드
-        * */
+
+
+        /* 결제 수단 보여주는 코드 */
         paymentTxt = findViewById(R.id.paymentTxt);
         paymentBtn = findViewById(R.id.paymentBtn);
         reserveBtn = findViewById(R.id.reserveBtn);
@@ -352,13 +494,13 @@ public class Service_completeActivity extends AppCompatActivity {
 
                 if(paymentBtn.getText().toString().equals("변경")|| paymentBtn.getText().toString().equals("등록")){
                     Log.e(TAG, "=== 버튼 텍스트가 변경인 경우, 즉 나의 등록 카드가 없는 경우, ===" );
-                    BootUser bootUser = new BootUser().setPhone("010-1234-5678");
+                    BootUser bootUser = new BootUser().setPhone("010-3051-7408");
                     BootExtra bootExtra = new BootExtra().setQuotas(new int[] {0,2,3});
 
-                    BootpayAnalytics.init(getApplicationContext(), "5fba1e488f075100207de71f");
+                    BootpayAnalytics.init(getApplicationContext(), application_id);
                     Bootpay.init(getFragmentManager())
                             .setContext(getApplicationContext())
-                            .setApplicationId("5fba1e488f075100207de71f") // 해당 프로젝트(안드로이드)의 application id 값
+                            .setApplicationId(application_id) // 해당 프로젝트(안드로이드)의 application id 값
                             .setBootUser(bootUser)
                             .setBootExtra(bootExtra)
                             .setPG(PG.DANAL) // 결제할 PG 사
@@ -406,7 +548,7 @@ public class Service_completeActivity extends AppCompatActivity {
                                         card_name = (String) jsonObjdata.get("card_name"); //하나카드
                                         e_at = (String) jsonObj.get("e_at"); //정기 결제 가능한 마지막 유효날짜
                                         c_at = (String) jsonObj.get("c_at"); //정기 결제 요청 시간
-                                        receipt_id = (String) jsonObj.get("receipt_id"); //카드 등록 후,
+//                                        receipt_id = (String) jsonObj.get("receipt_id"); //카드 등록 후,
 //                            String status = (String) jsonObj.get("status"); // 에러 떠서 그냥 없앰.
                                         action = (String) jsonObj.get("action"); //정기 결제 요청 시간
 
@@ -423,7 +565,7 @@ public class Service_completeActivity extends AppCompatActivity {
 
                                         Log.d(TAG, "=== e_at ===" +e_at);
                                         Log.d(TAG, "=== c_at ===" +c_at);
-                                        Log.d(TAG, "=== receipt_id ===" +receipt_id);
+//                                        Log.d(TAG, "=== receipt_id ===" +receipt_id);
 //                            Log.d(TAG, "=== status ===" +status);
                                         Log.d(TAG, "=== action ===" +action);
 
@@ -483,15 +625,133 @@ public class Service_completeActivity extends AppCompatActivity {
             }
         });
 
-
-
         // 예약하기 버튼 클릭
         reserveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "=== reserveBtn 클릭 ===" );
 
-                postData();
+
+
+
+
+
+                BootUser bootUser = new BootUser().setPhone("01030517408");
+                BootExtra bootExtra = new BootExtra().setQuotas(new int[] {0,2,3});
+
+                Log.e(TAG, "=== bootUser ==="+bootUser.toString());
+                Log.e(TAG, "=== bootExtra ==="+bootExtra.toString());
+                BioPayload bioPayload = new BioPayload();
+                bioPayload.setPg(PG.PAYAPP)
+                    .setName("우리집 청소")
+                    .setPrice((double) (needDefCost+ironCostInt+fridgeCostInt)) //최종 결제 금액
+                    .setOrder_id(String.valueOf(System.currentTimeMillis()))
+                    .setName("우리집 청소")
+
+                    .setNames(Arrays.asList("우리집 청소",
+                            serviceDTO3.getMyplaceDTO().getAddress().substring(8,14),
+                            " ("+serviceDTO3.getMyplaceDTO().getSizeStr()+")"))
+
+                    .setPrices(Arrays.asList(new BioPrice("기본 가격", (double) needDefCost),
+                            new BioPrice("유료 추가 1 다림질", (double) ironCostInt),
+                            new BioPrice("유료 추가 2 냉장고 정리", (double) fridgeCostInt)));
+
+
+                int stuck = 1;
+                Bootpay.init(getSupportFragmentManager())
+                    .setContext(getApplicationContext())
+                    .setApplicationId(application_id)
+                    .setOrderId(String.valueOf(System.currentTimeMillis()))
+                    .setBootExtra(bootExtra)
+                    .setBootUser(bootUser)
+                    .setBioPayload(bioPayload)
+                    .setEasyPayUserToken(easyUserToken2)
+                    .setAccountExpireAt("2021-07-16")
+                    .addItem("유료 추가 1 다림질", 1, "ITEM_CODE_MOUSE", 500)
+                    .addItem("유료 추가 2 냉장고 정리", 1, "ITEM_CODE_KEYBOARD", 500, "패션", "여성상의", "블라우스")
+                    .onConfirm(new ConfirmListener() {
+                        @Override
+                        public void onConfirm(@Nullable String data) {
+                            if (0 < stuck) Bootpay.confirm(data);
+                            else Bootpay.removePaymentWindow();
+
+                            Log.d("bootpay confirm", data);
+                        }
+                    })
+                    .onDone(new DoneListener() {
+                        @Override
+                        public void onDone(@Nullable String data) {
+                            Log.e(TAG, "bootpay done !!!!!!!!!!!!!!!!  "+ data);
+                            //{"receipt_id":"5fdbc6a98f07510034d3dee4",
+                            // "price":61600,"card_no":"40285712****7317",
+                            // "card_code":"07","card_name":"현대",
+                            // "card_quota":"00",
+                            // "receipt_url":"https://app.bootpay.co.kr/bill/clFxVmNCWFRBUEQ2V081dEZrZG9ldFJpVWNrYUljUVRCZ0xrc0tOd1dsNHYv%0AUT09LS1sbkUxRHcyWWtlWVM1TVh4LS1LalVZeFFSYnhDRC8vcExOTndBYUpR%0APT0%3D%0A",
+                            // "item_name":"우리집 청소","order_id":"1608238756576","url":"https://app.bootpay.co.kr",
+                            // "tax_free":0,"payment_name":"카드정기결제(REST)","pg_name":"페이앱",
+                            // "pg":"payapp","method":"card_rebill_rest","method_name":"카드정기결제(REST)",
+                            // "payment_group":"card","payment_group_name":"신용카드","requested_at":"2020-12-18 05:59:21",
+                            // "purchased_at":"2020-12-18 05:59:31","status":1,
+                            // "payment_data":
+                            // {"card_name":"현대","card_no":"40285712****7317","card_quota":"00",
+                            // "card_code":"07","card_auth_no":"00436501","receipt_id":"5fdbc6a98f07510034d3dee4",
+                            // "n":"우리집 청소","p":61600,"tid":"59463435","pg":"페이앱","pm":"카드정기결제(REST)",
+                            // "pg_a":"payapp","pm_a":"card_rebill_rest","o_id":"1608238756576",
+                            // "p_at":"2020-12-18 05:59:31","s":1,"g":2},"action":"BootpayDone"
+                            // }
+
+                            try{
+                                JSONParser jsonParser = new JSONParser();
+                                //JSON데이터를 넣어 JSON Object 로 만들어 준다.
+                                JSONObject jsonObject = (JSONObject) jsonParser.parse(data);
+
+                                receipt_id= (String) jsonObject.get("receipt_id");
+                                Log.e(TAG, "=== receipt_id ===" +receipt_id);
+
+
+                            }catch (Exception e){
+
+                            }
+
+                            Bootpay.dismiss();
+
+                            // TODO: 2020-12-18  결제 완료 하고, 결제한 서비스 내용 저장하는 부분
+                            postData();
+
+                        }
+                    })
+                    .onReady(new ReadyListener() {
+                        @Override
+                        public void onReady(@Nullable String data) {
+                            Log.d("bootpay ready", data);
+                        }
+                    })
+                    .onCancel(new CancelListener() {
+                        @Override
+                        public void onCancel(@Nullable String data) {
+
+                            Log.d("bootpay cancel", data);
+                        }
+                    })
+                    .onError(new ErrorListener() {
+                        @Override
+                        public void onError(@Nullable String data) {
+                            Log.d("bootpay error", data);
+                            Bootpay.dismiss();
+                        }
+                    })
+                    .onClose(new CloseListener() {
+                        @Override
+                        public void onClose(String data) {
+                            Log.d("bootpay close", "close");
+                        }
+                    })
+                    .requestBio();
+
+
+
+
+
 
             }
         });
@@ -514,7 +774,7 @@ public class Service_completeActivity extends AppCompatActivity {
                     // TODO: 2020-11-24 다이얼로그로 "예약이 완료되었습니다. 매칭 완료 시, "
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(Service_completeActivity.this);
-                    builder.setMessage("예약이 완료되었습니다. \n매칭 완료 시, 등록하신 카드로 자동 결제됩니다.");
+                    builder.setMessage("예약이 완료되었습니다.");
                     builder.setPositiveButton("확인",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -528,13 +788,16 @@ public class Service_completeActivity extends AppCompatActivity {
                                                     Log.e(TAG, "=== onCompleteLogout : 예약이 완료되었습니다. ===");
 
                                                     // TODO: 2020-12-15 fcm 보내는 부분
+                                                    FcmPushTest fcmPushTest = new FcmPushTest();
+                                                    try {
+                                                        fcmPushTest.pushFCMNotification(serManagerTxt.getText().toString()+" 에게 1건의 청소 요청이 들어왔습니다. 확인해주세요.",
+                                                                2, "dCKMxG4wSQ-P4TgEuI1m-b:APA91bFXOrKu_jSAqfHiOjXg8igTfWKcj1v7VcMHF8oRpaHkJnEnIjLR53JyZn-V9h5bEW7UsbxUROmEgu7zMqq_1hr7tD7XeCMPNVoiDL23kdMekK1YeQVOGwtxUBzySqTAE-KHvHh-");
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지저 경우. 그냥 넘어가도 딤 ==="+e );
+                                                    }
 
 
-
-
-
-
-                                                    //있으면 넘어감
                                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
                                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -593,12 +856,11 @@ public class Service_completeActivity extends AppCompatActivity {
                     params.put("recentUid", String.valueOf(recentUid));
                     params.put("recentBilling_key", recentBilling_key);
                     params.put("recentCard_name", recentCard_name);
-
+                    params.put("receipt_id", receipt_id);
 
                     Log.d(TAG, "=== params === : "+ params );
-                    Log.d(TAG, "=== recentUid === : "+ String.valueOf(recentUid) );
-                    Log.d(TAG, "=== recentBilling_key === : "+ recentBilling_key );
-                    Log.d(TAG, "=== recentCard_name === : "+ recentCard_name );
+
+                    Log.e(TAG, "=== receipt_id === : "+ receipt_id );
 
                     return params;
                 }
@@ -745,6 +1007,7 @@ public class Service_completeActivity extends AppCompatActivity {
     }
 
 
+    /* 내 계정으로 등록된 카드 가져오는 메서드 */
     private void makeStringRequestGet() {
 
         String url = "http://52.79.179.66/myCardCheck.php?currentUser="+ GlobalApplication.currentUser;
@@ -855,7 +1118,79 @@ public class Service_completeActivity extends AppCompatActivity {
     }
 
 
+    /* 레트로핏으로 서버에 이메일 보내서 토큰 받아오는 코드 - 서버에서 mysql에 저장 함*/
+    private void postSelectToken(String email, int whichClientManager){
 
+        Log.e(TAG, "=== postManagerProfile 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TokenSelectInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        TokenSelectInterface api =retrofit.create(TokenSelectInterface.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.selectToken(email, whichClientManager);
+
+        Log.e(TAG, "=== email ===" +email);
+        Log.e(TAG, "=== whichClientManager 1이면 클라, 2면 매니저===" +whichClientManager);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e(TAG, "onSuccess" + response.body());
+
+                        String jsonresponse = response.body();
+                        Log.e(TAG, "=== jsonresponse ===" +jsonresponse );
+
+                        try {
+                            org.json.JSONObject obj = new org.json.JSONObject(jsonresponse);
+                            Log.e(TAG, "=== response ===" +response);
+
+                            if(obj.optString("status").equals("true")){
+
+                                JSONArray dataArray  = obj.getJSONArray("data");
+
+                                // TODO: 2020-12-15 여기서 해당 텍스트 뷰에 데이터 넣음
+
+                                for (int i = 0; i < dataArray.length(); i++) {
+
+                                    org.json.JSONObject dataobj = dataArray.getJSONObject(i);
+
+                                    managerToken = dataobj.getString("Token");
+
+                                    Log.e(TAG, "=== ddddddd ===managerToken" +managerToken);
+
+
+
+                                }
+                            }else {
+                                Toast.makeText(Service_completeActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        Log.e(TAG, "onEmptyResponse"+"Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+
+            }
+        });
+
+
+    }
 
 
 }

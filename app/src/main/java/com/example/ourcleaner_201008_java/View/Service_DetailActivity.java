@@ -1,6 +1,7 @@
 package com.example.ourcleaner_201008_java.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -9,13 +10,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.Server.LoginRequest;
@@ -24,6 +28,7 @@ import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
 import com.example.ourcleaner_201008_java.View.Manager.Manager_Acount_Activity;
 import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
 import com.example.ourcleaner_201008_java.View.Manager.Manager_MainActivity;
+import com.example.ourcleaner_201008_java.View.Manager.Manager_ProfileActivity;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
@@ -34,6 +39,12 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.concurrent.TimeUnit;
 
+/* 서비스 상세정보 보는 엑티비티
+* 1. 매칭 대기중 - 결제 완료 - 취소 가능
+* 2. 매칭 완료 - 결제 완료 - 취소 가능
+* 3. 청소를 위해 매니저 이동중 - 결제 취소 가능 (청소 시작 전 까지)
+* 4. 청소 시작 결제 취소 불가
+* 5. 청소 완료 - 결제 취소 불가 - 서비스에 대한 후기 작성 가능함. */
 public class Service_DetailActivity extends AppCompatActivity {
 
     /* 매칭 대기 중, 매칭 완료, 청소 중, 청소 완료 */
@@ -55,7 +66,7 @@ public class Service_DetailActivity extends AppCompatActivity {
             plusTxt, cautionTxt;
 
     LinearLayout receiptLayout, priceDefLayout, priceIronLayout, pricefridgeLayout, priceResultLayout;
-    TextView priceDefNumTxt, priceIronNumTxt, pricefridgeNumTxt, priceResutNumTxt;
+    TextView priceDefNumTxt, priceIronNumTxt, pricefridgeNumTxt, priceResutNumTxt, serviceDeleteGuideTxt;
 
 //    int resultNeedTimeInt=0, needDefTimeInt; //필요한 전체 시간. 총 시간에서 setText하기 위해 필요한 변수
     int ironPlusTimeInt=0, refridgeTimeInt=0, startTimeInt=0, resultNeedTimeInt=0, defaultTimeInt=0, endTimeInt=0;
@@ -65,8 +76,15 @@ public class Service_DetailActivity extends AppCompatActivity {
     //숫자 천 자리에 콤마 찍기
     DecimalFormat formatter = new DecimalFormat("###,###");
 
-    Button Btn;
+    Button serviceDeleteBtn;
 
+    RelativeLayout relativeLayout1;
+    LinearLayout serviceDeleteLayout;
+
+
+    // TODO: 2020-12-18 매니저 정보를 어떻게 보여줄 지 고민해야 할듯. 프로필 정보와 후기 까지... 
+    ImageView profileImage; //수락 이후, 매니저 정보 보여주기
+    String  profileImagePathStr="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,908 +98,460 @@ public class Service_DetailActivity extends AppCompatActivity {
         serviceWaitingUidInt = intent.getIntExtra("uid",0);
         Log.d(TAG, "고객용 내 예약에서 인텐트 받음 intent : "+ serviceWaitingUidInt);
 
+
+
+
+
+        datedayTxt = findViewById(R.id.datedayTxt);
+        startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
+        stateTxt = findViewById(R.id.stateTxt);
+
+        placeNameTxt = findViewById(R.id.placeNameTxt);
+        addressSizeTxt = findViewById(R.id.addressSizeTxt);
+
+        editPossTxt = findViewById(R.id.editPossTxt);
+        focusTxt = findViewById(R.id.focusTxt);
+        freePlusTxt = findViewById(R.id.freePlusTxt);
+        garbageTxt = findViewById(R.id.garbageTxt);
+        plusTxt = findViewById(R.id.plusTxt);
+
+        cautionTxt = findViewById(R.id.cautionTxt);
+        profileImage = findViewById(R.id.profileImage);
+
+        relativeLayout1 = findViewById(R.id.relativeLayout1);
+        serviceDeleteGuideTxt= findViewById(R.id.serviceDeleteGuideTxt);
+
+        Log.e(TAG, "=== 기본 이미지로 변경 === ");
+        relativeLayout1.bringChildToFront(profileImage);
+
+        Glide.with(Service_DetailActivity.this)
+                .load(getDrawable(R.drawable.ic_baseline_person_24))
+                .circleCrop()
+                .into(profileImage);
+
+        // 10. 결제 예정 내역 보여주기
+        // 다른 경우, 이름 바꿔야 함.
+        priceDefLayout = findViewById(R.id.priceDefLayout);
+        priceIronLayout = findViewById(R.id.priceIronLayout);
+        pricefridgeLayout = findViewById(R.id.pricefridgeLayout);
+        priceResultLayout = findViewById(R.id.priceResultLayout);
+
+        // 선택한 장소의 평 수에 따라서 책정한 기본 가격 세팅
+        priceDefNumTxt = findViewById(R.id.priceDefNumTxt);
+
+
+        // 선택한 장소의 유료 선택지에 따라서 레이아웃 보이게 함.
+        // 기본 가격
+        priceIronNumTxt = findViewById(R.id.priceIronNumTxt);
+        pricefridgeNumTxt = findViewById(R.id.pricefridgeNumTxt);
+
+        serviceDeleteBtn = findViewById(R.id.serviceDeleteBtn);
+
+
+
         /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.e(TAG, "=== response ===" +response);
                 try {
-                    JSONArray jsonArray = new JSONArray(response);
-                    Log.e(TAG, "=== 유효한 uid인 경우, jsonArray 값이 있음 ===" );
-                    if(jsonArray.length()>0){
+                        JSONObject jsonObject = new JSONObject(response);
 
-                        for(int i = 0 ; i<jsonArray.length(); i++){
+                        if(jsonObject.getString("status").contains("true")){
+                            Log.d(TAG, "=== 서버로부터 데이터 잘 받아옴 ===" );
 
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            JSONArray jsonArray = jsonObject.getJSONArray("data");
 
-                            currentUser = jsonObject.getString( "currentUser" );
-                            serviceState = jsonObject.getString( "serviceState" );
+                            /* 어차피 게시물 하나만 받아올거니까 index 0 */
+                            JSONObject dataObject = (JSONObject) jsonArray.get(0);
 
-                            myplaceDTO_placeName = jsonObject.getString( "myplaceDTO_placeName" );
-                            myplaceDTO_address = jsonObject.getString( "myplaceDTO_address" );
-                            myplaceDTO_detailAddress = jsonObject.getString( "myplaceDTO_detailAddress" );
-                            myplaceDTO_sizeStr = jsonObject.getString( "myplaceDTO_sizeStr" );
+                            currentUser = dataObject.getString( "currentUser" );
+                            serviceState = dataObject.getString( "serviceState" );
 
-                            managerName = jsonObject.getString( "managerName" );
-                            regularBool = jsonObject.getString( "regularBool" );
-                            visitDate = jsonObject.getString( "visitDate" );
-                            visitDay = jsonObject.getString( "visitDay" );
+                            myplaceDTO_placeName = dataObject.getString( "myplaceDTO_placeName" );
+                            myplaceDTO_address = dataObject.getString( "myplaceDTO_address" );
+                            myplaceDTO_detailAddress = dataObject.getString( "myplaceDTO_detailAddress" );
+                            myplaceDTO_sizeStr = dataObject.getString( "myplaceDTO_sizeStr" );
 
-                            startTime = jsonObject.getString( "startTime" );
-                            needDefTime = jsonObject.getString( "needDefTime" );
-                            needDefCost = jsonObject.getString( "needDefCost" );
+                            managerName = dataObject.getString( "managerName" );
+                            regularBool = dataObject.getString( "regularBool" );
+                            visitDate = dataObject.getString( "visitDate" );
+                            visitDay = dataObject.getString( "visitDay" );
 
-                            servicefocusedhashMap = jsonObject.getString( "servicefocusedhashMap" );
-                            laundryBool = jsonObject.getString( "laundryBool" );
-                            laundryCaution = jsonObject.getString( "laundryCaution" );
+                            startTime = dataObject.getString( "startTime" );
+                            needDefTime = dataObject.getString( "needDefTime" );
+                            needDefCost = dataObject.getString( "needDefCost" );
 
-                            garbagerecycleBool = jsonObject.getString( "garbagerecycleBool" );
-                            garbagenormalBool = jsonObject.getString( "garbagenormalBool" );
-                            garbagefoodBool = jsonObject.getString( "garbagefoodBool" );
+                            servicefocusedhashMap = dataObject.getString( "servicefocusedhashMap" );
+                            laundryBool = dataObject.getString( "laundryBool" );
+                            laundryCaution = dataObject.getString( "laundryCaution" );
 
-                            garbagehowto = jsonObject.getString( "garbagehowto" );
-                            serviceplus = jsonObject.getString( "serviceplus" );
-                            serviceCaution = jsonObject.getString( "serviceCaution" );
+                            garbagerecycleBool = dataObject.getString( "garbagerecycleBool" );
+                            garbagenormalBool = dataObject.getString( "garbagenormalBool" );
+                            garbagefoodBool = dataObject.getString( "garbagefoodBool" );
 
-                            Log.e(TAG, "=== currentUser ===" +currentUser);
-                            Log.e(TAG, "=== serviceState ===" +serviceState);
+                            garbagehowto = dataObject.getString( "garbagehowto" );
+                            serviceplus = dataObject.getString( "serviceplus" );
+                            serviceCaution = dataObject.getString( "serviceCaution" );
 
-                            Log.e(TAG, "=== myplaceDTO_address ===" +myplaceDTO_address);
-                            Log.e(TAG, "=== myplaceDTO_detailAddress ===" +myplaceDTO_detailAddress);
-                            Log.e(TAG, "=== myplaceDTO_sizeStr ===" +myplaceDTO_sizeStr);
+                            if(jsonObject.getString("message").contains("매니저 미지정")){
+                                Log.d(TAG, "=== 매니저 미지정 인 경우, ===" );
 
-                            Log.e(TAG, "=== managerName ===" +managerName);
-                            Log.e(TAG, "=== regularBool ===" +regularBool);
-                            Log.e(TAG, "=== visitDate ===" +visitDate);
-                            Log.e(TAG, "=== visitDay ===" +visitDay);
+                                profileImage.setVisibility(View.GONE);
 
-                            Log.e(TAG, "=== startTime ===" +startTime);
-                            Log.e(TAG, "=== needDefTime ===" +needDefTime);
-                            Log.e(TAG, "=== needDefCost ===" +needDefCost);
+                                Glide.with(Service_DetailActivity.this)
+                                        .load(getDrawable(R.drawable.ic_baseline_person_24))
+                                        .circleCrop()
+                                        .into(profileImage);
+                                
+                            }else if(jsonObject.getString("message").contains("매니저 지정") && serviceState.equals("매칭 완료")){
+                                Log.d(TAG, "=== 매니저 지정 함 ===" );
+                                profileImagePathStr = dataObject.getString( "profileImagePathStr" );
+                                Log.d(TAG, "=== profileImagePathStr ===" +profileImagePathStr);
 
-                            Log.e(TAG, "=== servicefocusedhashMap ===" +servicefocusedhashMap);
-                            Log.e(TAG, "=== laundryBool ===" +laundryBool);
-                            Log.e(TAG, "=== laundryCaution ===" +laundryCaution);
+                                profileImage.setVisibility(View.VISIBLE);
 
-                            Log.e(TAG, "=== garbagerecycleBool ===" +garbagerecycleBool);
-                            Log.e(TAG, "=== garbagenormalBool ===" +garbagenormalBool);
-                            Log.e(TAG, "=== garbagefoodBool ===" +garbagefoodBool);
+                                Glide.with(Service_DetailActivity.this)
+                                        .load(profileImagePathStr)
+                                        .circleCrop()
+                                        .into(profileImage);
 
-                            Log.e(TAG, "=== garbagehowto ===" +garbagehowto);
-                            Log.e(TAG, "=== serviceplus ===" +serviceplus);
-                            Log.e(TAG, "=== serviceCaution ===" +serviceCaution);
-
-                            datedayTxt = findViewById(R.id.datedayTxt);
-                            startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
-                            stateTxt = findViewById(R.id.stateTxt);
-
-                            placeNameTxt = findViewById(R.id.placeNameTxt);
-                            addressSizeTxt = findViewById(R.id.addressSizeTxt);
-
-                            editPossTxt = findViewById(R.id.editPossTxt);
-                            focusTxt = findViewById(R.id.focusTxt);
-                            freePlusTxt = findViewById(R.id.freePlusTxt);
-                            garbageTxt = findViewById(R.id.garbageTxt);
-                            plusTxt = findViewById(R.id.plusTxt);
-
-                            cautionTxt = findViewById(R.id.cautionTxt);
-
-                            // 1. 날짜 요일 보여주기
-                            datedayTxt.setText(visitDate+"("+visitDay+") 예약");
-
-                            // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
-                            //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
-                            try{
-                                Log.e(TAG+123, "=== serviceplus ===" +serviceplus);
-                                if(serviceplus.contains("냉장고=true")){
-//                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 120;
-//                                    resultNeedTimeInt = needDefTimeInt;
-                                    refridgeTimeInt=120;
-                                    Log.d(TAG, "=== refridgeTimeInt ===" +refridgeTimeInt);
-                                }
-                                if(serviceplus.contains("다림질=true")){
-//                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 30;
-                                    ironPlusTimeInt=30;
-                                    Log.d(TAG+123, "=== ironPlusTimeInt ===" +ironPlusTimeInt);
-                                }
-
-                                defaultTimeInt= Integer.parseInt(needDefTime);
-                                Log.d(TAG+123, "=== defaultTimeInt ===" +defaultTimeInt);
-
-                                startTimeInt= Integer.parseInt(startTime);
-                                Log.d(TAG+123, "=== startTimeInt ===" +startTimeInt);
-
-                                resultNeedTimeInt =Integer.parseInt(needDefTime);
-                                Log.d(TAG+123, "=== resultNeedTimeInt ===" +resultNeedTimeInt);
-
-                                endTimeInt=startTimeInt+defaultTimeInt+refridgeTimeInt+ironPlusTimeInt;
-                                Log.d(TAG+123, "=== endTimeInt ===" +endTimeInt);
-
-                                startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
-
-                            }catch (Exception e){
-                                Log.e(TAG+123, "=== startAndAllTimeTxt ===" +e);
                             }
+                            // TODO: 2020-12-19 서비스 상태 변경 시, 작업하는 부분 
 
-                            // 3. 서비스 상태 보여주기
-                            Btn = findViewById(R.id.Btn);
-                            try{
-                                if(serviceState.contains("매칭 대기 중")){
-                                    stateTxt.setText("매칭 대기 중입니다.");
-                                    Btn.setText("예약 취소하기");
-                                }else if(serviceState.contains("예약 취소1")){
-                                    stateTxt.setText("취소된 예약입니다.");
-                                    Btn.setVisibility(View.GONE);
-                                }else if(serviceState.contains("매칭 완료")){
-                                    stateTxt.setText("취소된 예약입니다.");
-                                    Btn.setText("예약 취소하기");
-                                }else if(serviceState.contains("예약 취소2")){
-                                    stateTxt.setText("취소된 예약입니다.");
-                                    Btn.setVisibility(View.GONE);
-                                }else if(serviceState.contains("청소 중")){
-                                    stateTxt.setText("청소 중입니다.");
-                                    Btn.setVisibility(View.GONE);
-                                }else if(serviceState.contains("청소 완료")){
-                                    stateTxt.setText("완료된 청소입니다.");
-                                    Btn.setVisibility(View.GONE);
-                                }
-                            }catch (Exception e){
-                                Log.e(TAG, "=== serviceState 널인 경우, 에러코드 ===" +e);
-                            }
-
-                            // 4. 집 상세정보 보여주기
-                            // 내가 보는 경우에는, 장소 이름, 자세히 보기 가능. 그리고 변경하기 텍스트뷰도 보임. 물론, 서비스 이후에는 텍스트 뷰 보이면 안 됨.
-                            placeNameTxt.setText(myplaceDTO_placeName);
-
-                            try{
-                                addressSizeTxt.setText(myplaceDTO_address.substring(8,14)+"("+myplaceDTO_sizeStr+")");
-                            }catch (Exception e){
-                                Log.e(TAG, "=== myplaceDTO_address myplaceDTO_sizeStr 널인 경우 에러코드 ===" +e);
-                            }
-
-                            editPossTxt.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Log.d(TAG, "=== editPossTxt 클릭 : === ");
-
-                                    //있으면 넘어감
-                                    Intent intent = new Intent(getApplicationContext(), MyPlace_EditActivity.class);
-
-                                    intent.putExtra("myplaceDTO_address", myplaceDTO_address);
-                                    intent.putExtra("myplaceDTO_sizeStr", myplaceDTO_sizeStr);
-                                    intent.putExtra("currentUser", GlobalApplication.currentUser);
-
-                                    startActivity(intent);
-
-                                }
-
-                            });
-
-                            // 5. 집중 청소 구역 보여주기
-
-                            if(servicefocusedhashMap!= null){
-                                if(servicefocusedhashMap.contains("livingRoomBtn=true")){
-                                    resultFocusedStr = "거실";
-                                }
-
-                                if(servicefocusedhashMap.contains("roomBtn=true")){
-                                    if(resultFocusedStr.isEmpty()){
-                                        resultFocusedStr="방";
-                                    }else{
-                                        resultFocusedStr= resultFocusedStr+" 방";
-                                    }
-
-                                }
-
-                                if(servicefocusedhashMap.contains("bathRoomBtn=true")){
-                                    if(resultFocusedStr.isEmpty()){
-                                        resultFocusedStr="화장실";
-                                    }else{
-                                        resultFocusedStr= resultFocusedStr+" 화장실";
-                                    }
-
-                                }
-
-                                if(servicefocusedhashMap.contains("kitchenBtn=true")){
-                                    if(resultFocusedStr.isEmpty()){
-                                        resultFocusedStr="부엌";
-                                    }else{
-                                        resultFocusedStr= resultFocusedStr+" 부엌";
-                                    }
-                                }
-                                resultFocusedStr = resultFocusedStr+" 집중적으로 청소해주세요.";
-                            }
-
-                            focusTxt.setText(resultFocusedStr);
-
-                            // 6. 무료 추가 선택 보여주기
-
-                            if(laundryBool!= null){
-                                if(laundryBool.contains("true")){
-                                    laundryBool="세탁 추가";
-                                    freePlusTxt.setText(laundryBool);
-                                }else{
-                                    freePlusTxt.setText("무료 추가 없음");
-                                }
-                            }else{
-                                freePlusTxt.setText("무료 추가 없음");
-                            }
-
-
-                            // 7. 쓰레기 배출 선택 보여주기
-                            if(garbagerecycleBool.contains("true")){
-                                resultGarbageStr = "재활용";
-                            }
-
-                            if(garbagenormalBool.contains("true")){
-                                if(resultFocusedStr.isEmpty()){
-                                    resultGarbageStr="일반 쓰레기";
-                                }
-                                resultGarbageStr= resultGarbageStr+" 일반 쓰레기";
-                            }
-
-                            if(garbagefoodBool.contains("true")){
-                                if(resultFocusedStr.isEmpty()){
-                                    resultGarbageStr="음식물 쓰레기";
-                                }
-                                resultGarbageStr= resultGarbageStr+" 음식물 쓰레기";
-                            }
-
-                            if(resultGarbageStr!= null){
-                                if(resultGarbageStr.isEmpty()){
-
-                                }else{
-                                    garbageTxt.setText(resultGarbageStr+" 버려주세요.");
-                                }
-                            }else{
-                                garbageTxt.setText("선택 안 함");
-                            }
-
-                            // 8. 유료 선택 보여주기
-                            if(serviceplus.contains("다림질=true")){
-                                resultPlusStr = "다림질";
-                                ironCostInt = 6600;
-                            }
-                            if(serviceplus.contains("냉장고=true")){
-                                resultPlusStr = "냉장고";
-                                fridgeCostInt = 26400;
-                            }
-                            if(serviceplus.contains("다림질=true")&&serviceplus.contains("냉장고=true")){
-                                resultPlusStr="다림질 / 냉장고 청소 추가";
-                            }
-
-                            if(resultPlusStr.isEmpty()){
-                                plusTxt.setText("유료 추가 없음");
-                            }else{
-                                plusTxt.setText(resultPlusStr+"( +"+formatter.format(ironCostInt+fridgeCostInt)+" 원)");
-                            }
-
-                            // 9. 입실 후, 주의사항 보여주기
-                            if(serviceCaution.isEmpty()){
-                                cautionTxt.setText("작성하신 주의사항이 없습니다.");
-                            }else{
-                                cautionTxt.setText(serviceCaution);
-                            }
-
-                            // 10. 결제 예정 내역 보여주기
-                            // 다른 경우, 이름 바꿔야 함.
-                            priceDefLayout = findViewById(R.id.priceDefLayout);
-                            priceIronLayout = findViewById(R.id.priceIronLayout);
-                            pricefridgeLayout = findViewById(R.id.pricefridgeLayout);
-                            priceResultLayout = findViewById(R.id.priceResultLayout);
-
-                            // 선택한 장소의 평 수에 따라서 책정한 기본 가격 세팅
-                            priceDefNumTxt = findViewById(R.id.priceDefNumTxt);
-                            priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost))+" 원");
-
-                            // 선택한 장소의 유료 선택지에 따라서 레이아웃 보이게 함.
-                            // 기본 가격
-                            priceIronNumTxt = findViewById(R.id.priceIronNumTxt);
-                            pricefridgeNumTxt = findViewById(R.id.pricefridgeNumTxt);
-
-                            if(ironCostInt==6600){
-                                priceIronNumTxt.setText(formatter.format(ironCostInt)+" 원");
-                                priceIronLayout.setVisibility(View.VISIBLE);
-                            }
-                            if(fridgeCostInt==26400){
-                                pricefridgeNumTxt.setText(formatter.format(fridgeCostInt)+" 원");
-                                pricefridgeLayout.setVisibility(View.VISIBLE);
-                            }
-                            priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
-                            priceResutNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt)+" 원");
-
-
+                        }else{
 
                         }
 
-                    }else{
-                        Log.e(TAG, "=== 유효한 uid인 경우, jsonArray 값이 없음===" );
-                        Toast.makeText( getApplicationContext(), "예약 내용을 다시 확인해주세요.", Toast.LENGTH_SHORT ).show();
-                        finish();
-                    }
+
+
+
+
+                        // 1. 날짜 요일 보여주기
+                        datedayTxt.setText(visitDate+"("+visitDay+") 예약");
+
+                        // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
+                        //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
+                        try{
+                            Log.e(TAG+123, "=== serviceplus ===" +serviceplus);
+                            if(serviceplus.contains("냉장고=true")){
+//                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 120;
+//                                    resultNeedTimeInt = needDefTimeInt;
+                                refridgeTimeInt=120;
+                                Log.d(TAG, "=== refridgeTimeInt ===" +refridgeTimeInt);
+                            }
+                            if(serviceplus.contains("다림질=true")){
+//                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 30;
+                                ironPlusTimeInt=30;
+                                Log.d(TAG+123, "=== ironPlusTimeInt ===" +ironPlusTimeInt);
+                            }
+
+                            defaultTimeInt= Integer.parseInt(needDefTime);
+                            Log.d(TAG+123, "=== defaultTimeInt ===" +defaultTimeInt);
+
+                            startTimeInt= Integer.parseInt(startTime);
+                            Log.d(TAG+123, "=== startTimeInt ===" +startTimeInt);
+
+                            resultNeedTimeInt =Integer.parseInt(needDefTime);
+                            Log.d(TAG+123, "=== resultNeedTimeInt ===" +resultNeedTimeInt);
+
+                            endTimeInt=startTimeInt+defaultTimeInt+refridgeTimeInt+ironPlusTimeInt;
+                            Log.d(TAG+123, "=== endTimeInt ===" +endTimeInt);
+
+                            startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
+
+                        }catch (Exception e){
+                            Log.e(TAG+123, "=== startAndAllTimeTxt ===" +e);
+                        }
+
+                        // 3. 서비스 상태 보여주기
+                        try{
+                            if(serviceState.contains("매칭 대기 중")){
+
+                                stateTxt.setText("매칭 대기 중입니다.");
+                                serviceDeleteBtn.setText("예약 취소하기");
+                                Log.d(TAG, "=== 결제 후, 영수증 보여주기 ===" );
+
+                            }else if(serviceState.contains("예약 취소")){
+
+                                stateTxt.setText("취소된 예약입니다.");
+                                serviceDeleteBtn.setVisibility(View.GONE);
+                                Log.d(TAG, "=== 취소 후, 영수증 보여주기 ===" );
+
+                            }else if(serviceState.contains("매칭 완료")){
+
+                                int whiteColcor = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                                stateTxt.setTextColor(whiteColcor);
+
+                                stateTxt.setText(managerName.substring(0, 3) + " 매니저 님");
+                                stateTxt.setBackgroundResource(R.drawable.bordercircle602);
+
+                                stateTxt.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Log.d(TAG, "=== stateTxt 클릭 ===" );
+                                    }
+                                });
+
+                                serviceDeleteBtn.setText("예약 취소하기");
+                                Log.d(TAG, "=== 결제 후, 영수증 보여주기 + 매니저에 대한 정보 보여줘야 함. ===" );
+
+                                // TODO: 2020-12-18 청소 중, 청소 후 상태 변경 해야 함.. 
+                            }else if(serviceState.contains("청소 중")){
+
+                                stateTxt.setText("청소 중입니다.");
+                                serviceDeleteBtn.setVisibility(View.GONE);
+
+                            }else if(serviceState.contains("청소 완료")){
+
+                                stateTxt.setText("완료된 청소입니다.");
+                                serviceDeleteBtn.setVisibility(View.GONE);
+
+                            }
+                        }catch (Exception e){
+                            Log.e(TAG, "=== serviceState 널인 경우, 에러코드 ===" +e);
+                        }
+
+                        // 4. 집 상세정보 보여주기
+                        // 내가 보는 경우에는, 장소 이름, 자세히 보기 가능. 그리고 변경하기 텍스트뷰도 보임. 물론, 서비스 이후에는 텍스트 뷰 보이면 안 됨.
+                        placeNameTxt.setText(myplaceDTO_placeName);
+
+                        try{
+                            addressSizeTxt.setText(myplaceDTO_address.substring(8,14)+"("+myplaceDTO_sizeStr+")");
+                        }catch (Exception e){
+                            Log.e(TAG, "=== myplaceDTO_address myplaceDTO_sizeStr 널인 경우 에러코드 ===" +e);
+                        }
+
+
+
+                        // 5. 집중 청소 구역 보여주기
+
+                        if(servicefocusedhashMap!= null){
+                            if(servicefocusedhashMap.contains("livingRoomBtn=true")){
+                                resultFocusedStr = "거실";
+                            }
+
+                            if(servicefocusedhashMap.contains("roomBtn=true")){
+                                if(resultFocusedStr.isEmpty()){
+                                    resultFocusedStr="방";
+                                }else{
+                                    resultFocusedStr= resultFocusedStr+" 방";
+                                }
+
+                            }
+
+                            if(servicefocusedhashMap.contains("bathRoomBtn=true")){
+                                if(resultFocusedStr.isEmpty()){
+                                    resultFocusedStr="화장실";
+                                }else{
+                                    resultFocusedStr= resultFocusedStr+" 화장실";
+                                }
+
+                            }
+
+                            if(servicefocusedhashMap.contains("kitchenBtn=true")){
+                                if(resultFocusedStr.isEmpty()){
+                                    resultFocusedStr="부엌";
+                                }else{
+                                    resultFocusedStr= resultFocusedStr+" 부엌";
+                                }
+                            }
+                            resultFocusedStr = resultFocusedStr+" 집중적으로 청소해주세요.";
+                        }
+
+                        focusTxt.setText(resultFocusedStr);
+
+                        // 6. 무료 추가 선택 보여주기
+
+                        if(laundryBool!= null){
+                            if(laundryBool.contains("true")){
+                                laundryBool="세탁 추가";
+                                freePlusTxt.setText(laundryBool);
+                            }else{
+                                freePlusTxt.setText("무료 추가 없음");
+                            }
+                        }else{
+                            freePlusTxt.setText("무료 추가 없음");
+                        }
+
+
+                        // 7. 쓰레기 배출 선택 보여주기
+                        if(garbagerecycleBool.contains("true")){
+                            resultGarbageStr = "재활용";
+                        }
+
+                        if(garbagenormalBool.contains("true")){
+                            if(resultFocusedStr.isEmpty()){
+                                resultGarbageStr="일반 쓰레기";
+                            }
+                            resultGarbageStr= resultGarbageStr+" 일반 쓰레기";
+                        }
+
+                        if(garbagefoodBool.contains("true")){
+                            if(resultFocusedStr.isEmpty()){
+                                resultGarbageStr="음식물 쓰레기";
+                            }
+                            resultGarbageStr= resultGarbageStr+" 음식물 쓰레기";
+                        }
+
+                        if(resultGarbageStr!= null){
+                            if(resultGarbageStr.isEmpty()){
+
+                            }else{
+                                garbageTxt.setText(resultGarbageStr+" 버려주세요.");
+                            }
+                        }else{
+                            garbageTxt.setText("선택 안 함");
+                        }
+
+                        // 8. 유료 선택 보여주기
+                        if(serviceplus.contains("다림질=true")){
+                            resultPlusStr = "다림질";
+                            ironCostInt = 6600;
+                        }
+                        if(serviceplus.contains("냉장고=true")){
+                            resultPlusStr = "냉장고";
+                            fridgeCostInt = 26400;
+                        }
+                        if(serviceplus.contains("다림질=true")&&serviceplus.contains("냉장고=true")){
+                            resultPlusStr="다림질 / 냉장고 청소 추가";
+                        }
+
+                        if(resultPlusStr.isEmpty()){
+                            plusTxt.setText("유료 추가 없음");
+                        }else{
+                            plusTxt.setText(resultPlusStr+"( +"+formatter.format(ironCostInt+fridgeCostInt)+" 원)");
+                        }
+
+                        // 9. 입실 후, 주의사항 보여주기
+                        if(serviceCaution.isEmpty()){
+                            cautionTxt.setText("작성하신 주의사항이 없습니다.");
+                        }else{
+                            cautionTxt.setText(serviceCaution);
+                        }
+
+                        priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost))+" 원");
+
+                        if(ironCostInt==6600){
+                            priceIronNumTxt.setText(formatter.format(ironCostInt)+" 원");
+                            priceIronLayout.setVisibility(View.VISIBLE);
+                        }
+                        if(fridgeCostInt==26400){
+                            pricefridgeNumTxt.setText(formatter.format(fridgeCostInt)+" 원");
+                            pricefridgeLayout.setVisibility(View.VISIBLE);
+                        }
+                        priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
+                        priceResutNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt)+" 원");
+
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "=== response === 에러코드 : " +e);
+                    Log.e(TAG, "=== response 받아올 때, === 에러코드 : " +e);
                 }
             }
         };
-        ServiceSelectRequest serviceSelectRequest = new ServiceSelectRequest(String.valueOf(serviceWaitingUidInt), "매칭 대기 중" ,"고객",responseListener);
+        ServiceSelectRequest serviceSelectRequest = new ServiceSelectRequest(String.valueOf(serviceWaitingUidInt), "서비스본인열람" ,"고객",responseListener);
         RequestQueue queue = Volley.newRequestQueue( Service_DetailActivity.this );
         queue.add( serviceSelectRequest );
 
-//        datedayTxt = findViewById(R.id.datedayTxt);
-//        startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
-//        stateTxt = findViewById(R.id.stateTxt);
-//
-//        placeNameTxt = findViewById(R.id.placeNameTxt);
-//        addressSizeTxt = findViewById(R.id.addressSizeTxt);
-//
-//        editPossTxt = findViewById(R.id.editPossTxt);
-//        focusTxt = findViewById(R.id.focusTxt);
-//        freePlusTxt = findViewById(R.id.freePlusTxt);
-//        garbageTxt = findViewById(R.id.garbageTxt);
-//        plusTxt = findViewById(R.id.plusTxt);
-//
-//        cautionTxt = findViewById(R.id.cautionTxt);
 
+        /* 서비스 예약 취소 가이드 안내 다이얼로그 생성 */
+        serviceDeleteGuideTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "=== serviceDeleteGuideTxt 결제 취소 가이드 클릭 시, 생성하는 다이얼로그 ===" );
 
-//        // 1. 날짜 요일 보여주기
-//        datedayTxt.setText(visitDate="("+visitDay+") 예약");
-//
-//        // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
-//        //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
-//        try{
-//            Log.e(TAG, "=== serviceplus ===" +serviceplus);
-//            if(serviceplus.contains("냉장고=true")){
-//                resultNeedTimeInt = Integer.parseInt(needDefTime) + 120;
-//                resultNeedTimeInt = needDefTimeInt;
-//            }
-//            if(serviceplus.contains("다림질=true")){
-//                resultNeedTimeInt = Integer.parseInt(needDefTime) + 30;
-//            }
-//        }catch (Exception e){
-//            Log.e(TAG, "=== serviceplus널인 경우 ===" +e);
-//
-//        }
-//
-//        try{
-//            startAndAllTimeTxt.setText(timeIntToHourMin(Integer.parseInt(startTime))+"~"+
-//                    timeIntToHourMin(Integer.parseInt(startTime)+resultNeedTimeInt)+"("+timeIntToHourMin2(resultNeedTimeInt)+")");
-//
-//        }catch (Exception e){
-//
-//        }
-//
-//        // 3. 서비스 상태 보여주기
-//        try{
-//            if(serviceState.contains("매칭 대기 중")){
-//                stateTxt.setText("매칭 대기 중입니다.");
-//            }
-//        }catch (Exception e){
-//            Log.e(TAG, "=== serviceState 널인 경우, 에러코드 ===" +e);
-//        }
-//
-//        // 4. 집 상세정보 보여주기
-//        // 내가 보는 경우에는, 장소 이름, 자세히 보기 가능. 그리고 변경하기 텍스트뷰도 보임. 물론, 서비스 이후에는 텍스트 뷰 보이면 안 됨.
-//        placeNameTxt.setText(myplaceDTO_placeName);
-//
-//        try{
-//            addressSizeTxt.setText(myplaceDTO_address.substring(8,14)+"("+myplaceDTO_sizeStr+")");
-//        }catch (Exception e){
-//            Log.e(TAG, "=== myplaceDTO_address myplaceDTO_sizeStr 널인 경우 에러코드 ===" +e);
-//        }
-//
-//        editPossTxt.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Log.d(TAG, "=== editPossTxt 클릭 : === ");
-//
-//                //있으면 넘어감
-//                Intent intent = new Intent(getApplicationContext(), MyPlace_EditActivity.class);
-//
-//                intent.putExtra("myplaceDTO_address", myplaceDTO_address);
-//                intent.putExtra("myplaceDTO_sizeStr", myplaceDTO_sizeStr);
-//                intent.putExtra("currentUser", GlobalApplication.currentUser);
-//
-//                startActivity(intent);
-//
-//            }
-//
-//        });
-//
-//        // 5. 집중 청소 구역 보여주기
-//
-//        if(servicefocusedhashMap!= null){
-//            if(servicefocusedhashMap.contains("livingRoomBtn=true")){
-//                resultFocusedStr = "거실";
-//            }
-//
-//            if(servicefocusedhashMap.contains("roomBtn=true")){
-//                if(resultFocusedStr.isEmpty()){
-//                    resultFocusedStr="방";
-//                }
-//                resultFocusedStr= resultFocusedStr+" 방";
-//            }
-//
-//            if(servicefocusedhashMap.contains("bathRoomBtn=true")){
-//                if(resultFocusedStr.isEmpty()){
-//                    resultFocusedStr="화장실";
-//                }
-//                resultFocusedStr= resultFocusedStr+" 화장실";
-//            }
-//
-//            if(servicefocusedhashMap.contains("kitchenBtn=true")){
-//                if(resultFocusedStr.isEmpty()){
-//                    resultFocusedStr="부엌";
-//                }
-//                resultFocusedStr= resultFocusedStr+" 부엌";
-//            }
-//            resultFocusedStr = resultFocusedStr+" 집중적으로 청소해주세요.";
-//        }
-//
-//        focusTxt.setText(resultFocusedStr);
-//
-//        // 6. 무료 추가 선택 보여주기
-//
-//        if(laundryBool!= null){
-//            if(laundryBool.contains("true")){
-//                laundryBool="세탁 추가";
-//                freePlusTxt.setText(laundryBool);
-//            }else{
-//                freePlusTxt.setText("무료 추가 없음");
-//            }
-//        }else{
-//            freePlusTxt.setText("무료 추가 없음");
-//        }
-//
-//
-//        // 7. 쓰레기 배출 선택 보여주기
-//        if(garbagerecycleBool.contains("true")){
-//            resultGarbageStr = "재활용";
-//        }
-//
-//        if(garbagenormalBool.contains("true")){
-//            if(resultFocusedStr.isEmpty()){
-//                resultGarbageStr="일반 쓰레기";
-//            }
-//            resultGarbageStr= resultGarbageStr+" 일반 쓰레기";
-//        }
-//
-//        if(garbagefoodBool.contains("true")){
-//            if(resultFocusedStr.isEmpty()){
-//                resultGarbageStr="음식물 쓰레기";
-//            }
-//            resultGarbageStr= resultGarbageStr+" 음식물 쓰레기";
-//        }
-//
-//        if(resultGarbageStr!= null){
-//            if(resultGarbageStr.isEmpty()){
-//
-//            }else{
-//                garbageTxt.setText(resultGarbageStr+" 버려주세요.");
-//            }
-//        }else{
-//            garbageTxt.setText("선택 안 함");
-//        }
-//
-//        // 8. 유료 선택 보여주기
-//        if(serviceplus.contains("다림질=true")){
-//            resultPlusStr = "다림질";
-//            ironCostInt = 6600;
-//        }
-//        if(serviceplus.contains("냉장고=true")){
-//            fridgeCostInt = 26400;
-//            if(resultPlusStr.isEmpty()){
-//                resultPlusStr= resultPlusStr+" 냉장고 청소";
-//            }
-//        }
-//        if(resultPlusStr.isEmpty()){
-//            plusTxt.setText("유료 추가 없음");
-//        }else{
-//            plusTxt.setText(resultPlusStr+"( +"+formatter.format(ironCostInt+fridgeCostInt)+" 원)");
-//        }
-//
-//        // 9. 입실 후, 주의사항 보여주기
-//        if(serviceCaution.isEmpty()){
-//            cautionTxt.setText("작성하신 주의사항이 없습니다.");
-//        }else{
-//            cautionTxt.setText(serviceCaution);
-//        }
-//
-//        // 10. 결제 예정 내역 보여주기
-//        // 다른 경우, 이름 바꿔야 함.
-//        priceDefLayout = findViewById(R.id.priceDefLayout);
-//        priceIronLayout = findViewById(R.id.priceIronLayout);
-//        pricefridgeLayout = findViewById(R.id.pricefridgeLayout);
-//        priceResultLayout = findViewById(R.id.priceResultLayout);
-//
-//        // 선택한 장소의 평 수에 따라서 책정한 기본 가격 세팅
-//        priceDefNumTxt = findViewById(R.id.priceDefNumTxt);
-//        priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost))+" 원");
-//
-//        // 선택한 장소의 유료 선택지에 따라서 레이아웃 보이게 함.
-//        // 기본 가격
-//        priceIronNumTxt = findViewById(R.id.priceIronNumTxt);
-//        pricefridgeNumTxt = findViewById(R.id.pricefridgeNumTxt);
-//
-//        if(ironCostInt==6600){
-//            priceIronNumTxt.setText(formatter.format(ironCostInt)+" 원");
-//            priceIronLayout.setVisibility(View.VISIBLE);
-//        }
-//        if(fridgeCostInt==26400){
-//            pricefridgeNumTxt.setText(formatter.format(fridgeCostInt)+" 원");
-//            pricefridgeLayout.setVisibility(View.VISIBLE);
-//        }
-//        priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
-//        priceResutNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt)+" 원");
-//
+                AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
+                builder.setMessage("[취소 수수료 정책]" +
+                        "\n\n- 청소 1일 전 오후 18시 이후 : 이용 금액의 30%" +
+                        "\n\n- 청소 당일 시작 전 : 이용금액의 30%" +
+                        "\n\n- 업무가 시작된 이후 : 이용금액의 100%");
+                builder.setPositiveButton("확인했습니다.",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "=== 확인 클릭  ===" );
+                            }
+                        });
+
+                builder.show();
+
+            }
+        });
 
 
 
-        Btn = (Button) findViewById(R.id.Btn);
-        Btn.setOnClickListener(new View.OnClickListener() {
+
+        /* 서비스 예약 취소하는 코드임 */
+        serviceDeleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Log.d(TAG, "=== Btn 클릭 : === ");
+                Log.e(TAG, "=== serviceDeleteBtn 클릭. 예약 취소 버튼 누름 ===" );
 
-                    if(Btn.getText().toString().equals("예약 취소하기")&&serviceState.contains("매칭 대기 중")){
-                        Log.d(TAG, "=== 매칭 대기 중 상태에서 예약 취소하기 ===" );
+                AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
+                builder.setMessage("예약 취소 하시겠습니까?");
+                builder.setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "=== 확인 클릭  ===" );
 
+                                //UserManagement API 요청을 담당
+                                UserManagement.getInstance()
+                                        //requestLogout : 로그아웃 요청
+                                        //파라미터 : logout 요청 결과에 대한 callback
+                                        .requestLogout(new LogoutResponseCallback() {
+                                            @Override
+                                            public void onCompleteLogout() {
+                                                Log.d(TAG, "=== onCompleteLogout : 예약 취소 되었습니다. ===");
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
-                        builder.setMessage("예약 취소 하시겠습니까?");
-                        builder.setPositiveButton("확인",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Log.d(TAG, "=== 확인 클릭  ===" );
-
-                                        //UserManagement API 요청을 담당
-                                        UserManagement.getInstance()
-                                                //requestLogout : 로그아웃 요청
-                                                //파라미터 : logout 요청 결과에 대한 callback
-                                                .requestLogout(new LogoutResponseCallback() {
+                                                /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
+                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
                                                     @Override
-                                                    public void onCompleteLogout() {
-                                                        Log.d(TAG, "=== onCompleteLogout : 예약 취소 되었습니다. ===");
-
-                                                        /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
-                                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                            @Override
-                                                            public void onResponse(String response) {
-                                                                Log.e(TAG, "=== response ===" +response);
-                                                                try {
-                                                                    JSONArray jsonArray = new JSONArray(response);
-                                                                    Log.e(TAG, "=== 유효한 uid인 경우, jsonArray 값이 있음 ===" );
-                                                                    if(jsonArray.length()>0){
-
-                                                                        for(int i = 0 ; i<jsonArray.length(); i++){
-
-                                                                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-
-                                                                            currentUser = jsonObject.getString( "currentUser" );
-                                                                            serviceState = jsonObject.getString( "serviceState" );
-
-                                                                            myplaceDTO_placeName = jsonObject.getString( "myplaceDTO_placeName" );
-                                                                            myplaceDTO_address = jsonObject.getString( "myplaceDTO_address" );
-                                                                            myplaceDTO_detailAddress = jsonObject.getString( "myplaceDTO_detailAddress" );
-                                                                            myplaceDTO_sizeStr = jsonObject.getString( "myplaceDTO_sizeStr" );
-
-                                                                            managerName = jsonObject.getString( "managerName" );
-                                                                            regularBool = jsonObject.getString( "regularBool" );
-                                                                            visitDate = jsonObject.getString( "visitDate" );
-                                                                            visitDay = jsonObject.getString( "visitDay" );
-
-                                                                            startTime = jsonObject.getString( "startTime" );
-                                                                            needDefTime = jsonObject.getString( "needDefTime" );
-                                                                            needDefCost = jsonObject.getString( "needDefCost" );
-
-                                                                            servicefocusedhashMap = jsonObject.getString( "servicefocusedhashMap" );
-                                                                            laundryBool = jsonObject.getString( "laundryBool" );
-                                                                            laundryCaution = jsonObject.getString( "laundryCaution" );
-
-                                                                            garbagerecycleBool = jsonObject.getString( "garbagerecycleBool" );
-                                                                            garbagenormalBool = jsonObject.getString( "garbagenormalBool" );
-                                                                            garbagefoodBool = jsonObject.getString( "garbagefoodBool" );
-
-                                                                            garbagehowto = jsonObject.getString( "garbagehowto" );
-                                                                            serviceplus = jsonObject.getString( "serviceplus" );
-                                                                            serviceCaution = jsonObject.getString( "serviceCaution" );
-
-                                                                            Log.e(TAG, "=== currentUser ===" +currentUser);
-                                                                            Log.e(TAG, "=== serviceState ===" +serviceState);
-
-                                                                            Log.e(TAG, "=== myplaceDTO_address ===" +myplaceDTO_address);
-                                                                            Log.e(TAG, "=== myplaceDTO_detailAddress ===" +myplaceDTO_detailAddress);
-                                                                            Log.e(TAG, "=== myplaceDTO_sizeStr ===" +myplaceDTO_sizeStr);
-
-                                                                            Log.e(TAG, "=== managerName ===" +managerName);
-                                                                            Log.e(TAG, "=== regularBool ===" +regularBool);
-                                                                            Log.e(TAG, "=== visitDate ===" +visitDate);
-                                                                            Log.e(TAG, "=== visitDay ===" +visitDay);
-
-                                                                            Log.e(TAG, "=== startTime ===" +startTime);
-                                                                            Log.e(TAG, "=== needDefTime ===" +needDefTime);
-                                                                            Log.e(TAG, "=== needDefCost ===" +needDefCost);
-
-                                                                            Log.e(TAG, "=== servicefocusedhashMap ===" +servicefocusedhashMap);
-                                                                            Log.e(TAG, "=== laundryBool ===" +laundryBool);
-                                                                            Log.e(TAG, "=== laundryCaution ===" +laundryCaution);
-
-                                                                            Log.e(TAG, "=== garbagerecycleBool ===" +garbagerecycleBool);
-                                                                            Log.e(TAG, "=== garbagenormalBool ===" +garbagenormalBool);
-                                                                            Log.e(TAG, "=== garbagefoodBool ===" +garbagefoodBool);
-
-                                                                            Log.e(TAG, "=== garbagehowto ===" +garbagehowto);
-                                                                            Log.e(TAG, "=== serviceplus ===" +serviceplus);
-                                                                            Log.e(TAG, "=== serviceCaution ===" +serviceCaution);
-
-                                                                            datedayTxt = findViewById(R.id.datedayTxt);
-                                                                            startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
-                                                                            stateTxt = findViewById(R.id.stateTxt);
-
-                                                                            placeNameTxt = findViewById(R.id.placeNameTxt);
-                                                                            addressSizeTxt = findViewById(R.id.addressSizeTxt);
-
-                                                                            editPossTxt = findViewById(R.id.editPossTxt);
-                                                                            focusTxt = findViewById(R.id.focusTxt);
-                                                                            freePlusTxt = findViewById(R.id.freePlusTxt);
-                                                                            garbageTxt = findViewById(R.id.garbageTxt);
-                                                                            plusTxt = findViewById(R.id.plusTxt);
-
-                                                                            cautionTxt = findViewById(R.id.cautionTxt);
-
-                                                                            // 1. 날짜 요일 보여주기
-                                                                            datedayTxt.setText(visitDate+"("+visitDay+") 예약");
-
-                                                                            // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
-                                                                            //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
-                                                                            try{
-                                                                                Log.e(TAG+123, "=== serviceplus ===" +serviceplus);
-                                                                                if(serviceplus.contains("냉장고=true")){
-                                                                                    refridgeTimeInt=120;
-                                                                                    Log.d(TAG, "=== refridgeTimeInt ===" +refridgeTimeInt);
-                                                                                }
-                                                                                if(serviceplus.contains("다림질=true")){
-                                                                                    ironPlusTimeInt=30;
-                                                                                    Log.d(TAG+123, "=== ironPlusTimeInt ===" +ironPlusTimeInt);
-                                                                                }
-
-                                                                                defaultTimeInt= Integer.parseInt(needDefTime);
-                                                                                Log.d(TAG+123, "=== defaultTimeInt ===" +defaultTimeInt);
-
-                                                                                startTimeInt= Integer.parseInt(startTime);
-                                                                                Log.d(TAG+123, "=== startTimeInt ===" +startTimeInt);
-
-                                                                                resultNeedTimeInt =Integer.parseInt(needDefTime);
-                                                                                Log.d(TAG+123, "=== resultNeedTimeInt ===" +resultNeedTimeInt);
-
-                                                                                endTimeInt=startTimeInt+defaultTimeInt+refridgeTimeInt+ironPlusTimeInt;
-                                                                                Log.d(TAG+123, "=== endTimeInt ===" +endTimeInt);
-
-                                                                                startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
-
-                                                                            }catch (Exception e){
-                                                                                Log.e(TAG+123, "=== startAndAllTimeTxt ===" +e);
-                                                                            }
-
-                                                                            // 3. 서비스 상태 보여주기
-                                                                            Btn = findViewById(R.id.Btn);
-                                                                            try{
-                                                                                if(serviceState.contains("매칭 대기 중")){
-                                                                                    stateTxt.setText("매칭 대기 중입니다.");
-                                                                                    Btn.setText("예약 취소하기");
-                                                                                }else if(serviceState.contains("예약 취소1")){
-                                                                                    stateTxt.setText("취소된 예약입니다.");
-                                                                                    Btn.setVisibility(View.GONE);
-                                                                                }else if(serviceState.contains("매칭 완료")){
-                                                                                    stateTxt.setText("취소된 예약입니다.");
-                                                                                    Btn.setText("예약 취소하기");
-                                                                                }else if(serviceState.contains("예약 취소2")){
-                                                                                    stateTxt.setText("취소된 예약입니다.");
-                                                                                    Btn.setVisibility(View.GONE);
-                                                                                }else if(serviceState.contains("청소 중")){
-                                                                                    stateTxt.setText("청소 중입니다.");
-                                                                                    Btn.setVisibility(View.GONE);
-                                                                                }else if(serviceState.contains("청소 완료")){
-                                                                                    stateTxt.setText("완료된 청소입니다.");
-                                                                                    Btn.setVisibility(View.GONE);
-                                                                                }
-                                                                            }catch (Exception e){
-                                                                                Log.e(TAG, "=== serviceState 널인 경우, 에러코드 ===" +e);
-                                                                            }
-
-                                                                            // 4. 집 상세정보 보여주기
-                                                                            // 내가 보는 경우에는, 장소 이름, 자세히 보기 가능. 그리고 변경하기 텍스트뷰도 보임. 물론, 서비스 이후에는 텍스트 뷰 보이면 안 됨.
-                                                                            placeNameTxt.setText(myplaceDTO_placeName);
-
-                                                                            try{
-                                                                                addressSizeTxt.setText(myplaceDTO_address.substring(8,14)+"("+myplaceDTO_sizeStr+")");
-                                                                            }catch (Exception e){
-                                                                                Log.e(TAG, "=== myplaceDTO_address myplaceDTO_sizeStr 널인 경우 에러코드 ===" +e);
-                                                                            }
-
-                                                                            // TODO: 2020-11-28 장소 정보변경 불가능함
-                                                                            editPossTxt.setVisibility(View.GONE);
-
-                                                                            // 5. 집중 청소 구역 보여주기
-
-                                                                            if(servicefocusedhashMap!= null){
-                                                                                if(servicefocusedhashMap.contains("livingRoomBtn=true")){
-                                                                                    resultFocusedStr = "거실";
-                                                                                }
-
-                                                                                if(servicefocusedhashMap.contains("roomBtn=true")){
-                                                                                    if(resultFocusedStr.isEmpty()){
-                                                                                        resultFocusedStr="방";
-                                                                                    }else{
-                                                                                        resultFocusedStr= resultFocusedStr+" 방";
-                                                                                    }
-
-                                                                                }
-
-                                                                                if(servicefocusedhashMap.contains("bathRoomBtn=true")){
-                                                                                    if(resultFocusedStr.isEmpty()){
-                                                                                        resultFocusedStr="화장실";
-                                                                                    }else{
-                                                                                        resultFocusedStr= resultFocusedStr+" 화장실";
-                                                                                    }
-
-                                                                                }
-
-                                                                                if(servicefocusedhashMap.contains("kitchenBtn=true")){
-                                                                                    if(resultFocusedStr.isEmpty()){
-                                                                                        resultFocusedStr="부엌";
-                                                                                    }else{
-                                                                                        resultFocusedStr= resultFocusedStr+" 부엌";
-                                                                                    }
-                                                                                }
-                                                                                resultFocusedStr = resultFocusedStr+" 집중적으로 청소해주세요.";
-                                                                            }
-
-                                                                            focusTxt.setText(resultFocusedStr);
-
-                                                                            // 6. 무료 추가 선택 보여주기
-
-                                                                            if(laundryBool!= null){
-                                                                                if(laundryBool.contains("true")){
-                                                                                    laundryBool="세탁 추가";
-                                                                                    freePlusTxt.setText(laundryBool);
-                                                                                }else{
-                                                                                    freePlusTxt.setText("무료 추가 없음");
-                                                                                }
-                                                                            }else{
-                                                                                freePlusTxt.setText("무료 추가 없음");
-                                                                            }
-
-
-                                                                            // 7. 쓰레기 배출 선택 보여주기
-                                                                            if(garbagerecycleBool.contains("true")){
-                                                                                resultGarbageStr = "재활용";
-                                                                            }
-
-                                                                            if(garbagenormalBool.contains("true")){
-                                                                                if(resultFocusedStr.isEmpty()){
-                                                                                    resultGarbageStr="일반 쓰레기";
-                                                                                }
-                                                                                resultGarbageStr= resultGarbageStr+" 일반 쓰레기";
-                                                                            }
-
-                                                                            if(garbagefoodBool.contains("true")){
-                                                                                if(resultFocusedStr.isEmpty()){
-                                                                                    resultGarbageStr="음식물 쓰레기";
-                                                                                }
-                                                                                resultGarbageStr= resultGarbageStr+" 음식물 쓰레기";
-                                                                            }
-
-                                                                            if(resultGarbageStr!= null){
-                                                                                if(resultGarbageStr.isEmpty()){
-
-                                                                                }else{
-                                                                                    garbageTxt.setText(resultGarbageStr+" 버려주세요.");
-                                                                                }
-                                                                            }else{
-                                                                                garbageTxt.setText("선택 안 함");
-                                                                            }
-
-                                                                            // 8. 유료 선택 보여주기
-                                                                            if(serviceplus.contains("다림질=true")){
-                                                                                resultPlusStr = "다림질";
-                                                                                ironCostInt = 6600;
-                                                                            }
-                                                                            if(serviceplus.contains("냉장고=true")){
-                                                                                resultPlusStr = "냉장고";
-                                                                                fridgeCostInt = 26400;
-                                                                            }
-                                                                            if(serviceplus.contains("다림질=true")&&serviceplus.contains("냉장고=true")){
-                                                                                resultPlusStr="다림질 / 냉장고 청소 추가";
-                                                                            }
-
-                                                                            if(resultPlusStr.isEmpty()){
-                                                                                plusTxt.setText("유료 추가 없음");
-                                                                            }else{
-                                                                                plusTxt.setText(resultPlusStr+"( +"+formatter.format(ironCostInt+fridgeCostInt)+" 원)");
-                                                                            }
-
-                                                                            // 9. 입실 후, 주의사항 보여주기
-                                                                            if(serviceCaution.isEmpty()){
-                                                                                cautionTxt.setText("작성하신 주의사항이 없습니다.");
-                                                                            }else{
-                                                                                cautionTxt.setText(serviceCaution);
-                                                                            }
-
-                                                                            // 10. 결제 예정 내역 보여주기
-                                                                            // 다른 경우, 이름 바꿔야 함.
-                                                                            priceDefLayout = findViewById(R.id.priceDefLayout);
-                                                                            priceIronLayout = findViewById(R.id.priceIronLayout);
-                                                                            pricefridgeLayout = findViewById(R.id.pricefridgeLayout);
-                                                                            priceResultLayout = findViewById(R.id.priceResultLayout);
-
-                                                                            // 선택한 장소의 평 수에 따라서 책정한 기본 가격 세팅
-                                                                            priceDefNumTxt = findViewById(R.id.priceDefNumTxt);
-                                                                            priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost))+" 원");
-
-                                                                            // 선택한 장소의 유료 선택지에 따라서 레이아웃 보이게 함.
-                                                                            // 기본 가격
-                                                                            priceIronNumTxt = findViewById(R.id.priceIronNumTxt);
-                                                                            pricefridgeNumTxt = findViewById(R.id.pricefridgeNumTxt);
-
-                                                                            if(ironCostInt==6600){
-                                                                                priceIronNumTxt.setText(formatter.format(ironCostInt)+" 원");
-                                                                                priceIronLayout.setVisibility(View.VISIBLE);
-                                                                            }
-                                                                            if(fridgeCostInt==26400){
-                                                                                pricefridgeNumTxt.setText(formatter.format(fridgeCostInt)+" 원");
-                                                                                pricefridgeLayout.setVisibility(View.VISIBLE);
-                                                                            }
-                                                                            priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
-                                                                            priceResutNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt)+" 원");
-
-
-
-                                                                        }
-
-                                                                    }else{
-                                                                        Log.e(TAG, "=== 유효한 uid인 경우, jsonArray 값이 없음===" );
-                                                                        Toast.makeText( getApplicationContext(), "예약 내용을 다시 확인해주세요.", Toast.LENGTH_SHORT ).show();
-                                                                        finish();
-                                                                    }
-
-                                                                } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                    Log.e(TAG, "=== response === 에러코드 : " +e);
-                                                                }
-                                                            }
-                                                        };
-                                                        ServiceSelectRequest serviceSelectRequest = new ServiceSelectRequest(String.valueOf(serviceWaitingUidInt), "예약 취소1" ,"고객",responseListener);
-                                                        RequestQueue queue = Volley.newRequestQueue( Service_DetailActivity.this );
-                                                        queue.add( serviceSelectRequest );
-
+                                                    public void onResponse(String response) {
+                                                        Log.e(TAG, "=== response ===" + response);
 
                                                     }
-                                                });
-                                    }
-                                });
-                        builder.setNegativeButton("취소",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Log.d(TAG, "=== 취소 클릭 ===" );
-                                    }
-                                });
-                        builder.show();
+                                                };
+                                                ServiceSelectRequest serviceSelectRequest = new ServiceSelectRequest(String.valueOf(serviceWaitingUidInt), "예약취소" ,"고객",responseListener);
+                                                RequestQueue queue = Volley.newRequestQueue( Service_DetailActivity.this );
+                                                queue.add( serviceSelectRequest );
 
 
-                    }else if(Btn.getText().toString().equals("예약 취소하기")&&serviceState.contains("매칭 완료")){
-                        Log.d(TAG, "=== 매칭 완료 상태에서 예약 취소하기 ===" );
+                                            }
+                                        });
+                            }
+                        });
+                builder.setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "=== 취소 클릭 ===" );
+                            }
+                        });
+                builder.show();
 
 
-                    }
-
-                    }
+            }
             });
 
 
 
+        editPossTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "=== editPossTxt 클릭 : === ");
+
+                //있으면 넘어감
+                Intent intent = new Intent(getApplicationContext(), MyPlace_EditActivity.class);
+
+                intent.putExtra("myplaceDTO_address", myplaceDTO_address);
+                intent.putExtra("myplaceDTO_sizeStr", myplaceDTO_sizeStr);
+                intent.putExtra("currentUser", GlobalApplication.currentUser);
+
+                startActivity(intent);
+
+            }
+
+        });
     }
 
     //int 형태의 정수를 "3시 30분" String으로 나타내는 메서드

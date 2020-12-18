@@ -679,14 +679,12 @@ public class Manager_ProfileActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         Log.e(TAG, "=== onResume ===" );
 
     }
-
 
     /* 갤러리에서 받아온 이미지 보여주기 */
     private void showFileChooser() {

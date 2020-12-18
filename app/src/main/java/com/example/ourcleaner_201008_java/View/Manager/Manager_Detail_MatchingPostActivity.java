@@ -23,17 +23,24 @@ import com.example.ourcleaner_201008_java.Server.ServiceSelectRequest;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
 import com.example.ourcleaner_201008_java.View.MyPlace_EditActivity;
 import com.example.ourcleaner_201008_java.View.Service_DetailActivity;
+import com.google.gson.Gson;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import kr.co.bootpay.javaApache.BootpayApi;
+import kr.co.bootpay.javaApache.model.request.Cancel;
+import kr.co.bootpay.javaApache.model.request.RemoteForm;
+import kr.co.bootpay.javaApache.model.request.SubscribeBilling;
 
 
 public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
@@ -53,7 +60,8 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
 
 //    int startTimeInt, needDefTimeInt, allTimeInt;
 
-    TextView datedayTxt, startAndAllTimeTxt, stateTxt, placeNameTxt, addressSizeTxt, editPossTxt, focusTxt, freePlusTxt, garbageTxt,
+    TextView datedayTxt, startAndAllTimeTxt, stateTxt, placeNameTxt,
+            addressSizeTxt, editPossTxt, focusTxt, freePlusTxt, garbageTxt,
             plusTxt, cautionTxt;
 
     LinearLayout receiptLayout, priceDefLayout, priceIronLayout, pricefridgeLayout, priceResultLayout;
@@ -81,6 +89,21 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
 
         serviceWaitingUidInt = intent.getIntExtra("uid", 0);
         Log.d(TAG, "매니저용 메인에서 인텐트 받음 intent : "+ serviceWaitingUidInt);
+
+        datedayTxt = findViewById(R.id.datedayTxt);
+        startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
+        stateTxt = findViewById(R.id.stateTxt);
+
+        placeNameTxt = findViewById(R.id.placeNameTxt);
+        addressSizeTxt = findViewById(R.id.addressSizeTxt);
+
+        editPossTxt = findViewById(R.id.editPossTxt);
+        focusTxt = findViewById(R.id.focusTxt);
+        freePlusTxt = findViewById(R.id.freePlusTxt);
+        garbageTxt = findViewById(R.id.garbageTxt);
+        plusTxt = findViewById(R.id.plusTxt);
+
+        cautionTxt = findViewById(R.id.cautionTxt);
 
 
 
@@ -155,20 +178,7 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
                             Log.e(TAG, "=== serviceplus ===" +serviceplus);
                             Log.e(TAG, "=== serviceCaution ===" +serviceCaution);
 
-                            datedayTxt = findViewById(R.id.datedayTxt);
-                            startAndAllTimeTxt = findViewById(R.id.startAndAllTimeTxt);
-                            stateTxt = findViewById(R.id.stateTxt);
 
-                            placeNameTxt = findViewById(R.id.placeNameTxt);
-                            addressSizeTxt = findViewById(R.id.addressSizeTxt);
-
-                            editPossTxt = findViewById(R.id.editPossTxt);
-                            focusTxt = findViewById(R.id.focusTxt);
-                            freePlusTxt = findViewById(R.id.freePlusTxt);
-                            garbageTxt = findViewById(R.id.garbageTxt);
-                            plusTxt = findViewById(R.id.plusTxt);
-
-                            cautionTxt = findViewById(R.id.cautionTxt);
 
                             // 1. 날짜 요일 보여주기
                             datedayTxt.setText(visitDate+"("+visitDay+") 예약");
@@ -423,67 +433,26 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onCompleteLogout() {
                                                     Log.e(TAG+"ddd", "=== onCompleteLogout : 해당 서비스를 수락 버튼 클릭함. 그다음은 요청내용 받아와야 함. ===");
+
+                                                    // TODO: 2020-12-17 자동 결제 구현해야 함...
                                                     /* 해당 서버 요청-응답에서 이루어져야 하는 일
                                                     1. rest api로 엑세스 토큰 받아오기
                                                     2. 해당 서비스 db의 빌링키로 자동 결제되어야 함.
                                                     3. 해당 서비스 db에서 서비스 상태 변경
                                                     4.  */
 
-                                                    Log.e(TAG+"ddd", "=== BootpayApi api ===" );
-                                                    BootpayApi api = new BootpayApi(
-                                                            "5fba1e488f075100207de721",
-                                                            "6hZhD2SuxKpuNWoIfYg3uCk+jyNQ4avv1GAspvVTK2I="
-                                                    );
-                                                    try {
-                                                        api.getAccessToken();
-                                                        Log.e(TAG+"ddd", "=== api.getAccessToken(); ===");
-                                                    } catch (Exception e) {
-                                                        e.printStackTrace();
-                                                        Log.e(TAG+"ddd", "=== 에러코드 ===" + e );
-                                                    }
-
-//                                                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-//                                                        @Override
-//                                                        public void onResponse(String response) {
-//                                                            Log.e(TAG+"123", "=== response ===" +response);
-//                                                            try {
-//                                                                JSONArray jsonArray = new JSONArray(response);
-//                                                                Log.e(TAG+"123", "=== 유효한 uid인 경우, jsonArray 값이 있음 ===" );
-//                                                                if(jsonArray.length()>0){
-//
-//                                                                    for(int i = 0 ; i<jsonArray.length(); i++){
-//
-//                                                                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//
-//                                                                        String status = jsonObject.getString( "status" );
-//                                                                        String code = jsonObject.getString( "code" );
-//                                                                        cardBilling_key = jsonObject.getString( "cardBilling_key" );
-//                                                                        Log.e(TAG+"123", "=== status ===" +status);
-//                                                                        Log.e(TAG+"123", "=== code ===" +code);
-//                                                                        Log.e(TAG+"123", "=== cardBilling_key ===" +cardBilling_key);
-//
-//
-//                                                                 }
-//
-//                                                                }else{
-//                                                                    Log.e(TAG+"123", "=== 유효한 uid인 경우, jsonArray 값이 없음===" );
-//                                                                    Toast.makeText( getApplicationContext(), "예약 내용을 다시 확인해주세요.", Toast.LENGTH_SHORT ).show();
-//                                                                    finish();
-//                                                                }
-//
-//                                                            } catch (JSONException e) {
-//                                                                e.printStackTrace();
-//                                                                Log.e(TAG+"123", "=== response === 에러코드 : " +e);
-//                                                            }
-//                                                        }
-//                                                    };
-//                                                    PaymentRequest paymentRequest = new PaymentRequest(String.valueOf(serviceWaitingUidInt),
-//                                                            "5fc1cdc68f07510042cfb81b", priceResutNumTxt.getText().toString(),responseListener);
-//
-//                                                    Log.e(TAG+"123", "=== GlobalApplication.currentManager ==="+GlobalApplication.currentManager );
-//                                                    RequestQueue queue = Volley.newRequestQueue( Manager_Detail_MatchingPostActivity.this );
-//                                                    queue.add( paymentRequest );
-
+//                                                    Log.e(TAG+"ddd", "=== BootpayApi api ===" );
+//                                                    BootpayApi api = new BootpayApi(
+//                                                            "5fba1e488f075100207de721",
+//                                                            "6hZhD2SuxKpuNWoIfYg3uCk+jyNQ4avv1GAspvVTK2I="
+//                                                    );
+//                                                    try {
+//                                                        api.getAccessToken();
+//                                                        Log.e(TAG+"ddd", "=== api.getAccessToken(); ===");
+//                                                    } catch (Exception e) {
+//                                                        e.printStackTrace();
+//                                                        Log.e(TAG+"ddd", "=== 에러코드 ===" + e );
+//                                                    }
 
                                                 }
                                             });
@@ -567,4 +536,5 @@ public class Manager_Detail_MatchingPostActivity extends AppCompatActivity {
 
         return plusTimeStr;
     }
+
 }

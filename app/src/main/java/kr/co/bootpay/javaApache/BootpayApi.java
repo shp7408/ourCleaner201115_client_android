@@ -1,6 +1,9 @@
 package kr.co.bootpay.javaApache;
 
+import android.os.AsyncTask;
 import android.util.Log;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 import com.google.gson.Gson;
 import kr.co.bootpay.javaApache.model.request.*;
@@ -101,6 +104,7 @@ public class BootpayApi {
 
         Log.d("dddddddddddd", "=== token.application_id ===" +token.application_id);
         Log.d("dddddddddddd", "=== token.private_key ===" +token.private_key);
+
 
 
 

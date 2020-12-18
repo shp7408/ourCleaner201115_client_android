@@ -78,7 +78,10 @@ public class Service2_InfoActivity extends AppCompatActivity {
         Log.d(TAG, "=== servicefocusedhashMap 클리어함 ===" );
         servicefocusedhashMap.clear();
 
-
+        servicefocusedhashMap.put("roomBtn",false);
+        servicefocusedhashMap.put("bathRoomBtn",false);
+        servicefocusedhashMap.put("livingRoomBtn",false);
+        servicefocusedhashMap.put("kitchenBtn",false);
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override

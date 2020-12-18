@@ -85,7 +85,7 @@ public class Service1_TimeActivity extends AppCompatActivity implements MyPlaceA
     // TODO: 2020-10-23 매니저 부분 더 고민해야 함. 매니저 등록하면서
     Button managerChoBtn;
     String managerChoStr="매니저미지정"; //매니저 선택 후, 스트링 담는 변수
-    String managerNameEmailStr;
+    String managerNameEmailStr="매니저미지정";
 
     //청소 주기 관련 변수
     LinearLayout regularTermLayout; //정기 예약시에만 보임

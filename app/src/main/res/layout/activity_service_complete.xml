@@ -213,7 +213,8 @@
                 android:layout_marginTop="5dp"
                 android:background="@drawable/bordergrey"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -440,12 +441,13 @@
                     android:textSize="15sp"
                     android:layout_gravity="center"
                     android:textColor="@color/black"
-                    android:text="매니저가 결정되면 결제가 진행됩니다."
+                    android:text="예약 완료 시, 결제가 진행됩니다."
                     android:layout_marginBottom="10dp"
                     />
 
 
                 <TextView
+                    android:id="@+id/cancelTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textStyle="bold"

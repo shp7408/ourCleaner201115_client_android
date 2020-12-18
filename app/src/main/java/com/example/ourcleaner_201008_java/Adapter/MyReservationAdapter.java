@@ -9,20 +9,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Response;
 import com.example.ourcleaner_201008_java.DTO.MyReservationDTO;
-import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
-import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.R;
-import com.example.ourcleaner_201008_java.View.Fragment.FragmentReservation;
-import com.example.ourcleaner_201008_java.View.MainActivity;
 
-import org.json.JSONArray;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import static com.example.ourcleaner_201008_java.R.drawable.background2;
+import static com.example.ourcleaner_201008_java.R.drawable.bordercircle603grey;
 
 public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdapter.Viewholder> {
 
@@ -67,14 +67,47 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
         Log.d(TAG, "=== 뷰에 데이터 넣기 onBindViewHolder ===");
         MyReservationDTO myReservationDTO = reservationDTOArrayList.get(position);
 
-        holder.reserveDateTxt.setText(myReservationDTO.getServiceDate());
-        holder.reserveStateTxt.setText(myReservationDTO.getServiceState());
-//        holder.reserveDetailTxt.setText(myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
-        holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
+        holder.reserveDateTxt.setText(myReservationDTO.getServiceDate()+" 예약");
+        Log.d(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceDate());
 
-        Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceDate());
-        Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
-        Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
+        if(myReservationDTO.getServiceState().equals("매칭 대기 중")) {
+            Log.e(TAG, "=== 매칭 대기 중 인 경우, 회색 배경으로 변경 ===" );
+            Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
+
+
+            holder.reserveStateTxt.setText(myReservationDTO.getServiceState());
+            holder.reserveStateTxt.setBackgroundResource(background2);
+
+            /* 글자 색 변경하는 코드 */
+            int blackColcor = ContextCompat.getColor(mContext, R.color.black);
+            holder.reserveStateTxt.setTextColor(blackColcor);
+
+            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
+
+        } else if(myReservationDTO.getServiceState().equals("매칭 완료")){
+            Log.e(TAG, "=== 매칭 완료인 경우, 검은색 배경 그대로 진행 서비스까지 남은 날짜 / 매니저 이름 보여주기 ===" );
+            Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
+
+
+            // TODO: 2020-12-18 시연 당일 날짜 확인해야 함!!
+//            holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
+//                    calDateBetweenAandB("12.19",myReservationDTO.getServiceDate().substring(0,5))+" )");
+            holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
+                    calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))+" )");
+
+
+            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
+        }
+
+
+
+
+//        holder.reserveDetailTxt.setText(myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
+
+
+
+
+        Log.d(TAG, "=== getServiceDate ===" +myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
@@ -107,6 +140,88 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
         return reservationDTOArrayList.size(); // 리사이클러 뷰의 전체 크기를 설정하는 부분
     }
 
+
+    /* 12.30 형태로 두 날짜 사이의 차이 구하는 메서드 // 에러 시, 0을 return*/
+    public long calDateBetweenAandB(String a, String b)
+    {
+        // TODO: 2020-12-18 시연할 때, 날짜 2021년 넘어가면 바꿔야 함...ㅎㅎ
+        //입력할 때, 12.15 이런 식임
+
+        String nowYear1 = "2020";
+        String month1 = a.substring(0,2); //12월
+        String date1 = a.substring(3); // 20일
+        Log.e(TAG, "=== month1 ===" +month1 );
+        Log.e(TAG, "=== date1 ===" +date1 );
+
+        String nowYear2 = "2020";
+        String month2 = b.substring(0,2); //12월
+        String date2 = b.substring(3); // 20일
+        Log.e(TAG, "=== month2 ===" +month2 );
+        Log.e(TAG, "=== date2 ===" +date2 );
+
+        try{
+            String dateAll1 = nowYear1+"-"+month1+"-"+date1;
+            String dateAll2 = nowYear2+"-"+month2+"-"+date2;
+            Log.e(TAG, "=== calDateBetweenAandB === dateAll1 " +dateAll1);
+            Log.e(TAG, "=== calDateBetweenAandB === dateAll2 " +dateAll2);
+
+            String format = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+
+            Date firstDate = sdf.parse(dateAll1);
+            Date secondDate = sdf.parse(dateAll2);
+
+            long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//            System.out.println(String.format("A %s , B %s Diff %s Days", a, b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB ===" +String.format("A %s , B %s Diff %s Days", a, b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB diff ===" + "D - "+diff);
+
+            return diff;
+
+        }catch (Exception e){
+            Log.d(TAG, "=== calDateBetweenAandB 에러코드 ===" +e  );
+        }
+        return 0;
+    }
+
+
+    /* 오늘부터 12.30일 형태의 날짜 사이 차이를 구하는 메서드. // 에러 시, 0을 return */
+    public long calDateBetweenNowandB(String b)
+    {
+        // TODO: 2020-12-18 시연할 때, 날짜 2021년 넘어가면 바꿔야 함...ㅎㅎ
+        //입력할 때, 12.15 이런 식임
+
+        String nowYear2 = "2020";
+        String month2 = b.substring(0,2); //12월
+        String date2 = b.substring(3); // 20일
+        Log.e(TAG, "=== month2 ===" +month2 );
+        Log.e(TAG, "=== date2 ===" +date2 );
+
+        try{
+
+            String dateAll2 = nowYear2+"-"+month2+"-"+date2;
+            Log.e(TAG, "=== calDateBetweenAandB === dateAll2 " +dateAll2);
+
+            String format = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+
+            Date nowDate = new Date();
+            Date secondDate = sdf.parse(dateAll2);
+
+            long diffInMillies = Math.abs(secondDate.getTime() - nowDate.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//            System.out.println(String.format("A %s , B %s Diff %s Days", a, b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB ===" +String.format("A %s , B %s Diff %s Days", nowDate.getTime(), b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB diff ===" + "D - "+diff);
+
+            return diff;
+
+        }catch (Exception e){
+            Log.d(TAG, "=== calDateBetweenAandB 에러코드 ===" +e  );
+        }
+        return 0;
+    }
 
 }
 

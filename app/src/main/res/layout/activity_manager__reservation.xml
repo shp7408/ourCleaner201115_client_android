@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="18"
-        />
+        tools:listitem="@layout/row_manager_all_reservation"/>
 
     <LinearLayout
         android:layout_width="match_parent"

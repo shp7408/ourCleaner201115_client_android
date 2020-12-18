@@ -22,7 +22,9 @@ import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
 import com.example.ourcleaner_201008_java.DTO.ManagerWaitingDTO;
 import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface2;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.View.LoginActivity;
 import com.example.ourcleaner_201008_java.View.PlaceinputActivity;
 
 import org.json.JSONArray;
@@ -32,18 +34,40 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Manager_ReservationActivity extends AppCompatActivity{
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
+
+public class Manager_ReservationActivity extends AppCompatActivity implements ManagerReservationAdapter.OnListItemSelectedInterface, MyPlaceAdapter.OnListItemSelectedInterface{
 
     private static final String TAG = "매니저용예정목록화면";
 
     /* 매니저용 전체 메뉴 변수 */
     TextView waitingTxt, myWorkListTxt, chatListTxt, moreTxt;
 
+
+    /* 리사이클러뷰에 보여주기 위한 변수 */
+    ManagerWaitingDTO managerWaitingDTO;
+    ArrayList<ManagerWaitingDTO> managerWaitingDTOArrayList = new ArrayList<>();
+
+    // PlaceInputAdapter 리사이클러뷰 작업 2 단계.
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+    /* 서버에서 내 장소 정보 받아오기 위한 변수 */
+    String jsonResponse;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manager__reservation);
         Log.d(TAG, "=== onCreate ===" );
+
+        makeStringRequestGet();
 
         /* 매니저용 전체 메뉴 코드 */
         //각버튼 아이디 매칭
@@ -69,9 +93,9 @@ public class Manager_ReservationActivity extends AppCompatActivity{
                     case R.id.myWorkListTxt:
                         Log.d(TAG, "=== myWorkListTxt ===" );
                         //있으면 넘어감
-                        Intent intent2 = new Intent(getApplicationContext(), Manager_ReservationActivity.class);
-                        startActivity(intent2);
-                        finish();
+//                        Intent intent2 = new Intent(getApplicationContext(), Manager_ReservationActivity.class);
+//                        startActivity(intent2);
+//                        finish();
                         break;
 
                     //chatListTxt 버튼 행동
@@ -100,8 +124,153 @@ public class Manager_ReservationActivity extends AppCompatActivity{
         chatListTxt.setOnClickListener(onClickListener);
         moreTxt.setOnClickListener(onClickListener);
 
+        /* 현재 내 장소 정보를 모두 가져온 상태. 추가한 후에도 가져온 상태임. 이제는 리사이클러 뷰에 내 장소 목록을 보여줄 것임 */
+        //리사이클러 뷰가 있는 엑티비티의 리사이클러 뷰 id 연결
+        recyclerView = findViewById(R.id.myWorkList_recycle);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(layoutManager);
+
+        // 기본 구분선 추가
+        DividerItemDecoration dividerItemDecoration =
+                new DividerItemDecoration(recyclerView.getContext(),new LinearLayoutManager(this).getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        // 아이템 간격 처리
+        RecyclerDecoration spaceDecoration = new RecyclerDecoration(5);
+        recyclerView.addItemDecoration(spaceDecoration);
+
+        recyclerView.setNestedScrollingEnabled(true);
+
+        mAdapter = new ManagerReservationAdapter(getApplicationContext(),managerWaitingDTOArrayList, this);//리스너 구현을 위해 context 와 리스너 인자 추가함
+        recyclerView.setAdapter(mAdapter);
 
 
+    }
+
+
+
+
+    // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드
+    private void makeStringRequestGet() {
+
+        managerWaitingDTOArrayList = new ArrayList<>();
+
+//        String url = "http://52.79.179.66/managerWaitingMatching.php";
+//        String url = "http://52.79.179.66/managerWaitingMatching.php?serviceState="+"매칭 대기 중";
+        String url = "http://52.79.179.66/managerWaitingMatching.php?managerNameId="+GlobalApplication.currentManagerName+","+GlobalApplication.currentManager;
+
+        JsonArrayRequest req = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "makeStringRequestGet onResponse 성공!!!!!!!!!!!!!!!!!!"+response.toString());
+
+                        try {
+                            // Parsing json array response
+                            // loop through each json object
+                            jsonResponse = "";
+                            Log.d(TAG, "=== jsonResponse 반복문 이전 ===" +jsonResponse);
+
+                            //리사이클러뷰에 여러개 추가되는 것 막음
+                            managerWaitingDTOArrayList.clear();
+                            final int numberOfItemsInResp = response.length();
+
+                            for (int i = 0; i < numberOfItemsInResp; i++) {
+
+                                Log.d(TAG, "===  === i :" + i);
+
+                                JSONObject managerWaiting = (JSONObject) response.get(i);
+
+                                String uid = managerWaiting.getString("uid");
+                                String currentUser = managerWaiting.getString("currentUser");
+                                String serviceState = managerWaiting.getString("serviceState");
+                                String myplaceDTO_address = managerWaiting.getString("myplaceDTO_address");
+                                String myplaceDTO_sizeStr = managerWaiting.getString("myplaceDTO_sizeStr");
+                                String visitDate = managerWaiting.getString("visitDate");
+                                String visitDay = managerWaiting.getString("visitDay");
+                                String startTime = managerWaiting.getString("startTime");
+                                String needDefTime = managerWaiting.getString("needDefTime");
+                                String needDefCost = managerWaiting.getString("needDefCost");
+
+
+                                jsonResponse += "uid: " + uid + "\n\n";
+                                jsonResponse += "currentUser: " + currentUser + "\n\n";
+                                jsonResponse += "serviceState: " + serviceState + "\n\n";
+                                jsonResponse += "myplaceDTO_address: " + myplaceDTO_address + "\n\n";
+                                jsonResponse += "myplaceDTO_sizeStr: " + myplaceDTO_sizeStr + "\n\n";
+                                jsonResponse += "visitDate: " + visitDate + "\n\n";
+                                jsonResponse += "visitDay: " + visitDay + "\n\n";
+                                jsonResponse += "startTime: " + startTime + "\n\n";
+                                jsonResponse += "needDefTime: " + needDefTime + "\n\n";
+                                jsonResponse += "needDefCost: " + needDefCost + "\n\n";
+
+                                String dateDayStr= (visitDate+"("+visitDay+")"); //11.26(목) 형태
+
+                                managerWaitingDTO = new ManagerWaitingDTO(Integer.parseInt(uid), currentUser,
+                                        dateDayStr, Integer.parseInt(startTime), Integer.parseInt(needDefTime),
+                                        Integer.parseInt(needDefCost), myplaceDTO_address.substring(8,14),
+                                        myplaceDTO_sizeStr,serviceState);
+                                Log.d(TAG, "=== myplaceDTO 객체 생성 ===");
+
+                                managerWaitingDTOArrayList.add(managerWaitingDTO);
+                            }
+
+                            mAdapter.notifyDataSetChanged();
+                            Log.d(TAG, "=== jsonResponse 반복문 이후 ===" +jsonResponse);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                            Log.d(TAG, "===  === Error " + e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Log.d(TAG, "===  === Error " + String.valueOf(error));
+            }
+        });
+
+        // Adding request to request queue
+        GlobalApplication.getInstance().addToRequestQueue(req);
+    }
+
+
+    @Override
+    public void onItemSelected(View v, int position) {
+        Log.e(TAG, "=== position ===" +position);
+
+        //있으면 넘어감
+        Intent intent = new Intent(getApplicationContext(), Manager_Detail_MatchingPostActivity.class);
+
+        intent.putExtra("uid", managerWaitingDTOArrayList.get(position).getUidInt());
+
+        startActivity(intent);
+
+        //finish();
+
+
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.e(TAG, "=== onBackPressed ===" );
+
+        //메인 엑티비티가 왜 2번 호출 되는 것인가...
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        /* 엑티비티 모두 정리 위함 */
+        intent.addFlags(FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+
+        //finish();
     }
 
 }

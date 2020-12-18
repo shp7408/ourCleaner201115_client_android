@@ -61,21 +61,16 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
 
     @Override
     public void onBindViewHolder(@NonNull SelectManagerAdapter.MyViewHolder holder, int position) {
-//        Glide.with(context)
-//                .load(managerDTOArrayList.get(position).getImagePathStr())
-//                .circleCrop()
-//                .into(holder.managerImgView);
+
 
         Picasso.get()
                 .load(managerDTOArrayList.get(position).getImagePathStr())
                 .transform(new CircleTransform())
                 .into(holder.managerImgView);
 
-//        Picasso.get().load(managerDTOArrayList.get(position).getImagePathStr())
-//                .into(holder.managerImgView);
-
 
         holder.managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+        holder.managerAddressTxt.setText(managerDTOArrayList.get(position).getAddressStr().substring(8,14));
 
         // TODO: 2020-12-14 리뷰의 별점 가져와야 함
 //        ArrayList<ReviewDTO> reviewDTOArrayList = managerDTOArrayList.get(position).getReviewDTOArrayList();
@@ -104,7 +99,7 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         ImageView managerImgView;
-        TextView managerNameTxt, reviewTxt1, reviewTxt2, reviewTxt3, reviewTxt4, reviewScoreNumTxt;
+        TextView managerNameTxt, reviewTxt1, reviewTxt2, reviewTxt3, reviewTxt4, reviewScoreNumTxt, managerAddressTxt;
         RatingBar ratingBar;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -121,6 +116,8 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
             ratingBar=itemView.findViewById(R.id.ratingBar);
 
             reviewScoreNumTxt=itemView.findViewById(R.id.reviewScoreNumTxt);
+
+            managerAddressTxt=itemView.findViewById(R.id.managerAddressTxt);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

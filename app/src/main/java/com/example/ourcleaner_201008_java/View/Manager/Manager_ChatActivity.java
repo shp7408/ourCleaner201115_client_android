@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.View.LoginActivity;
+
+import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 
 public class Manager_ChatActivity extends AppCompatActivity {
 
@@ -57,9 +60,9 @@ public class Manager_ChatActivity extends AppCompatActivity {
                         case R.id.chatListTxt:
                             Log.d(TAG, "=== chatListTxt ===" );
                             //있으면 넘어감
-                            Intent intent3 = new Intent(getApplicationContext(), Manager_ChatActivity.class);
-                            startActivity(intent3);
-                            finish();
+//                            Intent intent3 = new Intent(getApplicationContext(), Manager_ChatActivity.class);
+//                            startActivity(intent3);
+//                            finish();
                             break;
 
                         //moreTxt 버튼 행동
@@ -78,5 +81,20 @@ public class Manager_ChatActivity extends AppCompatActivity {
         myWorkListTxt.setOnClickListener(onClickListener);
         chatListTxt.setOnClickListener(onClickListener);
         moreTxt.setOnClickListener(onClickListener);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.e(TAG, "=== onBackPressed ===" );
+
+        //메인 엑티비티가 왜 2번 호출 되는 것인가...
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+
+        /* 엑티비티 모두 정리 위함 */
+        intent.addFlags(FLAG_ACTIVITY_NO_HISTORY);
+        startActivity(intent);
+
+        //finish();
     }
 }

@@ -173,7 +173,6 @@ public class Manager_InputActivePlaceActivity extends AppCompatActivity implemen
     }
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
         if (requestCode == PERMISSIONS_ACCESS_FINE_LOCATION
