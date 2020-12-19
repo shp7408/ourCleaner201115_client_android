@@ -133,6 +133,8 @@ public class Service_completeActivity extends AppCompatActivity {
     String application_id = "5fba1e488f075100207de71f";
     String private_key = "GjaGT62Fxto9XyMBL835hRqDwz02QxdSmPo7GeAtfek=";
 
+    TextView serviceDeleteGuideTxt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,6 +148,8 @@ public class Service_completeActivity extends AppCompatActivity {
         serviceDTO3 = (ServiceDTO) intent.getSerializableExtra("serviceDTO3");
         Log.d(TAG, "=== serviceDTO3 ===" + serviceDTO3.getCurrentUser() );
 
+
+        serviceDeleteGuideTxt = findViewById(R.id.serviceDeleteGuideTxt);
 
 
         /* 이 부분 때문에 결제가 안되는 거였음..ㅠㅠㅠ */
@@ -240,40 +244,6 @@ public class Service_completeActivity extends AppCompatActivity {
         servicePlusTxt = findViewById(R.id.servicePlusTxt);
 
 
-        cancelTxt=findViewById(R.id.cancelTxt);
-
-        /* 취소 메서드 */
-        cancelTxt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e(TAG, "=== cancelTxt ===" );
-
-                BootpayApi api = new BootpayApi(application_id, private_key);
-
-                try {
-                    api.getAccessToken();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "=== cancelTxt 취소 취소  ==="+e );
-                }
-
-                Cancel cancel = new Cancel();
-                cancel.receipt_id = "5fdb88eb8f0751001dd3b448"; //영수증 번호 입력하는 곳!!!
-                cancel.name = "관리자 우리집 청소";
-                cancel.reason = "단순 변심으로 이한 결제 취소";
-
-                try {
-                    HttpResponse res = api.cancel(cancel);
-                    String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
-                    System.out.println(str);
-                    Log.d(TAG, "=== cancelTxt 취소 취소 str === " +str );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
 
 
 
@@ -483,6 +453,29 @@ public class Service_completeActivity extends AppCompatActivity {
 
 
         Log.d(TAG, "=== 최근 등록한 카드 보여주는 메서드 ===" );
+
+        /* 서비스 예약 취소 가이드 안내 다이얼로그 생성 */
+        serviceDeleteGuideTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "=== serviceDeleteGuideTxt 결제 취소 가이드 클릭 시, 생성하는 다이얼로그 ===" );
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Service_completeActivity.this);
+                builder.setMessage("[취소 수수료 정책]" +
+                        "\n\n- 청소 1일 전 오후 18시 이후 : 이용 금액의 30%" +
+                        "\n\n- 청소 당일 시작 전 : 이용금액의 30%" +
+                        "\n\n- 업무가 시작된 이후 : 이용금액의 100%");
+                builder.setPositiveButton("확인했습니다.",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Log.d(TAG, "=== 확인 클릭  ===" );
+                            }
+                        });
+
+                builder.show();
+
+            }
+        });
 
 
 
@@ -791,7 +784,8 @@ public class Service_completeActivity extends AppCompatActivity {
                                                     FcmPushTest fcmPushTest = new FcmPushTest();
                                                     try {
                                                         fcmPushTest.pushFCMNotification(serManagerTxt.getText().toString()+" 에게 1건의 청소 요청이 들어왔습니다. 확인해주세요.",
-                                                                2, "dCKMxG4wSQ-P4TgEuI1m-b:APA91bFXOrKu_jSAqfHiOjXg8igTfWKcj1v7VcMHF8oRpaHkJnEnIjLR53JyZn-V9h5bEW7UsbxUROmEgu7zMqq_1hr7tD7XeCMPNVoiDL23kdMekK1YeQVOGwtxUBzySqTAE-KHvHh-");
+                                                                2,
+                                                                managerToken);
                                                     } catch (Exception e) {
                                                         e.printStackTrace();
                                                         Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지저 경우. 그냥 넘어가도 딤 ==="+e );

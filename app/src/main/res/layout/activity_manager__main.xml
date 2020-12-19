@@ -39,13 +39,13 @@
             android:id="@+id/myWorkListTxt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="업무 목록"
+            android:text="나의\n서비스"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:gravity="center"
             android:layout_weight="1"
             android:background="@drawable/bordergrey"
-            android:textSize="20sp"
+            android:textSize="18sp"
 
             />
         <TextView
@@ -58,7 +58,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:background="@drawable/bordergrey"
-            android:textSize="20sp"
+            android:textSize="18sp"
 
             />
         <TextView

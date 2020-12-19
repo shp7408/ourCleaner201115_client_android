@@ -92,9 +92,29 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
             // TODO: 2020-12-18 시연 당일 날짜 확인해야 함!!
 //            holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
 //                    calDateBetweenAandB("12.19",myReservationDTO.getServiceDate().substring(0,5))+" )");
-            holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
-                    calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))+" )");
 
+
+            if(calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))==0){
+                holder.reserveStateTxt.setText("예약 당일");
+            }else{
+                holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
+                        calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))+" )");
+            }
+
+
+            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
+        } else if(myReservationDTO.getServiceState().equals("예약 취소")){
+            Log.e(TAG, "=== 예약 취소인 경우, 회색 배경 그대로 진행 서비스까지 남은 날짜 / 매니저 이름 보여주기 ===" );
+            Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
+
+            holder.reserveDateTxt.setText(myReservationDTO.getServiceDate()+" 예약 취소");
+
+            holder.reserveStateTxt.setText(myReservationDTO.getServiceState());
+            holder.reserveStateTxt.setBackgroundResource(background2);
+
+            /* 글자 색 변경하는 코드 */
+            int greyColcor = ContextCompat.getColor(mContext, R.color.grey2);
+            holder.reserveStateTxt.setTextColor(greyColcor);
 
             holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
         }
@@ -177,7 +197,8 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
             Log.e(TAG, "=== calDateBetweenAandB ===" +String.format("A %s , B %s Diff %s Days", a, b, diff));
             Log.e(TAG, "=== calDateBetweenAandB diff ===" + "D - "+diff);
 
-            return diff;
+            /* 1일 추가함 */
+            return diff+1;
 
         }catch (Exception e){
             Log.d(TAG, "=== calDateBetweenAandB 에러코드 ===" +e  );
@@ -215,6 +236,11 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
             Log.e(TAG, "=== calDateBetweenAandB ===" +String.format("A %s , B %s Diff %s Days", nowDate.getTime(), b, diff));
             Log.e(TAG, "=== calDateBetweenAandB diff ===" + "D - "+diff);
 
+            if(diff>0){
+                diff= diff+1;
+            }
+
+            /* 1일 추가함 */
             return diff;
 
         }catch (Exception e){

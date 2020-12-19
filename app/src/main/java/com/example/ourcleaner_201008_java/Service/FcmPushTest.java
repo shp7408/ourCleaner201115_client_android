@@ -84,7 +84,7 @@ public class FcmPushTest {
         JsonObject dataJson = new JsonObject();
 
         //1. 앱 백그라운드 발송 - 앱이 안띄워져 있는 경우임 -> 여기 클릭하면, 앱이 실행 됨
-        info.addProperty("title", "우리집 청소 백그라운드");
+        info.addProperty("title", "우리집 청소 알람");
         info.addProperty("body", msgBody); // Notification body
         info.addProperty("sound", "default");
 
@@ -110,7 +110,7 @@ public class FcmPushTest {
 
         // 2. 앱 포그라운드 -
         dataJson.addProperty("type", "PK");
-        dataJson.addProperty("title", "우리집 청소 포그라운드");
+        dataJson.addProperty("title", "우리집 청소 알람");
         dataJson.addProperty("message", msgBody);
         dataJson.addProperty("bcn_cd", "02");
 

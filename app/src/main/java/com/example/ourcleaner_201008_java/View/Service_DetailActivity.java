@@ -7,6 +7,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,23 +23,31 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.ourcleaner_201008_java.GlobalApplication;
+import com.example.ourcleaner_201008_java.Interface.AlarmManagerSelectInterface;
+import com.example.ourcleaner_201008_java.Interface.ServiceStatesChangeInterface;
+import com.example.ourcleaner_201008_java.Interface.TokenSelectInterface;
 import com.example.ourcleaner_201008_java.R;
-import com.example.ourcleaner_201008_java.Server.LoginRequest;
 import com.example.ourcleaner_201008_java.Server.ServiceSelectRequest;
-import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_Acount_Activity;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_MainActivity;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_ProfileActivity;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.LogoutResponseCallback;
+import com.example.ourcleaner_201008_java.Service.FcmPushTest;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import kr.co.bootpay.javaApache.BootpayApi;
+import kr.co.bootpay.javaApache.model.request.Cancel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 /* 서비스 상세정보 보는 엑티비티
 * 1. 매칭 대기중 - 결제 완료 - 취소 가능
@@ -58,12 +68,12 @@ public class Service_DetailActivity extends AppCompatActivity {
             myplaceDTO_sizeStr, managerName,regularBool, visitDate, visitDay, startTime,
             needDefTime, needDefCost, servicefocusedhashMap, laundryBool, laundryCaution,
             garbagerecycleBool, garbagenormalBool, garbagefoodBool, garbagehowto,
-            serviceplus, serviceCaution;
+            serviceplus, serviceCaution, receipt_id;
 
 //    int startTimeInt, needDefTimeInt, allTimeInt;
 
     TextView datedayTxt, startAndAllTimeTxt, stateTxt, placeNameTxt, addressSizeTxt, editPossTxt, focusTxt, freePlusTxt, garbageTxt,
-            plusTxt, cautionTxt;
+            plusTxt, cautionTxt, editServiceTxt, receiptTxt, priceDefTxt,priceResultTxt ;
 
     LinearLayout receiptLayout, priceDefLayout, priceIronLayout, pricefridgeLayout, priceResultLayout;
     TextView priceDefNumTxt, priceIronNumTxt, pricefridgeNumTxt, priceResutNumTxt, serviceDeleteGuideTxt;
@@ -81,10 +91,19 @@ public class Service_DetailActivity extends AppCompatActivity {
     RelativeLayout relativeLayout1;
     LinearLayout serviceDeleteLayout;
 
+    String application_id = "5fba1e488f075100207de721"; //rest api applicationid로 변경 -> 결제할때는 안드 어플리케이션 아이디 써야 함
+    String private_key = "GjaGT62Fxto9XyMBL835hRqDwz02QxdSmPo7GeAtfek=";
 
     // TODO: 2020-12-18 매니저 정보를 어떻게 보여줄 지 고민해야 할듯. 프로필 정보와 후기 까지... 
     ImageView profileImage; //수락 이후, 매니저 정보 보여주기
     String  profileImagePathStr="";
+
+    int diffDayInt;
+    int deleteCostInt;
+    String diffDayDeleteGuideTxt;
+
+    String managerToken;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +139,16 @@ public class Service_DetailActivity extends AppCompatActivity {
 
         relativeLayout1 = findViewById(R.id.relativeLayout1);
         serviceDeleteGuideTxt= findViewById(R.id.serviceDeleteGuideTxt);
+
+        editServiceTxt = findViewById(R.id.editServiceTxt);
+        receiptTxt = findViewById(R.id.receiptTxt);
+
+        priceDefTxt = findViewById(R.id.priceDefTxt);
+        priceResultTxt = findViewById(R.id.priceResultTxt);
+
+        priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
+
+        serviceDeleteLayout = findViewById(R.id.serviceDeleteLayout);
 
         Log.e(TAG, "=== 기본 이미지로 변경 === ");
         relativeLayout1.bringChildToFront(profileImage);
@@ -194,6 +223,45 @@ public class Service_DetailActivity extends AppCompatActivity {
                             serviceplus = dataObject.getString( "serviceplus" );
                             serviceCaution = dataObject.getString( "serviceCaution" );
 
+                            receipt_id = dataObject.getString( "receipt_id" );
+                            Log.e(TAG, "=== receipt_id ===" +receipt_id);
+
+
+
+
+                            try{
+
+
+                                if(managerName.contains(",")){
+                                    // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
+                                    int idx = managerName.indexOf(",");
+                                    String managerName22 = managerName.substring(0, idx);
+
+                                    String string = managerName22.substring(idx+1);
+                                    Log.d(TAG, "=== ddddd ==="+string );
+
+                                    string = string.trim();
+
+                                    Log.d(TAG, "=== ddddd ==="+string );
+
+                                    /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
+                                    postSelectToken(string, 2);
+                                }
+
+
+
+                            }catch (Exception e){
+                                Log.e(TAG, "=== 매니저 미지정 경우, 에러코드임 ===" +e );
+                            }
+
+
+
+
+
+
+
+
+
                             if(jsonObject.getString("message").contains("매니저 미지정")){
                                 Log.d(TAG, "=== 매니저 미지정 인 경우, ===" );
 
@@ -227,8 +295,12 @@ public class Service_DetailActivity extends AppCompatActivity {
 
 
 
+
                         // 1. 날짜 요일 보여주기
                         datedayTxt.setText(visitDate+"("+visitDay+") 예약");
+
+
+
 
                         // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
                         //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
@@ -258,7 +330,8 @@ public class Service_DetailActivity extends AppCompatActivity {
                             endTimeInt=startTimeInt+defaultTimeInt+refridgeTimeInt+ironPlusTimeInt;
                             Log.d(TAG+123, "=== endTimeInt ===" +endTimeInt);
 
-                            startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
+                            startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+
+                                    timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
 
                         }catch (Exception e){
                             Log.e(TAG+123, "=== startAndAllTimeTxt ===" +e);
@@ -272,11 +345,34 @@ public class Service_DetailActivity extends AppCompatActivity {
                                 serviceDeleteBtn.setText("예약 취소하기");
                                 Log.d(TAG, "=== 결제 후, 영수증 보여주기 ===" );
 
+
+
+
                             }else if(serviceState.contains("예약 취소")){
+
+
 
                                 stateTxt.setText("취소된 예약입니다.");
                                 serviceDeleteBtn.setVisibility(View.GONE);
-                                Log.d(TAG, "=== 취소 후, 영수증 보여주기 ===" );
+                                Log.d(TAG, "=== 취소 후, 취소 영수증 보여주기 ===" );
+
+                                int greyColcor = ContextCompat.getColor(getApplicationContext(), R.color.grey);
+                                stateTxt.setTextColor(greyColcor);
+
+                                profileImage.setVisibility(View.GONE);
+
+                                editPossTxt.setVisibility(View.GONE);
+                                editServiceTxt.setVisibility(View.GONE);
+
+                                receiptTxt.setText("결제 취소");
+
+                                priceIronLayout.setVisibility(View.GONE);
+                                pricefridgeLayout.setVisibility(View.GONE);
+//                                serviceDeleteLayout.setVisibility(View.GONE);
+
+                                // TODO: 2020-12-19 결제 취소한 영수증 저장한거 보여주기
+
+
 
                             }else if(serviceState.contains("매칭 완료")){
 
@@ -296,12 +392,16 @@ public class Service_DetailActivity extends AppCompatActivity {
                                 serviceDeleteBtn.setText("예약 취소하기");
                                 Log.d(TAG, "=== 결제 후, 영수증 보여주기 + 매니저에 대한 정보 보여줘야 함. ===" );
 
+
+
                                 // TODO: 2020-12-18 청소 중, 청소 후 상태 변경 해야 함.. 
                             }else if(serviceState.contains("청소 중")){
 
                                 stateTxt.setText("청소 중입니다.");
                                 serviceDeleteBtn.setVisibility(View.GONE);
 
+
+                                
                             }else if(serviceState.contains("청소 완료")){
 
                                 stateTxt.setText("완료된 청소입니다.");
@@ -440,10 +540,98 @@ public class Service_DetailActivity extends AppCompatActivity {
                             pricefridgeNumTxt.setText(formatter.format(fridgeCostInt)+" 원");
                             pricefridgeLayout.setVisibility(View.VISIBLE);
                         }
-                        priceResutNumTxt = findViewById(R.id.priceResutNumTxt);
+
                         priceResutNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt)+" 원");
 
+                    /* 결제 취소 시, 필요한 코드임. 오늘부터 예약 당일까지 얼마 남았는지 구하는 코드 */
+                    Log.e(TAG, "=== visitDate ==="+visitDate );
 
+                    diffDayInt= (int) calDateBetweenNowandB(visitDate);
+                    if(diffDayInt == 0){
+
+                        //어차피, 청소 시작 시, 예약 취소 버튼 없앨 것 임...
+                        Log.e(TAG, "=== 결제 취소를 위함 visitDate ==0 ===" +visitDate );
+                        diffDayDeleteGuideTxt="당일 예약 취소 시, 30%의 수수료가 있습니다.\n그래도 취소하시겠습니까?";
+                        deleteCostInt= (int) ((Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt) * 0.7);
+
+                    }else if(diffDayInt == 1){
+                        Log.e(TAG, "=== 결제 취소를 위함 visitDate ==1 ===" +visitDate );
+                        diffDayDeleteGuideTxt="예약 취소 하시겠습니까?";
+
+                        deleteCostInt= Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt;
+
+                        if(nowTimeToInt() > 18){
+                            Log.d(TAG, "=== 예약 전날 6시 넘은 경우 ===" );
+                            diffDayDeleteGuideTxt="전날 예약 취소 시, 30%의 수수료가 있습니다.\n그래도 취소하시겠습니까?";
+
+                            deleteCostInt= (int) ((Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt) * 0.7);                        }
+
+                    }else if(diffDayInt > 1){
+                        Log.e(TAG, "=== 결제 취소를 위함 visitDate >1 ===" +visitDate );
+                        diffDayDeleteGuideTxt="예약 취소 하시겠습니까?";
+
+                        deleteCostInt= (int) (Integer.parseInt(needDefCost)+ironCostInt+fridgeCostInt);
+                    }
+
+                    Log.e(TAG, "=== 결제 취소를 위함 deleteCostInt ===" +deleteCostInt );
+                    Log.e(TAG, "=== 결제 취소를 위함 diffDayDeleteGuideTxt ===" +diffDayDeleteGuideTxt );
+
+                    if(serviceState.contains("예약 취소")){
+
+                        priceIronLayout.setVisibility(View.GONE);
+                        pricefridgeLayout.setVisibility(View.GONE);
+                        serviceDeleteLayout.setVisibility(View.GONE);
+
+                        priceDefTxt.setText("결제 금액");
+                        priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)
+                                +ironCostInt+fridgeCostInt)+" 원");
+
+                        priceResultTxt.setText("환불 금액"); //deleteCostInt
+                        priceResutNumTxt.setText(formatter.format(deleteCostInt)+" 원");
+
+                        // TODO: 2020-12-19 결제 취소한 영수증 저장한거 보여주기
+
+
+
+                    }
+
+
+
+
+
+
+
+                    /* 서비스 예약 취소하는 코드임 */
+                    serviceDeleteBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Log.e(TAG, "=== serviceDeleteBtn 클릭. 예약 취소 버튼 누름 ===" );
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
+                            builder.setMessage(diffDayDeleteGuideTxt);
+                            builder.setPositiveButton("확인",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Log.d(TAG, "=== 확인 클릭  ===" );
+
+                                            postUpdateServiceState(serviceWaitingUidInt, "예약 취소");
+
+
+
+
+                                        }
+                                    });
+                            builder.setNegativeButton("취소",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Log.d(TAG, "=== 취소 클릭 ===" );
+                                        }
+                                    });
+                            builder.show();
+
+
+                        }
+                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -482,56 +670,6 @@ public class Service_DetailActivity extends AppCompatActivity {
 
 
 
-        /* 서비스 예약 취소하는 코드임 */
-        serviceDeleteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.e(TAG, "=== serviceDeleteBtn 클릭. 예약 취소 버튼 누름 ===" );
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
-                builder.setMessage("예약 취소 하시겠습니까?");
-                builder.setPositiveButton("확인",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "=== 확인 클릭  ===" );
-
-                                //UserManagement API 요청을 담당
-                                UserManagement.getInstance()
-                                        //requestLogout : 로그아웃 요청
-                                        //파라미터 : logout 요청 결과에 대한 callback
-                                        .requestLogout(new LogoutResponseCallback() {
-                                            @Override
-                                            public void onCompleteLogout() {
-                                                Log.d(TAG, "=== onCompleteLogout : 예약 취소 되었습니다. ===");
-
-                                                /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
-                                                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                                                    @Override
-                                                    public void onResponse(String response) {
-                                                        Log.e(TAG, "=== response ===" + response);
-
-                                                    }
-                                                };
-                                                ServiceSelectRequest serviceSelectRequest = new ServiceSelectRequest(String.valueOf(serviceWaitingUidInt), "예약취소" ,"고객",responseListener);
-                                                RequestQueue queue = Volley.newRequestQueue( Service_DetailActivity.this );
-                                                queue.add( serviceSelectRequest );
-
-
-                                            }
-                                        });
-                            }
-                        });
-                builder.setNegativeButton("취소",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "=== 취소 클릭 ===" );
-                            }
-                        });
-                builder.show();
-
-
-            }
-            });
 
 
 
@@ -552,6 +690,337 @@ public class Service_DetailActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    /* 레트로핏으로 서비스 번호, 서비스 상태 보내면 예약 취소 하는 코드 */
+    private void postUpdateServiceState(int serviceId, String serviceState22){
+        Log.e(TAG, "=== postUpdateServiceState 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(AlarmManagerSelectInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        ServiceStatesChangeInterface api =retrofit.create(ServiceStatesChangeInterface.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.updateServiceState(serviceId, serviceState22);
+
+        Log.e(TAG, "=== 서비스 id serviceId ===" + serviceId);
+        Log.e(TAG, "=== 서비스 id serviceState ===" + serviceState22);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e(TAG, "onSuccess" + response.body());
+                        String jsonresponse = response.body();
+                        //홈페이지에서 더 많은 컨텐츠를 확인하세요,  https://stickode.com/
+                        Log.e(TAG, "=== 예약 취소 db 변경 완료 ===" +jsonresponse);
+                        /*
+                        *  1. 화면에서 서비스 상태 변경됨 보여주기
+                        *  2. 오늘 날짜 확인해서 1일 이상 차이 나는지, 1일 차이 나는지, 0일 차이 나는지 확인해서,
+                        * 그에 따른 가격으로 환불하기  */
+
+                        int whiteColcor = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                        stateTxt.setText("취소된 예약입니다.");
+                        stateTxt.setBackgroundColor(whiteColcor);
+
+                        serviceDeleteBtn.setVisibility(View.GONE);
+                        Log.d(TAG, "=== 취소 후, 취소 영수증 보여주기 ===" );
+
+                        int greyColcor = ContextCompat.getColor(getApplicationContext(), R.color.grey);
+                        stateTxt.setTextColor(greyColcor);
+
+                        profileImage.setVisibility(View.GONE);
+
+                        editPossTxt.setVisibility(View.GONE);
+                        editServiceTxt.setVisibility(View.GONE);
+
+                        receiptTxt.setText("결제 취소");
+
+                        priceIronLayout.setVisibility(View.GONE);
+                        pricefridgeLayout.setVisibility(View.GONE);
+//                        serviceDeleteLayout.setVisibility(View.GONE);
+
+                        priceDefTxt.setText("결제 금액");
+                        priceDefNumTxt.setText(formatter.format(Integer.parseInt(needDefCost)
+                                +ironCostInt+fridgeCostInt)+" 원");
+
+                        priceResultTxt.setText("환불 금액"); //deleteCostInt
+                        priceResutNumTxt.setText(formatter.format(deleteCostInt)+" 원");
+
+
+
+
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try  {
+
+
+                                    /* 2. 결제 취소 부분 */
+                                    BootpayApi api = new BootpayApi(application_id, private_key);
+
+                                    try {
+                                        api.getAccessToken();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Log.d(TAG, "=== cancelTxt 취소 취소  ==="+e );
+                                    }
+
+                                    Cancel cancel = new Cancel();
+                                    cancel.receipt_id = receipt_id; //영수증 번호 입력하는 곳!!!
+                                    cancel.name = "본인";
+                                    cancel.reason = "단순 변심으로 인한 결제 취소";
+                                    cancel.price= Double.valueOf(deleteCostInt);
+
+                                    Log.e(TAG, "=== cancel.price ===" +cancel.price);
+
+                                    try {
+                                        HttpResponse res = api.cancel(cancel);
+                                        String str = IOUtils.toString(res.getEntity().getContent(), "UTF-8");
+
+                                        /* 취소 완료 후 부분 영수증 */
+                                        System.out.println(str);
+                                        Log.d(TAG, "=== cancelTxt 취소 취소 str === " +str );
+
+
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+
+                                        Log.e(TAG, "BootpayApi cancel 에러 코드 : "+ e);
+                                    }
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Log.e(TAG, "BootpayApi 에러 코드 : "+ e);
+                                }
+                            }
+                        });
+
+                        thread.start();
+                        Handler mHandler = new Handler(Looper.getMainLooper());
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.e(TAG, "BootpayApi : run");
+
+                            }
+
+                        }, 0);
+
+
+//                        /* 메인에서 사용하는 서비스 상태임 매니저 지정된 경우에 fcm 보내기 위한 코드 */
+//                        if(serviceState.contains("매칭 완료")){
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                            Thread thread2 = new Thread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//
+//                                    try{
+//                                        FcmPushTest fcmPushTest = new FcmPushTest();
+//                                        try {
+//                                            fcmPushTest.pushFCMNotification(datedayTxt.getText().toString()+"의 예약이 고객에 의해 취소됐습니다. 확인해주세요.",
+//                                                    2,
+//                                                    "c2eb041dc6852ec1af64e429d1133763c868478ff5547a9fb2d3b1b0026e29bc");
+//                                        } catch (Exception e) {
+//                                            e.printStackTrace();
+//                                            Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지저 경우. 그냥 넘어가도 딤 ==="+e );
+//                                        }
+//                                    }catch (Exception e){
+//                                        Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지저 경우. 그냥 넘어가도 딤 ==="+e );
+//
+//                                    }
+//
+//
+//
+//                                }
+//                            });
+//
+//                            thread2.start();
+//                            Handler mHandler2 = new Handler(Looper.getMainLooper());
+//                            mHandler2.postDelayed(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Log.e(TAG, "pushFCMNotification : run");
+//
+//                                }
+//
+//                            }, 1000);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//                        }
+
+
+
+
+
+                    } else {
+                        Log.e(TAG, "onEmptyResponse Returned empty response");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+            }
+        });
+    }
+
+    /* 레트로핏으로 서버에 이메일 보내서 토큰 받아오는 코드 - 서버에서 mysql에 저장 함*/
+    private void postSelectToken(String email, int whichClientManager){
+
+        Log.e(TAG, "=== postManagerProfile 시작 ===" );
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(TokenSelectInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        TokenSelectInterface api =retrofit.create(TokenSelectInterface.class);
+        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+        Call<String> call = api.selectToken(email, whichClientManager);
+
+        Log.e(TAG, "=== email ===" +email);
+        Log.e(TAG, "=== whichClientManager 1이면 클라, 2면 매니저===" +whichClientManager);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                Log.e("Responsestring", response.body());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e(TAG, "onSuccess" + response.body());
+
+                        String jsonresponse = response.body();
+                        Log.e(TAG, "=== jsonresponse ===" +jsonresponse );
+
+                        try {
+                            org.json.JSONObject obj = new org.json.JSONObject(jsonresponse);
+                            Log.e(TAG, "=== response ===" +response);
+
+                            if(obj.optString("status").equals("true")){
+
+                                JSONArray dataArray  = obj.getJSONArray("data");
+
+                                // TODO: 2020-12-15 여기서 해당 텍스트 뷰에 데이터 넣음
+
+                                for (int i = 0; i < dataArray.length(); i++) {
+
+                                    org.json.JSONObject dataobj = dataArray.getJSONObject(i);
+
+                                    managerToken = dataobj.getString("Token");
+
+                                    Log.e(TAG, "=== ddddddd ===managerToken" +managerToken);
+
+
+
+                                }
+                            }else {
+                                Toast.makeText(Service_DetailActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    } else {
+                        Log.e(TAG, "onEmptyResponse"+"Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+
+            }
+        });
+
+
+    }
+
+
+    /* 현재 시간 int로 구하는 메서드 */
+    public int nowTimeToInt(){
+        Date date_now = new Date(System.currentTimeMillis()); // 현재시간을 가져와 Date형으로 저장한다
+
+        int nowTimeInt;
+
+        // 년월일시분초 14자리 포멧
+        SimpleDateFormat fourteen_format = new SimpleDateFormat("HH");
+        System.out.println(fourteen_format.format(date_now));
+
+        nowTimeInt = Integer.parseInt(fourteen_format.format(date_now));
+
+        return nowTimeInt;
+    }
+
+    /* 오늘부터 12.30일 형태의 날짜 사이 차이를 구하는 메서드. // 에러 시, 0을 return */
+    public long calDateBetweenNowandB(String b)
+    { //.substring(0,5) 사용하면 됨!!
+        // TODO: 2020-12-18 시연할 때, 날짜 2021년 넘어가면 바꿔야 함...ㅎㅎ
+        //입력할 때, 12.15 이런 식임
+
+        String nowYear2 = "2020";
+        String month2 = b.substring(0,2); //12월
+        String date2 = b.substring(3); // 20일
+        Log.e(TAG, "=== month2 ===" +month2 );
+        Log.e(TAG, "=== date2 ===" +date2 );
+
+        try{
+
+            String dateAll2 = nowYear2+"-"+month2+"-"+date2;
+            Log.e(TAG, "=== calDateBetweenAandB === dateAll2 " +dateAll2);
+
+            String format = "yyyy-MM-dd";
+            SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.ENGLISH);
+
+            Date nowDate = new Date();
+            Date secondDate = sdf.parse(dateAll2);
+
+            long diffInMillies = Math.abs(secondDate.getTime() - nowDate.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+//            System.out.println(String.format("A %s , B %s Diff %s Days", a, b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB ===" +String.format("A %s , B %s Diff %s Days", nowDate.getTime(), b, diff));
+            Log.e(TAG, "=== calDateBetweenAandB diff ===" + "D - "+diff);
+
+            if(diff>0){
+                diff= diff+1;
+            }
+
+            /* 1일 추가함 */
+            return diff;
+
+        }catch (Exception e){
+            Log.d(TAG, "=== calDateBetweenAandB 에러코드 ===" +e  );
+        }
+        return 0;
     }
 
     //int 형태의 정수를 "3시 30분" String으로 나타내는 메서드
@@ -610,5 +1079,19 @@ public class Service_DetailActivity extends AppCompatActivity {
         }
 
         return plusTimeStr;
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Log.d(TAG, "=== onBackPressed ===" );
+
+        //있으면 넘어감
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 }
