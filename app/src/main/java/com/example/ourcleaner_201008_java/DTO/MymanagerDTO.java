@@ -1,9 +1,8 @@
 package com.example.ourcleaner_201008_java.DTO;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ManagerDTO implements Serializable {
+public class MymanagerDTO {
 
     int id;
     String email;
@@ -16,14 +15,10 @@ public class ManagerDTO implements Serializable {
     long reviewStarLong;
     ArrayList<ReviewDTO> reviewDTOArrayList;
 
-    private int viewType;
-
-    public ArrayList<MymanagerDTO> Mymanaggers;
-
-    public ManagerDTO() {
+    public MymanagerDTO() {
     }
 
-    public ManagerDTO(int id, String email, String nameStr, String phoneNumStr, String addressStr, ArrayList<String> desiredWorkAreaList, String imagePathStr, long reviewStarLong, ArrayList<ReviewDTO> reviewDTOArrayList, int viewType) {
+    public MymanagerDTO(int id, String email, String nameStr, String phoneNumStr, String addressStr, ArrayList<String> desiredWorkAreaList, String imagePathStr, long reviewStarLong, ArrayList<ReviewDTO> reviewDTOArrayList) {
         this.id = id;
         this.email = email;
         this.nameStr = nameStr;
@@ -32,45 +27,6 @@ public class ManagerDTO implements Serializable {
         this.desiredWorkAreaList = desiredWorkAreaList;
         this.imagePathStr = imagePathStr;
         this.reviewStarLong = reviewStarLong;
-        this.reviewDTOArrayList = reviewDTOArrayList;
-        this.viewType = viewType;
-    }
-
-    public ManagerDTO(int id, String email, String nameStr, String phoneNumStr, String addressStr, ArrayList<String> desiredWorkAreaList, String imagePathStr, long reviewStarLong, ArrayList<ReviewDTO> reviewDTOArrayList, int viewType, ArrayList<MymanagerDTO> mymanaggers) {
-        this.id = id;
-        this.email = email;
-        this.nameStr = nameStr;
-        this.phoneNumStr = phoneNumStr;
-        this.addressStr = addressStr;
-        this.desiredWorkAreaList = desiredWorkAreaList;
-        this.imagePathStr = imagePathStr;
-        this.reviewStarLong = reviewStarLong;
-        this.reviewDTOArrayList = reviewDTOArrayList;
-        this.viewType = viewType;
-        Mymanaggers = mymanaggers;
-    }
-
-    public ArrayList<MymanagerDTO> getMymanaggers() {
-        return Mymanaggers;
-    }
-
-    public void setMymanaggers(ArrayList<MymanagerDTO> mymanaggers) {
-        Mymanaggers = mymanaggers;
-    }
-
-    public int getViewType() {
-        return viewType;
-    }
-
-    public void setViewType(int viewType) {
-        this.viewType = viewType;
-    }
-
-    public ArrayList<ReviewDTO> getReviewDTOArrayList() {
-        return reviewDTOArrayList;
-    }
-
-    public void setReviewDTOArrayList(ArrayList<ReviewDTO> reviewDTOArrayList) {
         this.reviewDTOArrayList = reviewDTOArrayList;
     }
 
@@ -138,5 +94,11 @@ public class ManagerDTO implements Serializable {
         this.reviewStarLong = reviewStarLong;
     }
 
+    public ArrayList<ReviewDTO> getReviewDTOArrayList() {
+        return reviewDTOArrayList;
+    }
 
+    public void setReviewDTOArrayList(ArrayList<ReviewDTO> reviewDTOArrayList) {
+        this.reviewDTOArrayList = reviewDTOArrayList;
+    }
 }

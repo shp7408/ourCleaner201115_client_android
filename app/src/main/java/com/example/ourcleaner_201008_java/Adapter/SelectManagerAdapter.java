@@ -2,6 +2,7 @@ package com.example.ourcleaner_201008_java.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -18,20 +20,22 @@ import com.example.ourcleaner_201008_java.CircleTransform;
 import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
 import com.example.ourcleaner_201008_java.DTO.ReviewDTO;
 import com.example.ourcleaner_201008_java.R;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_ProfileActivity;
+
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import jp.wasabeef.picasso.transformations.internal.Utils;
 
-public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdapter.MyViewHolder> {
+public class SelectManagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = "매니저정보확인어댑터";
 
     private LayoutInflater inflater;
-    private ArrayList<ManagerDTO> managerDTOArrayList;
+    private ArrayList<ManagerDTO> managerDTOArrayList = null;
 
     public OnListItemSelectedInterface listItemSelectedInterface;
     
@@ -44,6 +48,12 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
 
     }
 
+    public SelectManagerAdapter(ArrayList<ManagerDTO> managerDTOArrayList, Context context) {
+        inflater = LayoutInflater.from(context);
+        this.managerDTOArrayList = managerDTOArrayList;
+        this.context = context;
+    }
+
     public SelectManagerAdapter(Context context, ArrayList<ManagerDTO> managerDTOArrayList, OnListItemSelectedInterface listItemSelectedInterface) {
         inflater = LayoutInflater.from(context);
         this.managerDTOArrayList = managerDTOArrayList;
@@ -52,72 +62,117 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
 
     @NonNull
     @Override
-    public SelectManagerAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.row_select_manager,parent,false);
-        MyViewHolder holder = new MyViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        return holder;
+        /* 매니저 가이드 */
+        if(viewType == Code.ViewType.MANAGER_SELECT_GUIDE){
+            view = inflater.inflate(R.layout.row_select_manager_guide, parent, false);
+            return new ManagerGuideViewHolder(view);
+        }
+
+        /* 매니저 정보 */
+        else {
+            view = inflater.inflate(R.layout.row_select_manager, parent, false);
+            return new ManagerViewHolder(view);
+        }
+
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SelectManagerAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
 
+        /* 매니저 가이드 */
+        if(holder instanceof ManagerGuideViewHolder){
+            ((ManagerGuideViewHolder) holder).managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+        }
 
-        Picasso.get()
-                .load(managerDTOArrayList.get(position).getImagePathStr())
-                .transform(new CircleTransform())
-                .into(holder.managerImgView);
+        /* 매니저 정보 */
+        else if(holder instanceof ManagerViewHolder){
+            ((ManagerViewHolder) holder).managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+//            ((ManagerViewHolder) holder).managerImgView.setImageResource(R.drawable.ic_baseline_person_24);
 
+            /* cannot be null string 체크 시, */
+            if(TextUtils.isEmpty(managerDTOArrayList.get(position).getImagePathStr())){
+                Picasso.get()
+                        .load(R.drawable.ic_baseline_person_24)
+                        .transform(new CircleTransform())
+                        .error(R.drawable.ic_baseline_person_24)
+                        .placeholder(R.drawable.ic_baseline_person_24)
+                        .into(((ManagerViewHolder) holder).managerImgView);
+            }else{
+                Log.e(TAG, "=== managerImgView ===" +((ManagerViewHolder) holder).managerImgView.toString());
+                Picasso.get()
+                    .load(managerDTOArrayList.get(position).getImagePathStr())
+                    .transform(new CircleTransform())
+                    .into(((ManagerViewHolder) holder).managerImgView);
+            }
 
-        holder.managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
-        holder.managerAddressTxt.setText(managerDTOArrayList.get(position).getAddressStr().substring(8,14));
+        }
 
-        // TODO: 2020-12-14 리뷰의 별점 가져와야 함
-//        ArrayList<ReviewDTO> reviewDTOArrayList = managerDTOArrayList.get(position).getReviewDTOArrayList();
-//        ArrayList<Float> arrayList = new ArrayList<>();;
-//
-//        for(int i=0; i<reviewDTOArrayList.size()-1; i++) {
-//            Log.e(TAG, "=== 리뷰 어레이리스트 i ===" +i);
-//
-//            arrayList.add(reviewDTOArrayList.get(i).getStarScoreLong());
-//            Log.e(TAG, "=== 리뷰 어레이리스트 getStarScoreLong ===" + reviewDTOArrayList.get(i).getStarScoreLong());
-//            Log.e(TAG, "=== 리뷰 어레이리스트 arrayList ===" + arrayList.toString());
-//        }
-
-        holder.ratingBar.setNumStars(3);
-
-        holder.reviewScoreNumTxt.setText("("+"3"+"/5)  "+"2"+"건");
-
-        // TODO: 2020-12-14 디테일 후기에서 상위 4개 태그 넣을 것
     }
+
+
+
+//    @Override
+//    public void onBindViewHolder(SelectManagerAdapter.MyViewHolder holder, int position) {
+//        if(holder instanceof ManagerGuideViewHolder){
+//            ((ManagerViewHolder) holder).managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+//        }
+//        else{
+//            ((ManagerGuideViewHolder) holder).managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+//        }
+//
+////        Picasso.get()
+////                .load(managerDTOArrayList.get(position).getImagePathStr())
+////                .transform(new CircleTransform())
+////                .into(holder.managerImgView);
+////
+////
+////        holder.managerNameTxt.setText(managerDTOArrayList.get(position).getNameStr());
+////        holder.managerAddressTxt.setText(managerDTOArrayList.get(position).getAddressStr().substring(8,14));
+////
+////        holder.reviewScoreNumTxt.setText("("+"3"+"/5)  "+"2"+"건");
+//
+//    }
 
     @Override
     public int getItemCount() {
         return managerDTOArrayList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        return managerDTOArrayList.get(position).getViewType();
+    }
+
+
+
+    /* 매니저 가이드 */
+    public class ManagerGuideViewHolder extends RecyclerView.ViewHolder{
+        TextView managerNameTxt;
+
+        public ManagerGuideViewHolder(@NonNull View itemView){
+            super(itemView);
+            managerNameTxt=itemView.findViewById(R.id.managerNameTxt);
+
+        }
+    }
+
+
+    /* 매니저 정보 */
+    public class ManagerViewHolder extends RecyclerView.ViewHolder{
 
         ImageView managerImgView;
-        TextView managerNameTxt, reviewTxt1, reviewTxt2, reviewTxt3, reviewTxt4, reviewScoreNumTxt, managerAddressTxt;
-        RatingBar ratingBar;
+        TextView managerNameTxt;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public ManagerViewHolder(@NonNull View itemView){
             super(itemView);
-
-            managerImgView=itemView.findViewById(R.id.managerImgView);
-
             managerNameTxt=itemView.findViewById(R.id.managerNameTxt);
-            reviewTxt1=itemView.findViewById(R.id.reviewTxt1);
-            reviewTxt2=itemView.findViewById(R.id.reviewTxt2);
-            reviewTxt3=itemView.findViewById(R.id.reviewTxt3);
-            reviewTxt4=itemView.findViewById(R.id.reviewTxt4);
-
-            ratingBar=itemView.findViewById(R.id.ratingBar);
-
-            reviewScoreNumTxt=itemView.findViewById(R.id.reviewScoreNumTxt);
-
-            managerAddressTxt=itemView.findViewById(R.id.managerAddressTxt);
+            managerImgView=itemView.findViewById(R.id.managerImgView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,7 +182,39 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<SelectManagerAdap
 
                 }
             });
-
         }
     }
+
+
+
+
+//    public class MyViewHolder extends RecyclerView.ViewHolder {
+//
+//        ImageView managerImgView;
+//        TextView managerNameTxt,reviewScoreNumTxt, managerAddressTxt;
+//        RatingBar ratingBar;
+//
+//        public MyViewHolder(@NonNull View itemView) {
+//            super(itemView);
+//
+//            managerImgView=itemView.findViewById(R.id.managerImgView);
+//            managerNameTxt=itemView.findViewById(R.id.managerNameTxt);
+//            ratingBar=itemView.findViewById(R.id.ratingBar);
+//            reviewScoreNumTxt=itemView.findViewById(R.id.reviewScoreNumTxt);
+//            managerAddressTxt=itemView.findViewById(R.id.managerAddressTxt);
+//
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    int pos  = getAdapterPosition();
+//                    listItemSelectedInterface.onItemSelected(view,getAdapterPosition());
+//
+//                }
+//            });
+//
+//        }
+//    }
+
+
+
 }

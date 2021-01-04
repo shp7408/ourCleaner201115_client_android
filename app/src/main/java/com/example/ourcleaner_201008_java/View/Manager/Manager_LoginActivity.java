@@ -90,7 +90,7 @@ public class Manager_LoginActivity extends AppCompatActivity {
         /* 계속 호출이 안 돼서..ㅎㅎ */
         if(GlobalApplication.currentManagerAddress==null){
             for(int i=0; i<1; i++) {
-                whereIsHere();
+                //whereIsHere();
             }
         }
 

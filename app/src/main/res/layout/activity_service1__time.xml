@@ -35,7 +35,7 @@ android:orientation="vertical">
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="10dp">
+            android:paddingHorizontal="15dp">
 
 
             <TextView
@@ -43,12 +43,15 @@ android:orientation="vertical">
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:padding="10dp"
-                android:background="@drawable/border"
+                android:padding="20dp"
                 android:text="3시간 30분에 \n50,400원 예상됩니다."
-                android:textColor="@color/black"
+                android:textColor="@color/white"
+                android:lineSpacingExtra="15dp"
                 android:textSize="25sp"
+                android:background="@drawable/shadow2"
                 android:textStyle="bold" />
+
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -68,7 +71,7 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:background="@drawable/bordergrey"
+                    android:background="@drawable/shadow2"
                     android:weightSum="2">
 
                     <TextView
@@ -78,11 +81,12 @@ android:orientation="vertical">
                         android:layout_weight="2"
                         android:background="@color/transparent"
                         android:gravity="start"
-                        android:padding="5dp"
+                        android:paddingVertical="15dp"
+                        android:paddingHorizontal="20dp"
                         android:textAlignment="textStart"
-                        android:textSize="15sp"
-                        android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textSize="18sp"
+                        android:lineSpacingExtra="10dp"
+                        android:textColor="@color/white"/>
 
                     <TextView
                         android:layout_width="50dp"
@@ -94,16 +98,17 @@ android:orientation="vertical">
                     <Button
                         android:id="@+id/managerChoBtn"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="@drawable/bordergrey"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow2"
                         android:gravity="start|center_vertical"
-                        android:padding="5dp"
-                        android:text="매니저 지정"
+                        android:layout_marginTop="5dp"
+                        android:paddingVertical="15dp"
+                        android:paddingHorizontal="20dp"
+                        android:text="매니저 지정하기"
                         android:textAlignment="textStart"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-
-                        android:textStyle="bold" />
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        />
 
                 </LinearLayout>
 
@@ -112,7 +117,7 @@ android:orientation="vertical">
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:background="@drawable/background2"
+                    android:background="@drawable/shadow"
                     android:visibility="gone"
                     >
 
@@ -124,8 +129,8 @@ android:orientation="vertical">
 
                         <ImageButton
                             android:id="@+id/close_btn2"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
                             android:layout_marginStart="385dp"
                             android:layout_marginLeft="385dp"
                             android:background="@drawable/close" />
@@ -150,572 +155,7 @@ android:orientation="vertical">
 
 
                 </LinearLayout>
-
-
-
             </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/regularTermLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bordergrey">
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/regularTerm1Txt"
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/transparent"
-                        android:text="요일 선택"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:gravity="center"
-
-                        />
-
-                    <TextView
-                        android:id="@+id/regularTerm2Txt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="end|center_vertical"
-                        android:background="@color/transparent"
-                        android:text="매주 목요일"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:layout_marginRight="5dp"
-                        android:layout_marginEnd="5dp"/>
-                </LinearLayout>
-                
-                <LinearLayout
-                    android:id="@+id/regulardaysBtnsLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/MonDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="월"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/TueDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="화"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/WendDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="수"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/ThursDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="목"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/FriDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="금"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/SatDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="토"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    <Button
-                        android:id="@+id/SunDBtn"
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:textSize="20sp"
-                        android:text="일"
-                        android:textColor="@color/black"
-                        android:background="@drawable/color_change"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp" />
-                    
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bordergrey">
-
-
-                <LinearLayout
-                    android:id="@+id/dateLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/date1Txt"
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/transparent"
-                        android:text="방문 날짜"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:gravity="center"
-                        />
-
-                    <TextView
-                        android:id="@+id/date2Txt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/transparent"
-                        android:gravity="end|center_vertical"
-                        android:text="10.28(수)"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <CalendarView
-                    android:id="@+id/dateCalendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-
-                    />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bordergrey">
-
-            <LinearLayout
-                android:id="@+id/timeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="2dp">
-
-                <TextView
-                    android:id="@+id/time1Txt"
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent"
-                    android:text="시작 시간"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:gravity="center"
-                    />
-
-
-                <TextView
-                    android:id="@+id/time2Txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/transparent"
-                    android:text="3시간 30분 / 10:00~13:30"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:textAlignment="viewEnd"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:gravity="end|center_vertical" />
-
-            </LinearLayout>
-
-
-
-            <TextView
-                   android:id="@+id/regulartimeTxt"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="서비스 시간"
-                   android:textColor="@color/black"
-                   android:textSize="15sp"
-                   android:layout_marginStart="10dp"
-                   android:padding="10dp"
-                   android:layout_marginLeft="10dp" />
-
-
-            <LinearLayout
-                android:id="@+id/regulartimeLayout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:weightSum="2"
-                android:gravity="center_vertical"
-                android:background="@drawable/bordergrey"
-                android:layout_marginLeft="10dp">
-
-                <TextView
-                    android:id="@+id/regulartimeChanTxt"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:text="3시간 30분"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="10dp"
-                    tools:layout_editor_absoluteX="23dp"
-                    tools:layout_editor_absoluteY="-83dp"
-                    android:layout_marginLeft="10dp" />
-                <Button
-                    android:id="@+id/regulartimeChanBtn"
-                    android:layout_width="40dp"
-                    android:layout_height="30dp"
-                    android:textSize="15sp"
-                    android:text="변경"
-                    android:background="@drawable/bordergrey"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginLeft="10dp" />
-
-            </LinearLayout>
-
-                <TextView
-                    android:id="@+id/regulartimeChoTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="방문 시간"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="10dp"
-                    android:padding="10dp"
-                    android:layout_marginLeft="10dp" />
-
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/timeDetailConst"
-                    android:layout_width="match_parent"
-                    android:layout_height="404dp"
-                    >
-
-                    <Button
-                        android:id="@+id/time8Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="8:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time9Btn"
-                        app:layout_constraintEnd_toStartOf="@+id/time830Btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/time830Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="8:30"
-
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time930Btn"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/time8Btn"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Button
-                        android:id="@+id/time9Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="8dp"
-
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="9:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time10Btn"
-                        app:layout_constraintEnd_toStartOf="@+id/time930Btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/time8Btn" />
-
-                    <Button
-                        android:id="@+id/time930Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-
-                        android:text="9:30"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/timeblanBtn1"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/time9Btn"
-                        app:layout_constraintTop_toBottomOf="@+id/time830Btn" />
-
-                    <Button
-                        android:id="@+id/time10Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/color_change"
-                        android:text="10:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time14Btn"
-                        app:layout_constraintEnd_toStartOf="@+id/timeblanBtn1"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/time9Btn" />
-
-                    <Button
-                        android:id="@+id/timeblanBtn1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="invisible"
-
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="16dp"
-                        android:background="@drawable/color_change"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time1430Btn"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/time10Btn"
-                        app:layout_constraintTop_toBottomOf="@+id/time930Btn" />
-
-                    <Button
-                        android:id="@+id/time14Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="14:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time15Btn"
-                        app:layout_constraintEnd_toStartOf="@+id/time1430Btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/time10Btn" />
-
-                    <Button
-                        android:id="@+id/time1430Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="14:30"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time1530Btn"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/time14Btn"
-                        app:layout_constraintTop_toBottomOf="@+id/timeblanBtn1" />
-
-                    <Button
-                        android:id="@+id/time15Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="15:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/time16Btn"
-                        app:layout_constraintEnd_toStartOf="@+id/time1530Btn"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/time14Btn" />
-
-                    <Button
-                        android:id="@+id/time1530Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="15:30"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toTopOf="@+id/timeblanBtn2"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/time15Btn"
-                        app:layout_constraintTop_toBottomOf="@+id/time1430Btn" />
-
-                    <Button
-                        android:id="@+id/timeblanBtn2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginEnd="32dp"
-                        android:layout_marginRight="32dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="15:30"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.494"
-                        app:layout_constraintStart_toEndOf="@+id/time16Btn"
-                        app:layout_constraintTop_toBottomOf="@+id/time1530Btn"
-                        app:layout_constraintVertical_bias="0.454" />
-
-                    <Button
-                        android:id="@+id/time16Btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="32dp"
-                        android:layout_marginLeft="32dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/color_change"
-                        android:text="16:00"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/timeblanBtn2"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/time15Btn"
-                        app:layout_constraintVertical_bias="0.0" />
-
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bordergrey">
-
-
-                <LinearLayout
-                    android:id="@+id/regularstartdateLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="2dp">
-
-                    <TextView
-                        android:id="@+id/regularstartdate1Txt"
-                        android:layout_width="70dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/transparent"
-                        android:text="시작일"
-                        android:textStyle="bold"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:gravity="center"
-                        />
-
-                    <TextView
-                        android:id="@+id/regularstartdate2Txt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginRight="5dp"
-                        android:background="@color/transparent"
-                        android:gravity="end|center_vertical"
-                        android:text="10.28(수)"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <CalendarView
-                    android:id="@+id/regularstartdateCalendar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
-
-            </LinearLayout>
 
 
             <Button
@@ -728,6 +168,7 @@ android:orientation="vertical">
                 android:layout_marginTop="30dp"
                 android:background="@drawable/background"
                 android:enabled="false"
+                android:visibility="gone"
                 />
 
 

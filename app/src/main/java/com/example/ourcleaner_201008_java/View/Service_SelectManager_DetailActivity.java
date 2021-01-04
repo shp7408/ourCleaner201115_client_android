@@ -1,32 +1,46 @@
 package com.example.ourcleaner_201008_java.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager.widget.ViewPager;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ourcleaner_201008_java.Adapter.SelectManagerAdapter;
+import com.example.ourcleaner_201008_java.Adapter.SectionPageAdapter;
 import com.example.ourcleaner_201008_java.CircleTransform;
-import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
+import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
+import com.example.ourcleaner_201008_java.Dialog.ExampleBottomSheetDialog;
+import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.ManagerSelectDetailInterface;
-import com.example.ourcleaner_201008_java.Interface.ManagerSelectInterface;
 import com.example.ourcleaner_201008_java.R;
+import com.example.ourcleaner_201008_java.View.Fragment.Fragment_First;
+import com.example.ourcleaner_201008_java.View.Fragment.Fragment_Second;
+import com.example.ourcleaner_201008_java.View.Fragment.Fragment_Third;
+import com.google.android.material.tabs.TabLayout;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,9 +50,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class Service_SelectManager_DetailActivity extends AppCompatActivity {
+public class Service_SelectManager_DetailActivity extends AppCompatActivity implements ExampleBottomSheetDialog.BottomSheetListener {
+//    public class Service_SelectManager_DetailActivity extends AppCompatActivity {
 
     private static final String TAG = "매니저디테일정보";
+
+    public static Context mcontext;
 
     String managerEmail;
     int managerUidStr;
@@ -47,10 +64,17 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
     TextView nameTxt,phoneNumTxt, reviewScoreNumTxt, reviewMoreTxt, activateGuideTxt, managerAddressTxt;
     RatingBar ratingBar;
     Button place1Btn, place2Btn, place3Btn, place4Btn, place5Btn, chooseBtn;
-
+    LinearLayout linearlayout;
 
     Service_SelectManagersActivity cActivity;
 
+    private ViewPager mViewPager;
+    SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
+
+    /* 현재 엑티비티의 정보 담는 객체 */
+    ServiceDTO serviceDTO;
+
+//    CalendarView calendar_view;
 
 
     @Override
@@ -60,24 +84,40 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
         Log.d(TAG, "=== onCreate ===" );
 
         /* 장소등록엑티비티, 장소등록엑티비티2 삭제하기 위한 코드  3.  */
-        cActivity = (Service_SelectManagersActivity) Service_SelectManagersActivity.CActivity;
+//        cActivity = (Service_SelectManagersActivity) Service_SelectManagersActivity.CActivity;
 
         //intent로 받을 때 사용하는 코드
         Intent intent = getIntent();
         Log.d(TAG, "약관동의 엑티비티에서 인텐트 받음 intent :"+intent);
 
         managerEmail = intent.getStringExtra("managerEmail");
-        Log.d(TAG, "이전 엑티비티에서 managerEmail 받아옴 이걸로 본인 데이터 받아오기 : "+ managerEmail);
+        Log.e(TAG, "managerEmail: "+ managerEmail);
+        serviceDTO = (ServiceDTO) intent.getSerializableExtra("serviceDTO");
+        Log.e(TAG, "serviceDTO getNeedDefCost: "+ serviceDTO.getNeedDefCost());
+        Log.e(TAG, "serviceDTO getNeedDefTime: "+ serviceDTO.getNeedDefTime());
 
-        profileImage = findViewById(R.id.profileImage);
+
+        linearlayout = findViewById(R.id.linearlayout);
+
+//        calendar_view = findViewById(R.id.calendar_view);
+//        settingdateCalendar();
+
+
+        mcontext=this;
+
+
+
+
+
+
 
         nameTxt = findViewById(R.id.nameTxt);
         phoneNumTxt = findViewById(R.id.phoneNumTxt);
         reviewScoreNumTxt = findViewById(R.id.reviewScoreNumTxt);
-        reviewMoreTxt = findViewById(R.id.reviewMoreTxt);
+//        reviewMoreTxt = findViewById(R.id.reviewMoreTxt);
         activateGuideTxt = findViewById(R.id.activateGuideTxt);
 
-        ratingBar = findViewById(R.id.ratingBar);
+//        ratingBar = findViewById(R.id.ratingBar);
 
         place1Btn = findViewById(R.id.place1Btn);
         place2Btn = findViewById(R.id.place2Btn);
@@ -95,9 +135,38 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
         place4Btn.setVisibility(View.GONE);
         place5Btn.setVisibility(View.GONE);
 
+        profileImage = findViewById(R.id.profileImage);
 
+
+        mViewPager = (ViewPager) findViewById(R.id.container);
+//        setupViewPager(mViewPager);
+
+        /* 예약 탭 프래그먼트 부분 */
+        Fragment_First fragment_first = new Fragment_First();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("getNeedDefCost", serviceDTO.getNeedDefCost());
+        bundle.putInt("getNeedDefTime", serviceDTO.getNeedDefTime());
+
+        fragment_first.setArguments(bundle);
+
+        adapter.addFragment(fragment_first, "예약 하기");
+
+
+        /* 서비스 및 후기 부분 프래그먼트 부분 */
+        adapter.addFragment(new Fragment_Second(), "서비스");
+        adapter.addFragment(new Fragment_Third(), "후기");
+        mViewPager.setAdapter(adapter);
+
+
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         fetchJSON();
+
+
+
 
         chooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +186,25 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
             }
         });
 
+
+
+
+
+
     }
+
+
+
+
+
+
+    public void setupViewPager(ViewPager viewPager) {
+        adapter.addFragment(new Fragment_First(), "예약 하기");
+        adapter.addFragment(new Fragment_Second(), "서비스");
+        adapter.addFragment(new Fragment_Third(), "후기");
+        viewPager.setAdapter(adapter);
+    }
+
 
     private void fetchJSON(){
 
@@ -270,4 +357,23 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity {
         });
     }
 
+
+
+
+
+
+
+
+
+
+
+//    @Override
+//    public void onButtonClicked(String text) {
+//        Log.d(TAG, "=== onButtonClicked ===" +text);
+//    }
+//
+    @Override
+    public void onButtonClicked(int getNeedDefTime) {
+        Log.d(TAG, "=== onButtonClicked ===" +getNeedDefTime);
+    }
 }

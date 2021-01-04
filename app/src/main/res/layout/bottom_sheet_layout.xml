@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:numberpicker="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/transparent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_margin="10dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="진행 시간"
+            android:layout_marginStart="35dp"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            />
+
+        <ImageButton
+            android:id="@+id/close_btn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/close"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="10dp"
+        android:gravity="center_vertical"
+        android:weightSum="2">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간 선택"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_weight="2"/>
+
+
+        <LinearLayout
+            android:layout_width="130dp"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="@color/transparent">
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:padding="0dp"
+                android:textColor="@android:color/black"
+                android:background="@null"
+                android:id="@+id/decrement"
+                android:textStyle="bold"
+                android:text="—"/>
+
+            <TextView
+                android:layout_width="70dp"
+                android:background="@android:color/white"
+                android:layout_height="match_parent"
+                android:text="3"
+                android:textColor="@android:color/black"
+                android:inputType="number"
+                android:id="@+id/display"
+                android:textSize="20sp"
+                android:gravity="center"
+                />
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:padding="0dp"
+                android:textSize="25sp"
+                android:textColor="@android:color/black"
+                android:background="@null"
+                android:id="@+id/increment"
+                android:text="+"/>
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_gray"
+        android:text="* 집 상태, 면적에 따라 여유롭게 시간을 선택해주세요"
+        android:textColor="@color/black"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginHorizontal="15dp"
+        />
+    <Button
+        android:id="@+id/completeBtn"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="20dp"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background"
+        android:textStyle="bold"
+        android:text="적용"
+        android:layout_marginBottom="20dp"/>
+
+</LinearLayout>

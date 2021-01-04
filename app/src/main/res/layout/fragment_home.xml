@@ -19,12 +19,12 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
+        android:background="@drawable/shadow2"
         android:padding="20dp"
         android:text="우리집 청소는\n
 '우리집 청소'에\n
 맡기세요."
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="bold"
 
@@ -47,11 +47,12 @@
         android:weightSum="2">
         <Button
             android:id="@+id/reserve_one_btn"
-            android:background="@drawable/border"
+            android:background="@drawable/shadow2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="예약하기"
             android:textSize="30dp"
+            android:textColor="@color/white"
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="461dp"
             android:layout_weight="1"/>

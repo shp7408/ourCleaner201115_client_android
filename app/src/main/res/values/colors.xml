@@ -18,7 +18,7 @@
     <color name="red">#FF0000  </color>
     <color name="blue">#0000FF  </color>
     <color name="grey">#424242  </color>
-    <color name="transparent">#00000000</color>#BDBDBD
+    <color name="transparent">#00000000</color>
     <color name="grey2">#BDBDBD</color>
 
 </resources>

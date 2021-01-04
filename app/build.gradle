@@ -44,6 +44,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    implementation 'androidx.core:core:1.5.0-alpha04'
+
+
 // 카카오톡 자동 로그인 위함
     implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
 // 볼리 사용
@@ -110,5 +113,24 @@ dependencies {
 
     implementation 'com.squareup.okhttp3:okhttp:3.2.0'
 
+    implementation 'com.github.applikeysolutions:cosmocalendar:1.0.4'
 
+    implementation 'com.android.support:design:30.0.0'
+    implementation 'com.github.travijuu:numberpicker:1.0.7' //안됨...왜 안될까..
+
+    implementation 'com.shawnlin:number-picker:2.4.11'
+
+    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "com.android.support") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "26.+"
+            }
+        }
+    }
 }

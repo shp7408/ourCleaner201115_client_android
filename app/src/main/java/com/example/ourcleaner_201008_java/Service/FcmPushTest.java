@@ -21,8 +21,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class FcmPushTest {
 
-    //구글 인증 서버키
-    private final String AUTH_KEY_FCM = "AAAAyzEIzdE:APA91bEfyfUBXZ7SE3d6xQ4mYy6cJQUkSHvGhYq5MtmxjYi3zDWbWZm5fHmhoiMZ1jhwaG9x7IQ9qRrWq08hQN6QBFw7XL8n8fo1Pm0r1qSDSh8P1Fgjuo3oar90DFu9m4vUvaVeJ7Pe";
+    //구글 인증 서버키 -> 서버 키 변경 함20201228
+    private final String AUTH_KEY_FCM = "AAAAyzEIzdE:APA91bEJRMmOb-Z_zvraHqydEEEHQrrPqr30XDnPzVDoZJytnzkBmvJEyHLpUdPtMvVG7ZoRDadN49y4x-2uWeqpVsfG5Fgw-SFUiHuNnOEzNnXP9q3zNS3bK1hgVbcacOCEBoF1WwuS";
     private final String API_URL_FCM = "https://fcm.googleapis.com/fcm/send";
 
     //기기별 앱 토큰

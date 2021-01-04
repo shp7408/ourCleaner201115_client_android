@@ -15,60 +15,87 @@ android:padding="5dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingVertical="10dp"
-        android:paddingHorizontal="20dp"
-        android:background="@drawable/bordercircle601"
+        android:paddingVertical="20dp"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/shadow2"
         >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:gravity="center"
+            >
 
             <ImageView
                 android:id="@+id/managerImgView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
                 android:orientation="vertical"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="3dp">
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/managerNameTxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="박서현 매니저"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/white"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginStart="30dp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
-                    <RatingBar
-                        android:id="@+id/ratingBar"
-                        style="@style/Widget.AppCompat.RatingBar.Indicator"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:numStars="5"
-                        android:rating="3.5"
-                        android:stepSize="0.1" />
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/happy_small"
+                        android:layout_marginStart="5dp"
+                        />
 
                     <TextView
                         android:id="@+id/reviewScoreNumTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginStart="3dp"
+                        android:text="80% (15)"
+                        android:textColor="@color/white"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reviewNumTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginStart="10dp"
-                        android:text="(3.5 / 5) 5 건"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"
+                        android:text="수행 완료 20 건"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/reviewNumTxt2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:text="재신청 의향 80%"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                 </LinearLayout>
@@ -82,77 +109,14 @@ android:padding="5dp">
                     android:textColor="@color/black"
                     android:padding="5dp"
                     android:layout_marginTop="3dp"
+                    android:visibility="gone"
                     />
             </LinearLayout>
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/reviewTxt1"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="가스레인지 찌든 때 싹"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bordercircle60"/>
-
-            <TextView
-                android:id="@+id/reviewTxt2"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="냉장고 내부 정리 완벽"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bordercircle60"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/reviewTxt3"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="분리수거 완벽해요"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bordercircle60"/>
-
-            <TextView
-                android:id="@+id/reviewTxt4"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="세면대 청소 깨끗"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:gravity="center_vertical"
-                android:background="@drawable/bordercircle60"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

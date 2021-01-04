@@ -38,4 +38,16 @@
     </string-array>
 
     <string name="default_notification_channel_id">서비스 요청</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Font -->
+    <string name="roboto_regular">sans-serif</string>
+    <string name="roboto_light">sans-serif-light</string>
+    <string name="roboto_condensed">sans-serif-condensed</string>
+    <string name="roboto_thin">sans-serif-thin</string>
+    <string name="roboto_medium">sans-serif-medium</string>
+
+    <string name="number_picker_formatter">%02d</string>
+
 </resources>

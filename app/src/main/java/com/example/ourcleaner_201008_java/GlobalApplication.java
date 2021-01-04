@@ -23,6 +23,9 @@ public class GlobalApplication extends Application {
 
     //현재 사용자 가져오기 위한 변수
     public static String currentUser;
+    public static String currentUserAddress;
+
+
     public static String currentManager;
     public static String currentManagerName;
     public static String currentManagerPhonNum;
@@ -170,6 +173,14 @@ public class GlobalApplication extends Application {
                 }
             };
         }
+    }
+
+    public static String getCurrentUserAddress() {
+        return currentUserAddress;
+    }
+
+    public static void setCurrentUserAddress(String currentUserAddress) {
+        GlobalApplication.currentUserAddress = currentUserAddress;
     }
 
     public String getCurrentUser(){

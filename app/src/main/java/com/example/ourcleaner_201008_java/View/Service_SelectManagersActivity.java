@@ -12,10 +12,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ourcleaner_201008_java.Adapter.MyManagerAdapter;
 import com.example.ourcleaner_201008_java.Adapter.SelectManagerAdapter;
 import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
+import com.example.ourcleaner_201008_java.DTO.MymanagerDTO;
+import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
+import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.ManagerSelectInterface;
 import com.example.ourcleaner_201008_java.R;
 
@@ -34,23 +39,33 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class Service_SelectManagersActivity extends AppCompatActivity implements SelectManagerAdapter.OnListItemSelectedInterface{
+public class Service_SelectManagersActivity extends AppCompatActivity
+        implements SelectManagerAdapter.OnListItemSelectedInterface{
 
     private static final String TAG = "매니저선택엑티비티1";
 
-    Spinner spinner;
 
     private SelectManagerAdapter selectManagerAdapter;
     private RecyclerView recyclerView;
 
-    ArrayList<ManagerDTO> managerDTOArrayList;
+    ArrayList<ManagerDTO> managerDTOArrayList = new ArrayList<>();;
+
+
+    private MyManagerAdapter myManagerAdapter;
+    private RecyclerView recyclerView2;
+
+    ArrayList<MymanagerDTO> mymanagerDTOS = new ArrayList<>();
+
 
     /* 이전 엑티비티에서 intent로 주소 받아옴 도로명 주소는 나중에.. */
-    String siGunGuStr="화성시", eupmyundongStr="진안동";
+    String siGunGuStr="화성시", eupmyundongStr="진안동", siGunGuStr2;
 
-    /* 저장 후, 현재 엑티비티 종료 위함 -> 1. static으로 엑티비티 선언 */
-    public static Activity CActivity;
+    /* 현재 엑티비티의 정보 담는 객체 */
+    ServiceDTO serviceDTO;
 
+    TextView myplaceAddressTxt;
+
+    Boolean nextBool=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,30 +74,48 @@ public class Service_SelectManagersActivity extends AppCompatActivity implements
         Log.d(TAG, "=== onCreate ===" );
 
         /* 저장 후, 현재 엑티비티 종료 위함 -> 2. 엑티비티 객체에 현재 클래스를 담음 */
-        CActivity = Service_SelectManagersActivity.this;
-
-        spinner = findViewById(R.id.spinner);
+//        CActivity = Service_SelectManagersActivity.this;
 
         recyclerView = findViewById(R.id.select_manager_recycle);
+//        recyclerView2 = findViewById(R.id.myManagerRecyclerView);
 
-        fetchJSON();
+        myplaceAddressTxt = findViewById(R.id.myplaceAddressTxt);
 
-//        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Log.e(TAG, "=== onItemClick ===" +i);
-//            }
-//        });
+        //intent로 받을 때 사용하는 코드
+        Intent intent = getIntent();
+
+        serviceDTO = (ServiceDTO) intent.getSerializableExtra("serviceDTO");
+
+        siGunGuStr = serviceDTO.getMyplaceDTO().getAddress().substring(8,14); //경기 화성시
+        Log.e(TAG, "=== siGunGuStr ===" +siGunGuStr);
+
+        siGunGuStr2 = serviceDTO.getMyplaceDTO().getAddress().substring(11,14); //화성시
+        Log.e(TAG, "=== siGunGuStr2 ===" +siGunGuStr2);
+
+        myplaceAddressTxt.setText(siGunGuStr);
+
+
+        fetchJSON2();
+
+        try{
+            Thread.sleep(100);
+
+            fetchJSON();
+
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+
+
+
+
 
 
 
     }
 
-    private void fetchJSON(){
-
-        //인스턴스 변수로 해서
-//        final String siGunGuStr = etUname.getText().toString().trim();
-//        final String eupmyundongStr = etPass.getText().toString().trim();
+    /* 현재 사용자 이메일 보내서, 최근 방문한 매니저 목록 가져오기 */
+    private void fetchJSON2(){
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ManagerSelectInterface.JSONURL)
@@ -92,10 +125,188 @@ public class Service_SelectManagersActivity extends AppCompatActivity implements
         ManagerSelectInterface api = retrofit.create(ManagerSelectInterface.class);
 
         Map<String, String> mapdata = new HashMap<>();
-        mapdata.put("siGunGuStr", siGunGuStr);
+        mapdata.put("siGunGuStr", siGunGuStr2);
+        mapdata.put("user", GlobalApplication.currentUser);
+
+        Log.e(TAG, "siGunGuStr"+siGunGuStr2);
+        Log.e(TAG, "user"+GlobalApplication.currentUser);
+
+        Call<String> call = api.getNearManager(mapdata);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.e(TAG, "Responsestring"+response.body());
+                //Toast.makeText()
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        Log.e(TAG, "onSuccess"+response.body());
+
+                        String jsonresponse = response.body();
+                        writeRecycler2(jsonresponse);
+
+                        nextBool=true;
+
+                    } else {
+                        Log.e(TAG, "onEmptyResponse"+"Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "onFailure");
+
+            }
+        });
+    }
+
+    private void writeRecycler2(String response){
+
+        String TAG2 = "3333333333";
+
+        try {
+            //getting the whole json object from the response
+            JSONObject obj = new JSONObject(response);
+            Log.e(TAG2, "=== response ===" +response);
+
+            if(obj.optString("status").equals("true")){
+
+
+//                    managerDTOArrayList = new ArrayList<>();
+                    JSONArray dataArray  = obj.getJSONArray("data");
+
+                    ManagerDTO managerDTOGide = new ManagerDTO();
+
+                    managerDTOGide.setNameStr("나의 매니저");
+                    managerDTOGide.setViewType(0);
+
+                    managerDTOArrayList.add(managerDTOGide);
+
+                    for (int i = 0; i < dataArray.length(); i++) {
+
+                        ManagerDTO managerDTO = new ManagerDTO();
+                        JSONObject dataobj = dataArray.getJSONObject(i);
+
+                        managerDTO.setViewType(1);
+                        managerDTO.setId(dataobj.getInt("uid"));
+                        managerDTO.setNameStr(dataobj.getString("nameStr"));
+                        managerDTO.setEmail(dataobj.getString("idStr"));
+                        managerDTO.setPhoneNumStr(dataobj.getString("phoneNumStr"));
+                        managerDTO.setAddressStr(dataobj.getString("addressStr"));
+
+
+                        managerDTO.setImagePathStr(dataobj.getString("profileImagePathStr"));
+                        Log.e(TAG, "=== managerImgView ===" +managerDTO.getImagePathStr());
+
+
+                        managerDTOArrayList.add(managerDTO);
+
+
+                    }
+
+                selectManagerAdapter = new SelectManagerAdapter(this, managerDTOArrayList, this);
+
+
+
+
+                recyclerView.setAdapter(selectManagerAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//                retrofitAdapter = new RetrofitAdapter(this,modelRecyclerArrayList);
+//                recyclerView.setAdapter(retrofitAdapter);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//                managerDTOArrayList = new ArrayList<>();
+//                JSONArray dataArray  = obj.getJSONArray("data");
+//
+//                ManagerDTO managerDTOGide = new ManagerDTO();
+//
+//                managerDTOGide.setNameStr("나의 매니저");
+//                managerDTOGide.setViewType(0);
+//
+//                managerDTOArrayList.add(managerDTOGide);
+//
+//                MymanagerDTO mymanagerDTO = new MymanagerDTO();
+//
+//                for (int i = 0; i < dataArray.length(); i++) {
+//
+//                    ManagerDTO managerDTO = new ManagerDTO();
+//                    JSONObject dataobj = dataArray.getJSONObject(i);
+//
+//                    managerDTO.setViewType(2);
+//                    managerDTO.setId(dataobj.getInt("uid"));
+//                    managerDTO.setNameStr(dataobj.getString("nameStr"));
+//                    managerDTO.setEmail(dataobj.getString("idStr"));
+//                    managerDTO.setPhoneNumStr(dataobj.getString("phoneNumStr"));
+//                    managerDTO.setAddressStr(dataobj.getString("addressStr"));
+//
+//
+//                    managerDTO.setImagePathStr(dataobj.getString("profileImagePathStr"));
+//                    Log.e(TAG, "=== managerImgView ===" +managerDTO.getImagePathStr());
+//
+//
+//                    managerDTOArrayList.add(managerDTO);
+//
+//                    mymanagerDTO.setId(dataobj.getInt("uid"));
+//                    mymanagerDTO.setNameStr(dataobj.getString("nameStr"));
+//                    mymanagerDTO.setEmail(dataobj.getString("idStr"));
+//                    mymanagerDTO.setPhoneNumStr(dataobj.getString("phoneNumStr"));
+//                    mymanagerDTO.setAddressStr(dataobj.getString("addressStr"));
+//                    mymanagerDTO.setImagePathStr(dataobj.getString("profileImagePathStr"));
+//
+//                    mymanagerDTOS.add(mymanagerDTO);
+//
+//                }
+//
+//                selectManagerAdapter = new SelectManagerAdapter(this, managerDTOArrayList, this );
+//
+//                recyclerView.setAdapter(selectManagerAdapter);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+//
+////                myManagerAdapter = new MyManagerAdapter(this,  mymanagerDTOS);
+////
+////                recyclerView2.setAdapter(myManagerAdapter);
+////                recyclerView2.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
+//
+
+            }else {
+                Toast.makeText(Service_SelectManagersActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void fetchJSON(){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ManagerSelectInterface.JSONURL)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .build();
+
+        ManagerSelectInterface api = retrofit.create(ManagerSelectInterface.class);
+
+        Map<String, String> mapdata = new HashMap<>();
+        mapdata.put("siGunGuStr", siGunGuStr2);
         mapdata.put("eupmyundongStr", eupmyundongStr);
 
-        Log.e(TAG, "3333333333 siGunGuStr"+siGunGuStr);
+        Log.e(TAG, "3333333333 siGunGuStr"+siGunGuStr2);
         Log.e(TAG, "3333333333 eupmyundongStr"+eupmyundongStr);
 
         Call<String> call = api.getNearManager(mapdata);
@@ -137,14 +348,22 @@ public class Service_SelectManagersActivity extends AppCompatActivity implements
 
             if(obj.optString("status").equals("true")){
 
-                managerDTOArrayList = new ArrayList<>();
+//                managerDTOArrayList = new ArrayList<>();
                 JSONArray dataArray  = obj.getJSONArray("data");
+
+                ManagerDTO managerDTOGide = new ManagerDTO();
+
+                managerDTOGide.setNameStr("우리 동네 매니저");
+                managerDTOGide.setViewType(0);
+
+                managerDTOArrayList.add(managerDTOGide);
 
                 for (int i = 0; i < dataArray.length(); i++) {
 
                     ManagerDTO managerDTO = new ManagerDTO();
                     JSONObject dataobj = dataArray.getJSONObject(i);
 
+                    managerDTO.setViewType(1);
                     managerDTO.setId(dataobj.getInt("uid"));
                     managerDTO.setNameStr(dataobj.getString("nameStr"));
                     managerDTO.setEmail(dataobj.getString("idStr"));
@@ -153,35 +372,17 @@ public class Service_SelectManagersActivity extends AppCompatActivity implements
 
 
                     managerDTO.setImagePathStr(dataobj.getString("profileImagePathStr"));
+                    Log.e(TAG, "=== managerImgView ===" +managerDTO.getImagePathStr());
 
-
-//                    JSONArray jsonArray = dataobj.getJSONArray("desiredWorkAreaList");
-//
-//                    /* jsonarray를 array로  */
-//                    ArrayList<String> desiredWorkAreaList = new ArrayList<>();
-//
-//                    if (jsonArray != null) {
-//                        for ( int j=0 ; j<jsonArray.length() ; j++ ){
-//                            desiredWorkAreaList.add(jsonArray.getString(j));
-//                        }
-//                    }
-//                    Log.e(TAG2, "=== desiredWorkAreaList ===" +desiredWorkAreaList.toString());
-//
-//                    managerDTO.setDesiredWorkAreaList(desiredWorkAreaList);
 
                     managerDTOArrayList.add(managerDTO);
-/*
-                    modelRecycler.setImgURL(dataobj.getString("imgURL"));
-                    modelRecycler.setName(dataobj.getString("name"));
-                    modelRecycler.setCountry(dataobj.getString("country"));
-                    modelRecycler.setCity(dataobj.getString("city"));
 
-                    modelRecyclerArrayList.add(modelRecycler);
-*/
 
                 }
 
-                selectManagerAdapter = new SelectManagerAdapter(this, managerDTOArrayList, this );
+                selectManagerAdapter = new SelectManagerAdapter(this, managerDTOArrayList, this);
+
+
 
                 recyclerView.setAdapter(selectManagerAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
@@ -209,7 +410,7 @@ public class Service_SelectManagersActivity extends AppCompatActivity implements
         /* 엑티비티 2개 넘는 경우,  */
         intent.addFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
         intent.putExtra("managerEmail", managerDTOArrayList.get(position).getEmail());
-
+        intent.putExtra("serviceDTO", serviceDTO);
 
         startActivity(intent);
 
