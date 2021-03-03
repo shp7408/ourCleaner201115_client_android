@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Manager.Manager_Chat_Room_Activity">
+
+<!--    <TextView-->
+<!--        android:id="@+id/send"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="전송"-->
+<!--        android:textSize="17sp"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:background="@drawable/background"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_margin="8dp"-->
+<!--        android:padding="10dp"/>-->
+
+    <TextView
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="전송"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:background="@drawable/background"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:padding="10dp"/>
+
+    <!--    <RelativeLayout-->
+    <!--        android:id="@+id/relativeLayout1"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_alignParentRight="true"-->
+    <!--        android:layout_marginBottom="5dp"-->
+    <!--        >-->
+
+
+
+    <!--        <TextView-->
+    <!--            android:id="@+id/sendImg"-->
+    <!--            android:layout_width="45dp"-->
+    <!--            android:layout_height="45dp"-->
+    <!--            android:gravity="center"-->
+    <!--            android:textColor="@color/white"-->
+    <!--            android:background="@drawable/ic_baseline_image_24"-->
+    <!--            android:padding="10dp"-->
+    <!--            android:visibility="gone"/>-->
+
+    <!--    </RelativeLayout>-->
+
+    <EditText
+        android:id="@+id/messageBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="메세지를 입력해주세요."
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/send"
+        android:layout_toRightOf="@+id/sendImg"
+        android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/sendImg"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/ic_baseline_image_24"
+                android:layout_alignParentBottom="true"
+                android:padding="10dp"
+                />
+
+<!--    <ListView-->
+<!--        android:id="@+id/messageList"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="654dp"-->
+<!--        android:layout_above="@+id/messageBox"-->
+<!--        android:layout_marginTop="35dp"-->
+<!--        android:divider="@null"/>-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/managerChatRecyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_above="@+id/messageBox"
+        android:layout_marginTop="30dp"
+        tools:listitem="@layout/row_manager_message_received"/>
+
+    <TextView
+        android:id="@+id/roomTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:paddingHorizontal="20dp"
+        android:text="화성시 박용현 고객님과의 대화"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

@@ -22,680 +22,368 @@
                 android:layout_height="35dp">
 
                 <ImageButton
-                    android:id="@+id/close_btn"
+                    android:id="@+id/back_btn"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
-                    android:background="@drawable/close"
+                    android:background="@drawable/ic_baseline_arrow_back_24"
                     />
 
             </LinearLayout>
 
 
             <RelativeLayout
-                android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/border"
-                android:orientation="vertical"
-                android:paddingBottom="30dp">
+                android:layout_gravity="center"
+                >
 
-                <TextView
-                    android:id="@+id/datedayTxt"
-                    android:layout_width="match_parent"
-                    android:layout_height="130dp"
-                    android:layout_marginBottom="10dp"
-                    android:background="@color/grey"
-                    android:gravity="center"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="30dp"
-                    android:text="11.26(목) 예약"
-                    android:textColor="@color/white"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/startAndAllTimeTxt"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/datedayTxt"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="63dp"
-                    android:layout_marginBottom="13dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/shadow2"
+                    android:layout_marginTop="40dp"
                     android:gravity="center"
-                    android:text="10시 ~ 14시 30분 (4시간 30분)"
-                    android:textColor="@color/grey2"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    >
+
+                    <TextView
+                        android:id="@+id/dateDayTimeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1.10(일) 7시 ~ 12시 (5시간)"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="70dp"/>
+
+                    <!-- 1번 회색 상자 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/serviceStateTxt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="청소 전"
+                            android:gravity="center"
+                            android:background="@drawable/bordergrey"
+                            android:textColor="@color/black"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="10dp"
+                            android:padding="10dp"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <View style="@style/Divider"
+                            android:layout_marginBottom="5dp"/>
 
 
 
-                <TextView
-                    android:id="@+id/stateTxt"
-                    android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/serviceState3Txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="아래의 '이동 하기' 버튼을 클릭하면,"
+                            android:textSize="13sp"
+                            android:textColor="@color/red"
+                            />
+                        <TextView
+                            android:id="@+id/serviceState4Txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="고객의 상세주소를 확인할 수 있습니다."
+                            android:textSize="13sp"
+                            android:textColor="@color/red"
+                            />
+
+                        <View style="@style/Divider"
+                            android:layout_marginTop="5dp" />
+                        <TextView
+                            android:id="@+id/serviceStateChangeTxt"
+                            android:layout_width="150dp"
+                            android:layout_height="wrap_content"
+                            android:text="이동 하기"
+                            android:gravity="center"
+                            android:background="@drawable/background"
+                            android:textColor="@color/white"
+                            android:layout_marginHorizontal="30dp"
+                            android:layout_marginVertical="10dp"
+                            android:padding="10dp"
+                            android:textSize="15sp"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
+
+                    <!-- 2번 회색 상자 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="20dp"
+                        android:gravity="right">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="집 상세정보"
+                            android:textColor="@color/black"
+                            android:layout_marginBottom="5dp"
+                            android:textStyle="bold"/>
+
+                        <View style="@style/Divider"
+                            android:layout_marginBottom="5dp"
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_weight="2"
+                            android:gravity="center">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:paddingHorizontal="10dp"
+                                android:layout_weight="2"
+                                >
+
+                                <TextView
+                                    android:id="@+id/addressTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="서울 종로구 ~~"
+                                    android:textColor="@color/black"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/addressDetailTxt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:paddingHorizontal="10dp"
+                                    android:text="302호"
+                                    android:textColor="@color/black"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    />
+
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/findRoadTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="길 찾기 >"
+                                android:gravity="center"
+                                android:background="@drawable/background"
+                                android:textColor="@color/white"
+                                android:paddingVertical="5dp"
+                                android:paddingHorizontal="10dp"
+                                android:visibility="gone"/>
+
+                        </LinearLayout>
+
+
+                        <View style="@style/Divider"
+                            android:layout_marginTop="5dp"
+                            />
+
+                    </LinearLayout>
+
+                    <!-- 3번 회색 상자 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shadow"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="20dp"
+                        android:gravity="center">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="업무 관련 정보"
+                            android:textColor="@color/black"
+                            android:layout_marginBottom="10dp"
+                            android:textStyle="bold"/>
+
+                        <View style="@style/Divider" />
+
+                        <com.google.android.material.tabs.TabLayout
+
+                            android:id="@+id/tabs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintBottom_toTopOf="@+id/container"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent">
+
+                        </com.google.android.material.tabs.TabLayout>
+
+                        <View style="@style/Divider"
+                            android:layout_marginBottom="5dp"/>
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/container"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            app:layout_constraintStart_toStartOf="@+id/tabs"
+                            app:layout_constraintTop_toBottomOf="@+id/tabs">
+
+                        </androidx.viewpager.widget.ViewPager>
+
+
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+
+
+                <LinearLayout
+                    android:layout_width="300dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="100dp"
-                    android:layout_marginTop="130dp"
-                    android:layout_marginEnd="100dp"
-                    android:layout_marginBottom="30dp"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="5dp"
-                    android:text="매칭 대기 중 입니다."
-                    android:textColor="@color/colorSecondary1"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:layout_marginTop="3dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="15dp"
+                    android:background="@drawable/background6">
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/customerPlaceNameTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="화성시 박용현"
+                            android:textColor="@color/black"
+                            android:textSize="25sp"
+                            android:textStyle="bold" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+
+                            <TextView
+                                android:id="@+id/firstVisitTxt"
+                                android:layout_width="80dp"
+                                android:layout_height="25dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/badge11"
+                                android:gravity="center"
+                                android:text="첫 방문"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:id="@+id/secondVisitTxt"
+                                android:layout_width="80dp"
+                                android:layout_height="25dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/badge12"
+                                android:gravity="center"
+                                android:text="재 방문"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                />
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/contactTxt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="고객 연결"
+                            android:gravity="center"
+                            android:background="@drawable/background2"
+                            android:textColor="@color/black"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_margin="5dp"
+                            android:drawableStart="@drawable/ic_baseline_chat_24"
+                            android:paddingStart="10dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:paddingEnd="10dp"/>
+
+                        <TextView
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:text="전화 하기"
+                            android:gravity="center"
+                            android:background="@drawable/background"
+                            android:textColor="@color/white"
+                            android:padding="10dp"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:layout_margin="5dp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+                </LinearLayout>
+
+
             </RelativeLayout>
 
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bordergrey"
-                android:orientation="vertical"
-                android:padding="10dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="10dp"
-                    android:text="집 상세정보"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/placeNameTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginEnd="20dp"
-                        android:text="집주소"
-                        android:padding="5dp"
-                        android:gravity="center"
-                        android:background="@drawable/bordergrey"
-                        android:textColor="@color/black" />
 
-                    <TextView
-                        android:id="@+id/addressSizeTxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="경기도 화성시 (13평)"
-                        android:textColor="@color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
 
 
-                </LinearLayout>
 
-                <!--                <TextView-->
-                <!--                    android:layout_width="wrap_content"-->
-                <!--                    android:layout_height="wrap_content"-->
-                <!--                    android:layout_marginStart="10dp"-->
-                <!--                    android:layout_marginLeft="10dp"-->
-                <!--                    android:text="반려동물"-->
-                <!--                    android:textColor="@color/black"-->
-                <!--                    android:textSize="15sp"-->
-                <!--                    android:textStyle="bold" />-->
-
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="90dp"-->
-                <!--                    android:gravity="center"-->
-                <!--                    android:orientation="horizontal"-->
-
-                <!--                    >-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/pet1Btn"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginEnd="5dp"-->
-                <!--                        android:layout_marginRight="5dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="개"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="25sp" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/pet2Btn"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginEnd="5dp"-->
-                <!--                        android:layout_marginRight="5dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="고양이"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="25sp" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/pet3Btn"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginEnd="5dp"-->
-                <!--                        android:layout_marginRight="5dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="기타"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="25sp" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/pet4Btn"-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:layout_marginEnd="5dp"-->
-                <!--                        android:layout_marginRight="5dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="없음"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="25sp" />-->
-
-                <!--                </LinearLayout>-->
-
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="50dp"-->
-                <!--                    android:layout_margin="10dp"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    android:weightSum="2">-->
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="2"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        android:text="영유아(7세 이하)"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="15sp"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/childIsBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="있음"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="15sp"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/childNotBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="없음"-->
-
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="15sp"-->
-                <!--                        android:textStyle="bold" />-->
-                <!--                </LinearLayout>-->
-
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="50dp"-->
-                <!--                    android:layout_margin="10dp"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    android:weightSum="2">-->
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="2"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        android:text="CCTV"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="15sp"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/ctIsBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="있음"-->
-
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/ctNotBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="없음"-->
-
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textStyle="bold" />-->
-                <!--                </LinearLayout>-->
-
-                <!--                <LinearLayout-->
-                <!--                    android:layout_width="match_parent"-->
-                <!--                    android:layout_height="50dp"-->
-                <!--                    android:layout_margin="10dp"-->
-                <!--                    android:orientation="horizontal"-->
-                <!--                    android:weightSum="2">-->
-
-                <!--                    <TextView-->
-                <!--                        android:layout_width="wrap_content"-->
-                <!--                        android:layout_height="wrap_content"-->
-                <!--                        android:layout_weight="2"-->
-                <!--                        android:padding="10dp"-->
-                <!--                        android:text="무료 주차"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textSize="15sp"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/parkingIsBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="가능"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textStyle="bold" />-->
-
-                <!--                    <Button-->
-                <!--                        android:id="@+id/parkingNotBtn"-->
-                <!--                        android:layout_width="60dp"-->
-                <!--                        android:layout_height="40dp"-->
-                <!--                        android:background="@drawable/color_change"-->
-                <!--                        android:text="불가"-->
-                <!--                        android:textColor="@color/black"-->
-                <!--                        android:textStyle="bold" />-->
-                <!--                </LinearLayout>-->
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bordergrey"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_marginTop="5dp"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:text="기본 선택"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="집중 청소 구역"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/focusTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="세탁 / 실내 창틀 먼지 / 베란다 바닥"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
-                    />
-
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="무료 추가 선택"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:textStyle="bold"
-                    />
-
-                <TextView
-                    android:id="@+id/freePlusTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="세탁 / 실내 창틀 먼지 / 베란다 바닥"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="쓰레기 배출 선택"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:textStyle="bold"
-                    />
-                <TextView
-                    android:id="@+id/garbageTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="재활용 / 일반 쓰레기 / 음식물 쓰레기"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:padding="5dp"
-                    android:layout_marginStart="20dp"
-                    />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bordergrey"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_marginTop="5dp"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:text="유료 선택"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <TextView
-                    android:id="@+id/plusTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="다림질 / 냉장고 청소 (+ 26,000원)"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    />
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bordergrey"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_marginTop="5dp"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:text="입실 후 주의사항"
-                    android:layout_marginBottom="10dp"
-                    />
-
-                <TextView
-                    android:id="@+id/cautionTxt"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:text="작성하신 사항이 없습니다."
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:layout_marginStart="20dp"
-                    />
-            </LinearLayout>
-
-            <!--            <LinearLayout-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:background="@drawable/bordergrey"-->
-            <!--                android:orientation="vertical"-->
-            <!--                android:padding="10dp"-->
-            <!--                android:layout_marginTop="5dp"-->
-            <!--                >-->
-
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="match_parent"-->
-            <!--                    android:textStyle="bold"-->
-            <!--                    android:textSize="20sp"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:text="거래 정보"-->
-            <!--                    android:layout_marginBottom="10dp"-->
-            <!--                    />-->
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="5"-->
-            <!--                    android:text="일시 : 2020-10-09 19:40:16"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:textSize="15sp"-->
-            <!--                    android:padding="5dp"-->
-            <!--                    android:layout_marginStart="20dp"-->
-            <!--                    />-->
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="5"-->
-            <!--                    android:text="금액 : 50,400원"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:textSize="15sp"-->
-            <!--                    android:padding="5dp"-->
-            <!--                    android:layout_marginStart="20dp"-->
-            <!--                    />-->
-            <!--                <TextView-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_weight="5"-->
-            <!--                    android:text="결제수단 : 카카오페이"-->
-            <!--                    android:textColor="@color/black"-->
-            <!--                    android:textSize="15sp"-->
-            <!--                    android:padding="5dp"-->
-            <!--                    android:layout_marginStart="20dp"-->
-            <!--                    />-->
-
-
-            <!--            </LinearLayout>-->
-
-            <LinearLayout
-                android:id="@+id/receiptLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bordergrey"
-                android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_marginTop="5dp"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@color/black"
-                    android:text="거래 정보"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="10"
-                    />
-
-
-                <LinearLayout
-                    android:id="@+id/priceDefLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    >
-
-
-                    <TextView
-                        android:id="@+id/priceDefTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="기본금액"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/priceDefNumTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:textAlignment="textEnd"
-                        android:text="66,000 원"
-                        android:padding="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:gravity="end" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/priceIronLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:visibility="gone"
-                    >
-
-
-                    <TextView
-                        android:id="@+id/priceIronTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="다림질(+30분)"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/priceIronNumTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:textAlignment="textEnd"
-                        android:text="6,600 원"
-                        android:padding="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:gravity="end" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/pricefridgeLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:visibility="gone"
-
-                    >
-
-
-                    <TextView
-                        android:id="@+id/pricefridgeTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="냉장실 간단청소(+2시간)"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        />
-
-                    <TextView
-                        android:id="@+id/pricefridgeNumTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:textAlignment="textEnd"
-                        android:text="26,400 원"
-                        android:padding="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        android:gravity="end" />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/priceResultLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10"
-                    >
-
-
-                    <TextView
-                        android:id="@+id/priceResultTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:text="총 결제금액"
-                        android:textColor="@color/black"
-                        android:textSize="15sp"
-                        android:textStyle="bold"
-                        />
-
-                    <TextView
-                        android:id="@+id/priceResutNumTxt"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="5"
-                        android:textAlignment="textEnd"
-                        android:text="99,000 원"
-                        android:padding="5dp"
-                        android:textColor="@color/black"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:gravity="end" />
-
-                </LinearLayout>
-            </LinearLayout>
-
-
-            <Button
-                android:id="@+id/Btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="서비스 수락하기"
-                android:textColor="@color/white"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/background"
-                />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

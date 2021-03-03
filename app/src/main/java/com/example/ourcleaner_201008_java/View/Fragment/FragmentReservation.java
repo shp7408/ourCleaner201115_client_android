@@ -2,6 +2,7 @@ package com.example.ourcleaner_201008_java.View.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,25 +22,30 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.ourcleaner_201008_java.Adapter.MyReservationAdapter;
-import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
 import com.example.ourcleaner_201008_java.DTO.MyReservationDTO;
-import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
-import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.View.MainActivity;
 import com.example.ourcleaner_201008_java.View.Service_DetailActivity;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.DayOfWeek;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.concurrent.TimeUnit;
 
 
-public class FragmentReservation extends Fragment implements MyReservationAdapter.OnListItemSelectedInterface {
+public class FragmentReservation extends Fragment
+        implements MyReservationAdapter.OnListItemSelectedInterface,
+        OnDateSelectedListener {
 
     private static final String TAG = "나의예약";
 
@@ -49,7 +55,7 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
     private RecyclerView mRecyclerView;
 //    private RecyclerView.Adapter adapter;
 //    private RecyclerView.LayoutManager layoutManager;
-    private  MyReservationAdapter myReservationAdapter;
+    private  MyReservationAdapter adapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ArrayList<MyReservationDTO> myReservationDTOArrayList = new ArrayList<>();
@@ -57,11 +63,15 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
     /* 서버에서 내 장소 정보 받아오기 위한 변수 */
     String jsonResponse;
     // 서버에서 받아온 데이터를 담는 객체
-    MyplaceDTO myplaceDTO;
-    ServiceDTO serviceDTO;
     MyReservationDTO myReservationDTO;
 
     int resultNeedTime=0;
+
+
+    /* material 달력 */
+    MaterialCalendarView materialCalendarView;
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return inflater.inflate(R.layout.fragment_myreservation, container, false);
@@ -70,6 +80,8 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
         /* fragment 관련 코드. 레이아웃 연결 */
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_myreservation, container, false);
 
+
+
         /* 리사이클러 뷰 관련 코드. 리사이클러 뷰 와 연결 */
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.myreservation_recycle);
 
@@ -77,8 +89,11 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(0);
-        myReservationAdapter = new MyReservationAdapter(getActivity(),myReservationDTOArrayList, this);
-        mRecyclerView.setAdapter(myReservationAdapter);
+
+        adapter = new MyReservationAdapter(getActivity(),myReservationDTOArrayList, this);
+        mRecyclerView.setAdapter(adapter);
+
+
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         // 기본 구분선 추가
@@ -88,6 +103,31 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
 
 
         mRecyclerView.setNestedScrollingEnabled(true);
+
+
+
+
+        /* material 달력 */
+        materialCalendarView = rootView.findViewById(R.id.materialCalendarView);
+
+        materialCalendarView.setOnDateChangedListener(this);
+        materialCalendarView.addDecorator(new TodayDecorator());
+
+        //CalendarDay maxdate = CalendarDay.from(CalendarDay.today().getYear(), CalendarDay.today().getMonth(), CalendarDay.today().getDay()+14);
+
+        materialCalendarView.setCurrentDate(CalendarDay.today());
+        materialCalendarView.setSelectedDate(CalendarDay.today());
+        materialCalendarView.state().edit()
+                .setFirstDayOfWeek(DayOfWeek.SUNDAY)
+                //.setMaximumDate(maxdate)
+                .commit();
+
+//        OneDayDecorator oneDayDecorator = new OneDayDecorator();
+
+//        materialCalendarView.addDecorators(
+//                new MySelectorDecorator(getActivity()),
+//                oneDayDecorator
+//        );
 
         return rootView;
     }
@@ -112,7 +152,36 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
         Log.d(TAG, "=== prepareData() ===" );
         myReservationDTOArrayList = new ArrayList<>();
 
-        String url = "http://52.79.179.66/myReservationList.php?currentUser="+ GlobalApplication.currentUser;
+        /* 오늘 날짜 만드는 코드 */
+        CalendarDay date = CalendarDay.today();
+        String dateStr = date.toString();
+        Log.d(TAG, "=== prepareData dateStr ===" +dateStr);
+
+        String year = dateStr.substring(12,16);
+        Log.d(TAG, "=== prepareData year ===" +year);
+
+        //월 일 붙어있는거
+        String monthDayAll = dateStr.substring(17);
+        Log.d(TAG, "=== prepareData monthDayAll ===" +monthDayAll);
+
+        //월
+        String month = monthDayAll.substring(0, monthDayAll.indexOf("-"));
+        Log.d(TAG, "=== prepareData month ===" +month);
+
+        //일
+        String dayOfMonth = monthDayAll.substring(monthDayAll.lastIndexOf("-")+1, monthDayAll.length()-1);
+        Log.d(TAG, "=== prepareData dayOfMonth ===" +dayOfMonth);
+
+        int yearInt = Integer.parseInt(year); //2021
+        int monthInt = Integer.parseInt(month); //1
+        int dayOfMonthInt = Integer.parseInt(dayOfMonth); //6
+
+        String resultDate = monthInt+"."+dayOfMonthInt;
+        Log.d(TAG, "=== prepareData resultDate ==="+resultDate );
+
+
+
+        String url = "http://52.79.179.66/myReservationList.php?currentUser="+ GlobalApplication.currentUser+"&date="+resultDate;
         JsonArrayRequest req = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -169,8 +238,8 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
                                 jsonResponse += "serviceplus: " + serviceplus + "\n\n";
                                 jsonResponse += "myplaceDTO_placeName: " + myplaceDTO_placeName + "\n\n";
 
-                                myReservationDTO = new MyReservationDTO(uid, currentUser, serviceState, visitDate+"("+visitDay+")", serviceState, myplaceDTO_placeName+" / "+timeIntToHourMin(startTime)+" ~ "+timeIntToHourMin(startTime+resultNeedTime)+"("+timeIntToHourMin2(resultNeedTime)+")");
-                                //myReservationDTO = new MyReservationDTO(uid, currentUser, serviceState, visitDate+"("+visitDay+")", serviceState, serviceState);
+//                                myReservationDTO = new MyReservationDTO(uid, currentUser, serviceState, visitDate+"("+visitDay+")", serviceState, myplaceDTO_placeName+" / "+timeIntToHourMin(startTime)+" ~ "+timeIntToHourMin(startTime+resultNeedTime)+"("+timeIntToHourMin2(resultNeedTime)+")");
+                                myReservationDTO = new MyReservationDTO(uid, currentUser, serviceState, visitDate+"("+visitDay+")", myplaceDTO_placeName, timeIntToHourMin(startTime));
                                 myReservationDTOArrayList.add(myReservationDTO);
 
                                 //myReservationDTOArrayList.add(new MyReservationDTO("df", "dd", "dd", "df", "df", "fds"));
@@ -186,7 +255,7 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
                             Collections.sort(myReservationDTOArrayList);
 
                             //리사이클러 뷰 계속 size 0뜨는 문제 해결 위함
-                            myReservationAdapter.notifyDataSetChanged();
+                            adapter.notifyDataSetChanged();
 
                             Log.d(TAG, "=== jsonResponse 반복문 이후 ===");
 
@@ -210,6 +279,195 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
 
 
 
+    }
+
+    //날짜 클릭했을 때, 리사이클러뷰 다시 보여주는 부분
+    private void prepareData2(CalendarDay date) {
+
+
+
+        /* 오늘 날짜 만드는 코드 */
+//        CalendarDay date = CalendarDay.today();
+        String dateStr = date.toString();
+        Log.d(TAG, "=== prepareData dateStr ===" +dateStr);
+
+        String year = dateStr.substring(12,16);
+        Log.d(TAG, "=== prepareData year ===" +year);
+
+        //월 일 붙어있는거
+        String monthDayAll = dateStr.substring(17);
+        Log.d(TAG, "=== prepareData monthDayAll ===" +monthDayAll);
+
+        //월
+        String month = monthDayAll.substring(0, monthDayAll.indexOf("-"));
+        Log.d(TAG, "=== prepareData month ===" +month);
+
+        //일
+        String dayOfMonth = monthDayAll.substring(monthDayAll.lastIndexOf("-")+1, monthDayAll.length()-1);
+        Log.d(TAG, "=== prepareData dayOfMonth ===" +dayOfMonth);
+
+        int yearInt = Integer.parseInt(year); //2021
+        int monthInt = Integer.parseInt(month); //1
+        int dayOfMonthInt = Integer.parseInt(dayOfMonth); //6
+
+        String resultDate = monthInt+"."+dayOfMonthInt;
+        Log.d(TAG, "=== prepareData resultDate ==="+resultDate );
+
+
+
+        String url = "http://52.79.179.66/myReservationList.php?currentUser="+
+                GlobalApplication.currentUser+"&date="+resultDate;
+        JsonArrayRequest req = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "makeStringRequestGet onResponse 성공!!!!!!!!!!!!!!!!!!"+response.toString());
+
+                        try {
+                            // Parsing json array response
+                            // loop through each json object
+                            jsonResponse = "";
+                            Log.d(TAG, "=== jsonResponse 반복문 이전 ===" +jsonResponse);
+
+                            //리사이클러뷰에 여러개 추가되는 것 막음
+//                            ArrayList<MyReservationDTO> arrayList = new ArrayList<>();
+
+                            myReservationDTOArrayList.clear();
+                            final int numberOfItemsInResp = response.length();
+
+                            for (int i = 0; i < numberOfItemsInResp ; i++) {
+                                Log.e(TAG, "=== jsonResponse 반복문 이후 ===");
+                                Log.e(TAG, "response.length() 전체 반복문 횟수: "+ numberOfItemsInResp);
+                                Log.e(TAG, "현재 반복문 시작 번호 :" + i);
+
+                                JSONObject myReservation = (JSONObject) response.get(i);
+
+                                int uid = myReservation.getInt("uid");
+                                String currentUser = myReservation.getString("currentUser");
+                                String serviceState = myReservation.getString("serviceState");
+                                String visitDate = myReservation.getString("visitDate");
+                                String visitDay = myReservation.getString("visitDay");
+
+                                int startTime = myReservation.getInt("startTime");
+                                int needDefTime = myReservation.getInt("needDefTime");
+
+                                String serviceplus = myReservation.getString("serviceplus");
+                                String myplaceDTO_placeName = myReservation.getString("myplaceDTO_placeName");
+
+                                if(serviceplus.contains("냉장고=true")){
+                                    resultNeedTime = needDefTime + 120;
+                                    needDefTime = resultNeedTime;
+                                }
+                                if(serviceplus.contains("다림질=true")){
+                                    resultNeedTime = needDefTime + 30;
+                                }
+
+                                jsonResponse += "uid: " + uid + "\n\n";
+                                jsonResponse += "currentUser: " + currentUser + "\n\n";
+                                jsonResponse += "serviceState: " + serviceState + "\n\n";
+
+                                jsonResponse += "visitDate: " + visitDate + "\n\n";
+
+                                jsonResponse += "visitDay: " + visitDay + "\n\n";
+                                jsonResponse += "startTime: " + startTime + "\n\n";
+                                jsonResponse += "needDefTime: " + needDefTime + "\n\n";
+
+                                jsonResponse += "serviceplus: " + serviceplus + "\n\n";
+                                jsonResponse += "myplaceDTO_placeName: " + myplaceDTO_placeName + "\n\n";
+
+                                myReservationDTO = new MyReservationDTO(uid, currentUser, serviceState, visitDate+"("+visitDay+")", myplaceDTO_placeName, timeIntToHourMin(startTime));
+                                myReservationDTOArrayList.add(myReservationDTO);
+
+                                Log.d(TAG, "=== myReservationDTOArrayList 에 데이터 넣음 ===" + myReservationDTOArrayList.get(i).getServiceDate());
+
+
+                            }
+
+
+//                            Log.d(TAG, "=== myReservationDTOArrayList 에 데이터 넣음 ===" + myReservationDTOArrayList.size());
+//
+//                            Log.e(TAG, "=== 객체 정렬 ===" );
+//                            //객체 정렬 위함
+//                            Collections.sort(myReservationDTOArrayList);
+//
+//                            //리사이클러 뷰 계속 size 0뜨는 문제 해결 위함
+//                            myReservationAdapter.notifyDataSetChanged();
+//
+//                            Log.d(TAG, "=== jsonResponse 반복문 이후 ===");
+
+
+
+
+
+                            adapter = new MyReservationAdapter(getActivity(),myReservationDTOArrayList, FragmentReservation.this::onItemSelected);
+                            mRecyclerView.setAdapter(adapter);
+
+
+
+                            Collections.sort(myReservationDTOArrayList);
+
+                            //리사이클러 뷰 계속 size 0뜨는 문제 해결 위함
+                            adapter.notifyDataSetChanged();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                            Log.e(TAG, "=== 생명 === Error " + e );
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Log.d(TAG, "===  === Error " + error);
+            }
+        });
+
+        // Adding request to request queue
+        GlobalApplication.getInstance().addToRequestQueue(req);
+
+
+
+    }
+
+
+    private class TodayDecorator implements DayViewDecorator {
+
+        private final CalendarDay today;
+        private final Drawable backgroundDrawable;
+
+        public TodayDecorator() {
+            today = CalendarDay.today();
+            backgroundDrawable = getResources().getDrawable(R.drawable.today_circle_background);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return today.equals(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setBackgroundDrawable(backgroundDrawable);
+        }
     }
 
 
@@ -291,6 +549,15 @@ public class FragmentReservation extends Fragment implements MyReservationAdapte
         intent.putExtra("uid", myReservationDTOArrayList.get(position).getUid());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        Log.d(TAG, "=== onDateSelected date ===" +date );
+        Log.d(TAG, "=== onDateSelected selected ===" +selected );
+
+        prepareData2(date);
+
     }
 
 //    @Override

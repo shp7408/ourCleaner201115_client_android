@@ -1,16 +1,18 @@
 package com.example.ourcleaner_201008_java.View.Manager;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,28 +22,28 @@ import com.example.ourcleaner_201008_java.Adapter.ManagerReservationAdapter;
 import com.example.ourcleaner_201008_java.Adapter.MyPlaceAdapter;
 import com.example.ourcleaner_201008_java.Adapter.RecyclerDecoration;
 import com.example.ourcleaner_201008_java.DTO.ManagerWaitingDTO;
-import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
-import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface2;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.View.LoginActivity;
-import com.example.ourcleaner_201008_java.View.PlaceinputActivity;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.DayViewDecorator;
+import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.DayOfWeek;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 import static android.content.Intent.FLAG_ACTIVITY_NO_HISTORY;
 
-public class Manager_ReservationActivity extends AppCompatActivity implements ManagerReservationAdapter.OnListItemSelectedInterface, MyPlaceAdapter.OnListItemSelectedInterface{
+public class Manager_ReservationActivity extends AppCompatActivity
+        implements ManagerReservationAdapter.OnListItemSelectedInterface, MyPlaceAdapter.OnListItemSelectedInterface
+        ,OnDateSelectedListener, OnMonthChangedListener {
 
     private static final String TAG = "매니저용예정목록화면";
 
@@ -61,6 +63,9 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
     /* 서버에서 내 장소 정보 받아오기 위한 변수 */
     String jsonResponse;
 
+    /* material 달력 */
+    MaterialCalendarView materialCalendarView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +80,24 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
         myWorkListTxt = findViewById(R.id.myWorkListTxt);
         chatListTxt = findViewById(R.id.chatListTxt);
         moreTxt = findViewById(R.id.moreTxt);
+
+        materialCalendarView = findViewById(R.id.calendarView);
+
+        materialCalendarView.setOnDateChangedListener(this);
+
+
+        materialCalendarView.setOnDateChangedListener(this);
+        materialCalendarView.addDecorator(new TodayDecorator());
+
+       // CalendarDay maxdate = CalendarDay.from(CalendarDay.today().getYear(), CalendarDay.today().getMonth(), CalendarDay.today().getDay()+14);
+
+        materialCalendarView.setCurrentDate(CalendarDay.today());
+        materialCalendarView.setSelectedDate(CalendarDay.today());
+        materialCalendarView.state().edit()
+                .setFirstDayOfWeek(DayOfWeek.SUNDAY)
+                //.setMaximumDate(maxdate)
+                .commit();
+
 
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
@@ -151,15 +174,44 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
 
 
 
-
-    // 현재 사용자를 url에 넣어서 보내면, 사용자가 등록한 장소 목록들을 받아오는 메서드
+    /* 오늘 날짜로 업무 목록 서버에서 받아오는 코드 */
     private void makeStringRequestGet() {
+
+        /* 오늘 날짜 만드는 코드 */
+        CalendarDay date = CalendarDay.today();
+        String dateStr = date.toString();
+        Log.d(TAG, "=== prepareData dateStr ===" +dateStr);
+
+        String year = dateStr.substring(12,16);
+        Log.d(TAG, "=== prepareData year ===" +year);
+
+        //월 일 붙어있는거
+        String monthDayAll = dateStr.substring(17);
+        Log.d(TAG, "=== prepareData monthDayAll ===" +monthDayAll);
+
+        //월
+        String month = monthDayAll.substring(0, monthDayAll.indexOf("-"));
+        Log.d(TAG, "=== prepareData month ===" +month);
+
+        //일
+        String dayOfMonth = monthDayAll.substring(monthDayAll.lastIndexOf("-")+1, monthDayAll.length()-1);
+        Log.d(TAG, "=== prepareData dayOfMonth ===" +dayOfMonth);
+
+        int yearInt = Integer.parseInt(year); //2021
+        int monthInt = Integer.parseInt(month); //1
+        int dayOfMonthInt = Integer.parseInt(dayOfMonth); //6
+
+        String resultDate = monthInt+"."+dayOfMonthInt;
+        Log.d(TAG, "=== prepareData resultDate ==="+resultDate );
+
+
+
 
         managerWaitingDTOArrayList = new ArrayList<>();
 
-//        String url = "http://52.79.179.66/managerWaitingMatching.php";
-//        String url = "http://52.79.179.66/managerWaitingMatching.php?serviceState="+"매칭 대기 중";
-        String url = "http://52.79.179.66/managerWaitingMatching.php?managerNameId="+GlobalApplication.currentManagerName+","+GlobalApplication.currentManager;
+        String url = "http://52.79.179.66/managerWaitingMatching.php?managerNameId="
+                +GlobalApplication.currentManagerName+","+GlobalApplication.currentManager
+                +"&date="+resultDate;
 
         JsonArrayRequest req = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
@@ -240,6 +292,145 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
     }
 
 
+
+
+
+
+
+    /* 캘린더에서 클릭한 날짜로 업무 목록 서버에서 받아오는 코드 */
+    private void makeStringRequestGet2(CalendarDay date) {
+
+        /* 오늘 날짜 만드는 코드 */
+//        CalendarDay date = CalendarDay.today();
+        String dateStr = date.toString();
+        Log.d(TAG, "=== prepareData dateStr ===" +dateStr);
+
+        String year = dateStr.substring(12,16);
+        Log.d(TAG, "=== prepareData year ===" +year);
+
+        //월 일 붙어있는거
+        String monthDayAll = dateStr.substring(17);
+        Log.d(TAG, "=== prepareData monthDayAll ===" +monthDayAll);
+
+        //월
+        String month = monthDayAll.substring(0, monthDayAll.indexOf("-"));
+        Log.d(TAG, "=== prepareData month ===" +month);
+
+        //일
+        String dayOfMonth = monthDayAll.substring(monthDayAll.lastIndexOf("-")+1, monthDayAll.length()-1);
+        Log.d(TAG, "=== prepareData dayOfMonth ===" +dayOfMonth);
+
+        int yearInt = Integer.parseInt(year); //2021
+        int monthInt = Integer.parseInt(month); //1
+        int dayOfMonthInt = Integer.parseInt(dayOfMonth); //6
+
+        String resultDate = monthInt+"."+dayOfMonthInt;
+        Log.d(TAG, "=== prepareData resultDate ==="+resultDate );
+
+
+
+
+        managerWaitingDTOArrayList = new ArrayList<>();
+
+        String url = "http://52.79.179.66/managerWaitingMatching.php?managerNameId="
+                +GlobalApplication.currentManagerName+","+GlobalApplication.currentManager
+                +"&date="+resultDate;
+
+        JsonArrayRequest req = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d(TAG, "makeStringRequestGet2() onResponse"+response.toString());
+
+                        try {
+                            // Parsing json array response
+                            // loop through each json object
+                            jsonResponse = "";
+                            Log.d(TAG, "=== makeStringRequestGet2() jsonResponse ===" +jsonResponse);
+
+                            //리사이클러뷰에 여러개 추가되는 것 막음
+                            managerWaitingDTOArrayList.clear();
+                            final int numberOfItemsInResp = response.length();
+
+                            for (int i = 0; i < numberOfItemsInResp; i++) {
+
+                                Log.d(TAG, "=== makeStringRequestGet2() === i :" + i);
+
+                                JSONObject managerWaiting = (JSONObject) response.get(i);
+
+                                String uid = managerWaiting.getString("uid");
+                                String currentUser = managerWaiting.getString("currentUser");
+                                String serviceState = managerWaiting.getString("serviceState");
+                                String myplaceDTO_address = managerWaiting.getString("myplaceDTO_address");
+                                String myplaceDTO_sizeStr = managerWaiting.getString("myplaceDTO_sizeStr");
+                                String visitDate = managerWaiting.getString("visitDate");
+                                String visitDay = managerWaiting.getString("visitDay");
+                                String startTime = managerWaiting.getString("startTime");
+                                String needDefTime = managerWaiting.getString("needDefTime");
+                                String needDefCost = managerWaiting.getString("needDefCost");
+
+
+                                jsonResponse += "uid: " + uid + "\n\n";
+                                jsonResponse += "currentUser: " + currentUser + "\n\n";
+                                jsonResponse += "serviceState: " + serviceState + "\n\n";
+                                jsonResponse += "myplaceDTO_address: " + myplaceDTO_address + "\n\n";
+                                jsonResponse += "myplaceDTO_sizeStr: " + myplaceDTO_sizeStr + "\n\n";
+                                jsonResponse += "visitDate: " + visitDate + "\n\n";
+                                jsonResponse += "visitDay: " + visitDay + "\n\n";
+                                jsonResponse += "startTime: " + startTime + "\n\n";
+                                jsonResponse += "needDefTime: " + needDefTime + "\n\n";
+                                jsonResponse += "needDefCost: " + needDefCost + "\n\n";
+
+                                String dateDayStr= (visitDate+"("+visitDay+")"); //11.26(목) 형태
+
+                                managerWaitingDTO = new ManagerWaitingDTO(Integer.parseInt(uid), currentUser,
+                                        dateDayStr, Integer.parseInt(startTime), Integer.parseInt(needDefTime),
+                                        Integer.parseInt(needDefCost), myplaceDTO_address.substring(8,14),
+                                        myplaceDTO_sizeStr,serviceState);
+                                Log.d(TAG, "=== makeStringRequestGet2() myplaceDTO 객체 생성 ===");
+
+                                managerWaitingDTOArrayList.add(managerWaitingDTO);
+                            }
+
+
+                            mAdapter = new ManagerReservationAdapter(getApplicationContext()
+                            , managerWaitingDTOArrayList, Manager_ReservationActivity.this::onItemSelected);
+
+
+                            mAdapter.notifyDataSetChanged();
+                            Log.d(TAG, "=== jsonResponse 반복문 이후 ===" +jsonResponse);
+
+                            recyclerView.setAdapter(mAdapter);
+
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                            Log.d(TAG, "=== Error ===  " + e);
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Log.d(TAG, "===  === Error " + String.valueOf(error));
+            }
+        });
+
+        // Adding request to request queue
+        GlobalApplication.getInstance().addToRequestQueue(req);
+    }
+
+
+
+
+
+
+
+
+
     @Override
     public void onItemSelected(View v, int position) {
         Log.e(TAG, "=== position ===" +position);
@@ -250,6 +441,7 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
         intent.putExtra("uid", managerWaitingDTOArrayList.get(position).getUidInt());
 
         startActivity(intent);
+
 
         //finish();
 
@@ -273,4 +465,38 @@ public class Manager_ReservationActivity extends AppCompatActivity implements Ma
         //finish();
     }
 
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        Log.d(TAG, "=== onDateSelected date ===" +date);
+        Log.d(TAG, "=== onDateSelected selected ===" +selected);
+
+        makeStringRequestGet2(date);
+
+    }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+        Log.d(TAG, "=== onMonthChanged date ===" );
+    }
+
+    private class TodayDecorator implements DayViewDecorator {
+
+        private final CalendarDay today;
+        private final Drawable backgroundDrawable;
+
+        public TodayDecorator() {
+            today = CalendarDay.today();
+            backgroundDrawable = getResources().getDrawable(R.drawable.today_circle_background);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return today.equals(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.setBackgroundDrawable(backgroundDrawable);
+        }
+    }
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/managerProfile"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ic_baseline_person_24"
+        android:layout_marginBottom="5dp"
+        />
+
+    <TextView
+        android:id="@+id/whoSendTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="10dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/receivedLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/managerProfile"
+
+        >
+        <TextView
+            android:id="@+id/receivedMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background2"
+            android:textColor="@color/black"
+            android:text="ddddddddddddddd"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            />
+        <ImageView
+            android:id="@+id/receivedImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/background6"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/whoSendTimeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇시 몇 분"
+        android:layout_below="@+id/receivedLayout"
+        android:layout_alignEnd="@id/receivedLayout"/>
+
+    <RelativeLayout
+        android:id="@+id/sendLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        >
+
+        <TextView
+            android:id="@+id/sendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="ddddddddddddddd"
+            android:background="@drawable/shadow2"
+            android:textColor="@color/black"
+            />
+
+        <ImageView
+            android:id="@+id/sendImg"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/shadow2"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/sendTimeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇시 몇 분"
+        android:layout_below="@+id/sendLayout"
+        android:layout_alignStart="@id/sendLayout"/>
+
+</RelativeLayout>

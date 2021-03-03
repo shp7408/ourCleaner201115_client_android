@@ -21,4 +21,16 @@
     <color name="transparent">#00000000</color>
     <color name="grey2">#BDBDBD</color>
 
+    <color name="customerFirst">#12b886</color>
+    <color name="customerSecond">#228be6</color>
+    <color name="customerGood">#fd7e14</color>
+
+    <color name="badgeClean">#FFFFFF</color>
+    <color name="badgeTime">#3bc9db</color>
+    <color name="badgeKind">#ffe066</color>
+    <color name="badgeMC">#a9e34b</color>
+    <color name="badgeRe">#da77f2</color>
+
+
+    <!-- https://yeun.github.io/open-color/ -->
 </resources>

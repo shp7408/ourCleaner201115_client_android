@@ -1,11 +1,9 @@
 package com.example.ourcleaner_201008_java.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,17 +16,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.ourcleaner_201008_java.DTO.ReviewDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.AlarmManagerSelectInterface;
 import com.example.ourcleaner_201008_java.Interface.ServiceStatesChangeInterface;
 import com.example.ourcleaner_201008_java.Interface.TokenSelectInterface;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.Server.ServiceSelectRequest;
-import com.example.ourcleaner_201008_java.Service.FcmPushTest;
+import com.example.ourcleaner_201008_java.SharedP.Preference_User_Info;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -38,6 +40,7 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +79,7 @@ public class Service_DetailActivity extends AppCompatActivity {
             plusTxt, cautionTxt, editServiceTxt, receiptTxt, priceDefTxt,priceResultTxt ;
 
     LinearLayout receiptLayout, priceDefLayout, priceIronLayout, pricefridgeLayout, priceResultLayout;
-    TextView priceDefNumTxt, priceIronNumTxt, pricefridgeNumTxt, priceResutNumTxt, serviceDeleteGuideTxt;
+    TextView priceDefNumTxt, priceIronNumTxt, pricefridgeNumTxt, priceResutNumTxt, serviceDeleteGuideTxt, managerTxt, reviewTxt;
 
 //    int resultNeedTimeInt=0, needDefTimeInt; //필요한 전체 시간. 총 시간에서 setText하기 위해 필요한 변수
     int ironPlusTimeInt=0, refridgeTimeInt=0, startTimeInt=0, resultNeedTimeInt=0, defaultTimeInt=0, endTimeInt=0;
@@ -150,13 +153,7 @@ public class Service_DetailActivity extends AppCompatActivity {
 
         serviceDeleteLayout = findViewById(R.id.serviceDeleteLayout);
 
-        Log.e(TAG, "=== 기본 이미지로 변경 === ");
-        relativeLayout1.bringChildToFront(profileImage);
-
-        Glide.with(Service_DetailActivity.this)
-                .load(getDrawable(R.drawable.ic_baseline_person_24))
-                .circleCrop()
-                .into(profileImage);
+        managerTxt = findViewById(R.id.managerTxt);
 
         // 10. 결제 예정 내역 보여주기
         // 다른 경우, 이름 바꿔야 함.
@@ -176,18 +173,27 @@ public class Service_DetailActivity extends AppCompatActivity {
 
         serviceDeleteBtn = findViewById(R.id.serviceDeleteBtn);
 
+        reviewTxt = findViewById(R.id.reviewTxt);
+        reviewTxt.setVisibility(View.GONE);
 
+//        Log.e(TAG, "=== 기본 이미지로 변경 === ");
+//        relativeLayout1.bringChildToFront(profileImage);
+//
+//        Glide.with(Service_DetailActivity.this)
+//                .load(getDrawable(R.drawable.ic_baseline_person_24))
+//                .circleCrop()
+//                .into(profileImage);
 
         /* 서버에서 서비스 상세 정보 받아오는 코드임 필요한 변수는 전역으로 선언 함.*/
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG, "=== response ===" +response);
+                Log.e(TAG, "=== onResponse response ===" +response);
                 try {
                         JSONObject jsonObject = new JSONObject(response);
 
                         if(jsonObject.getString("status").contains("true")){
-                            Log.d(TAG, "=== 서버로부터 데이터 잘 받아옴 ===" );
+                            Log.d(TAG, "=== onResponse 서버로부터 데이터 잘 받아옴 ===" );
 
                             JSONArray jsonArray = jsonObject.getJSONArray("data");
 
@@ -227,57 +233,61 @@ public class Service_DetailActivity extends AppCompatActivity {
                             Log.e(TAG, "=== receipt_id ===" +receipt_id);
 
 
+                            Log.d(TAG, "=== managerName.substring(0, 3) 이름 ===" +managerName.substring(0, 3));
+                            Log.d(TAG, "=== managerName.substring(5) 이메일 ===" +managerName.substring(4));
 
 
-                            try{
+                            /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
+                            postSelectToken(managerName.substring(4), 2);
 
 
-                                if(managerName.contains(",")){
-                                    // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
-                                    int idx = managerName.indexOf(",");
-                                    String managerName22 = managerName.substring(0, idx);
-
-                                    String string = managerName22.substring(idx+1);
-                                    Log.d(TAG, "=== ddddd ==="+string );
-
-                                    string = string.trim();
-
-                                    Log.d(TAG, "=== ddddd ==="+string );
-
-                                    /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
-                                    postSelectToken(string, 2);
-                                }
-
-
-
-                            }catch (Exception e){
-                                Log.e(TAG, "=== 매니저 미지정 경우, 에러코드임 ===" +e );
-                            }
-
-
-
-
-
-
+//                            try{
+//
+//
+//                                if(managerName.contains(",")){
+//                                    Log.d(TAG, "=== managerName ===" +managerName );
+//                                    // 먼저 , 의 인덱스를 찾는다 - 인덱스 값: idx
+//                                    int idx = managerName.indexOf(",");
+//                                    String managerName22 = managerName.substring(0, idx);
+//
+//                                    String string = managerName22.substring(idx+1);
+//                                    Log.d(TAG, "===  managerName22.substring(idx+1) ==="+string );
+////
+////                                    string = string.trim();
+////
+////                                    Log.d(TAG, "=== onResponse ==="+string );
+////
+////                                    /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
+////                                    postSelectToken(string, 2);
+//                                }
+//
+//
+//
+//                            }catch (Exception e){
+//                                Log.e(TAG, "=== onResponse 매니저 미지정 경우, 에러코드임 ===" +e );
+//                            }
 
 
 
-                            if(jsonObject.getString("message").contains("매니저 미지정")){
-                                Log.d(TAG, "=== 매니저 미지정 인 경우, ===" );
 
-                                profileImage.setVisibility(View.GONE);
+
+
+
+
+
+                            if(jsonObject.getString("message").contains("매니저 미지정")|| serviceState.contains("매칭 대기 중")){
+                                Log.d(TAG, "=== onResponse 매니저 미지정 인 경우, 매칭 대기 중 ===" );
 
                                 Glide.with(Service_DetailActivity.this)
                                         .load(getDrawable(R.drawable.ic_baseline_person_24))
                                         .circleCrop()
                                         .into(profileImage);
-                                
-                            }else if(jsonObject.getString("message").contains("매니저 지정") && serviceState.equals("매칭 완료")){
-                                Log.d(TAG, "=== 매니저 지정 함 ===" );
-                                profileImagePathStr = dataObject.getString( "profileImagePathStr" );
-                                Log.d(TAG, "=== profileImagePathStr ===" +profileImagePathStr);
 
-                                profileImage.setVisibility(View.VISIBLE);
+                            }else if(jsonObject.getString("message").contains("매니저 지정") && serviceState.equals("매칭 완료")){
+                                Log.d(TAG, "=== onResponse 매니저 지정 함 ===" );
+                                profileImagePathStr = dataObject.getString( "profileImagePathStr" );
+                                Log.d(TAG, "=== onResponse profileImagePathStr ===" +profileImagePathStr);
+
 
                                 Glide.with(Service_DetailActivity.this)
                                         .load(profileImagePathStr)
@@ -285,7 +295,23 @@ public class Service_DetailActivity extends AppCompatActivity {
                                         .into(profileImage);
 
                             }
-                            // TODO: 2020-12-19 서비스 상태 변경 시, 작업하는 부분 
+                            // TODO: 2020-12-19 서비스 상태 변경 시, 작업하는 부분
+                            else{
+                                Log.d(TAG, "=== onResponse 매니저 지정 함 ===" );
+                                profileImagePathStr = dataObject.getString( "profileImagePathStr" );
+                                Log.d(TAG, "=== onResponse profileImagePathStr ===" +profileImagePathStr);
+
+
+                                Glide.with(Service_DetailActivity.this)
+                                        .load(profileImagePathStr)
+                                        .circleCrop()
+                                        .into(profileImage);
+
+
+
+                            }
+
+
 
                         }else{
 
@@ -305,37 +331,41 @@ public class Service_DetailActivity extends AppCompatActivity {
                         // 2. 시작 시간, 마치는 시간, 전체 소요 시간 보여주기
                         //마치는 시간, 전체 시간 가져오기 오기위해, 해쉬맵 string 체크
                         try{
-                            Log.e(TAG+123, "=== serviceplus ===" +serviceplus);
+                            Log.e(TAG, "=== onResponse serviceplus ===" +serviceplus);
                             if(serviceplus.contains("냉장고=true")){
 //                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 120;
 //                                    resultNeedTimeInt = needDefTimeInt;
                                 refridgeTimeInt=120;
-                                Log.d(TAG, "=== refridgeTimeInt ===" +refridgeTimeInt);
+                                Log.d(TAG, "=== onResponse refridgeTimeInt ===" +refridgeTimeInt);
                             }
                             if(serviceplus.contains("다림질=true")){
 //                                    resultNeedTimeInt = Integer.parseInt(needDefTime) + 30;
                                 ironPlusTimeInt=30;
-                                Log.d(TAG+123, "=== ironPlusTimeInt ===" +ironPlusTimeInt);
+                                Log.d(TAG, "=== onResponse ironPlusTimeInt ===" +ironPlusTimeInt);
                             }
 
                             defaultTimeInt= Integer.parseInt(needDefTime);
-                            Log.d(TAG+123, "=== defaultTimeInt ===" +defaultTimeInt);
+                            Log.d(TAG+123, "=== onResponse defaultTimeInt ===" +defaultTimeInt);
 
                             startTimeInt= Integer.parseInt(startTime);
-                            Log.d(TAG+123, "=== startTimeInt ===" +startTimeInt);
+                            Log.d(TAG+123, "=== onResponse startTimeInt ===" +startTimeInt);
 
                             resultNeedTimeInt =Integer.parseInt(needDefTime);
-                            Log.d(TAG+123, "=== resultNeedTimeInt ===" +resultNeedTimeInt);
+                            Log.d(TAG+123, "=== onResponse resultNeedTimeInt ===" +resultNeedTimeInt);
 
                             endTimeInt=startTimeInt+defaultTimeInt+refridgeTimeInt+ironPlusTimeInt;
-                            Log.d(TAG+123, "=== endTimeInt ===" +endTimeInt);
+                            Log.d(TAG+123, "=== onResponse endTimeInt ===" +endTimeInt);
 
                             startAndAllTimeTxt.setText(timeIntToHourMin(startTimeInt)+"~"+
                                     timeIntToHourMin(endTimeInt)+"("+timeIntToHourMin2(endTimeInt-startTimeInt)+")");
 
                         }catch (Exception e){
-                            Log.e(TAG+123, "=== startAndAllTimeTxt ===" +e);
+                            Log.e(TAG+123, "=== onResponse startAndAllTimeTxt ===" +e);
                         }
+
+
+
+
 
                         // 3. 서비스 상태 보여주기
                         try{
@@ -343,13 +373,10 @@ public class Service_DetailActivity extends AppCompatActivity {
 
                                 stateTxt.setText("매칭 대기 중입니다.");
                                 serviceDeleteBtn.setText("예약 취소하기");
-                                Log.d(TAG, "=== 결제 후, 영수증 보여주기 ===" );
-
-
+                                Log.d(TAG, "=== onResponse 결제 후, 영수증 보여주기 ===" );
 
 
                             }else if(serviceState.contains("예약 취소")){
-
 
 
                                 stateTxt.setText("취소된 예약입니다.");
@@ -368,45 +395,61 @@ public class Service_DetailActivity extends AppCompatActivity {
 
                                 priceIronLayout.setVisibility(View.GONE);
                                 pricefridgeLayout.setVisibility(View.GONE);
-//                                serviceDeleteLayout.setVisibility(View.GONE);
+                                serviceDeleteLayout.setVisibility(View.GONE);
 
-                                // TODO: 2020-12-19 결제 취소한 영수증 저장한거 보여주기
+                                // TODO: 2020-12-19 결제 취소한 영수증 저장한거 보여주기 안함
 
 
 
                             }else if(serviceState.contains("매칭 완료")){
 
-                                int whiteColcor = ContextCompat.getColor(getApplicationContext(), R.color.white);
-                                stateTxt.setTextColor(whiteColcor);
+                                stateTxt.setText("청소 전 입니다.");
 
-                                stateTxt.setText(managerName.substring(0, 3) + " 매니저 님");
-                                stateTxt.setBackgroundResource(R.drawable.bordercircle602);
-
-                                stateTxt.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Log.d(TAG, "=== stateTxt 클릭 ===" );
-                                    }
-                                });
+                                managerTxt.setText(managerName.substring(0, 3) + " 매니저 님");
 
                                 serviceDeleteBtn.setText("예약 취소하기");
                                 Log.d(TAG, "=== 결제 후, 영수증 보여주기 + 매니저에 대한 정보 보여줘야 함. ===" );
 
 
+                                // TODO: 2020-12-18 청소 중, 청소 후 상태 변경 해야 함..
+                            }else if(serviceState.contains("이동 중")){
 
-                                // TODO: 2020-12-18 청소 중, 청소 후 상태 변경 해야 함.. 
-                            }else if(serviceState.contains("청소 중")){
+                                managerTxt.setText(managerName.substring(0, 3) + " 매니저 님");
 
-                                stateTxt.setText("청소 중입니다.");
+                                stateTxt.setText("매니저님이 이동 중입니다.");
                                 serviceDeleteBtn.setVisibility(View.GONE);
 
 
-                                
+
+                            }else if(serviceState.contains("청소 중")){
+
+                                managerTxt.setText(managerName.substring(0, 3) + " 매니저 님");
+
+                                stateTxt.setText("매니저님이 청소 중입니다.");
+                                serviceDeleteBtn.setVisibility(View.GONE);
+                                serviceDeleteLayout.setVisibility(View.GONE);
+
+
                             }else if(serviceState.contains("청소 완료")){
+
+                                managerTxt.setText(managerName.substring(0, 3) + " 매니저 님");
 
                                 stateTxt.setText("완료된 청소입니다.");
                                 serviceDeleteBtn.setVisibility(View.GONE);
 
+                                reviewTxt.setVisibility(View.VISIBLE);
+                                serviceDeleteLayout.setVisibility(View.GONE);
+
+                            }else if(serviceState.contains("청소 완료 리뷰")){
+
+                                managerTxt.setText(managerName.substring(0, 3) + " 매니저 님");
+
+                                stateTxt.setText("완료된 청소입니다.");
+                                serviceDeleteBtn.setVisibility(View.GONE);
+                                serviceDeleteLayout.setVisibility(View.GONE);
+
+                                reviewTxt.setVisibility(View.VISIBLE);
+                                reviewTxt.setText("리뷰 확인하기");
                             }
                         }catch (Exception e){
                             Log.e(TAG, "=== serviceState 널인 경우, 에러코드 ===" +e);
@@ -667,7 +710,100 @@ public class Service_DetailActivity extends AppCompatActivity {
             }
         });
 
+        managerTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "=== managerTxt 클릭 ===" );
 
+                CharSequence info[] = new CharSequence[] {"전화 하기", "채팅 하기" };
+                AlertDialog.Builder builder = new AlertDialog.Builder(Service_DetailActivity.this);
+
+                builder.setItems(info, new DialogInterface.OnClickListener() {
+
+                    @Override
+
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch(which)
+                        {
+                            case 0:
+                                // 전화 하기
+                                //Toast.makeText(Manager_Detail_MatchingPostActivity.this, "전화 하기", Toast.LENGTH_SHORT).show();
+
+
+                                //전화 어플에 있는 Activity 정보를 넣어 Intent 정의
+                                Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:01030517408"));
+                                startActivity(callIntent);
+
+//                                /* 전화 걸기 권한 문제 */
+//                                if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) { // 안드로이드 M 이상일 경우
+//                                    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//
+//                                        String contact_number="01030517408";
+//                                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+//                                        callIntent.setData(Uri.parse("tel:" + contact_number));
+//                                        startActivity(callIntent);
+//
+//                                    } else { //전화 권한 없을 경우
+//                                    }
+//                                }else{
+//                                    // 안드로이드 M 이하일 경우
+//                                }
+
+
+//                                try {
+//                                    String contact_number="01030517408";
+//                                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+//                                    callIntent.setData(Uri.parse("tel:" + contact_number));
+//                                    startActivity(callIntent);
+//                                } catch (Exception e) {
+//                                    // no activity to handle intent. show error dialog/toast whatever
+//                                    Log.e(TAG, "=== 전화 걸기 ===" +e);
+//                                }
+
+                                break;
+
+                            case 1:
+                                // 채팅 하기
+                                //Toast.makeText(Manager_Detail_MatchingPostActivity.this, "채팅 하기", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "=== 채팅 하기 클릭 ===" );
+
+                                /* 해당 매니저의 토큰 값 받아오기  managerToken 미리 받아옴.*/
+//                                String token = postSelectToken(managerName.substring(4).trim(), 2);
+
+
+                                //있으면 넘어감
+                                Intent intent = new Intent(Service_DetailActivity.this, Chat_Room_Activity.class);
+
+                                /* 메세지 기준으로 intent 데이터 보냄 */
+                                intent.putExtra("whomSent1", managerName.substring(4)); //메세지 받는 매니저 이메일
+                                intent.putExtra("whomSent2", managerName.substring(0, 3)); // 메세지 받는 매니저 이름
+                                intent.putExtra("whomSent3", profileImagePathStr); // 메세지 받는 매니저 프로필 이미지
+                                intent.putExtra("whomSent4", managerToken); // 메세지 받는 매니저 토큰
+
+
+                                Log.e(TAG, "=== whomSent 1 ===" +managerName.substring(4));
+                                Log.e(TAG, "=== whomSent 2 ===" +managerName.substring(0, 3));
+                                Log.e(TAG, "=== whomSent 3 ===" +profileImagePathStr);
+                                Log.e(TAG, "=== whomSent 4 ===" +managerToken);
+
+                                intent.putExtra("whoSend", GlobalApplication.currentUser); // 메세지 보내는 사람 이메일
+                                Log.e(TAG, "=== whoSend ===" + GlobalApplication.currentUser);
+
+
+                                startActivity(intent);
+
+
+                                break;
+                        }
+                        dialog.dismiss();
+                    }
+
+                });
+
+                builder.show();
+
+            }
+        });
 
 
 
@@ -690,6 +826,49 @@ public class Service_DetailActivity extends AppCompatActivity {
             }
 
         });
+
+        reviewTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "=== reviewTxt ===" );
+
+                //있으면 넘어감
+                Intent intent = new Intent(getApplicationContext(), Review_C1_Activity.class);
+
+                /* 회원 정보 가져오기 위함 */
+                ArrayList<String> arrayList2;
+
+                arrayList2 = Preference_User_Info.getStringArrayPref(getApplicationContext(), GlobalApplication.currentUser);
+
+
+                ReviewDTO reviewDTO = new ReviewDTO();
+                reviewDTO.setCreatedEmailStr(GlobalApplication.currentUser);
+                reviewDTO.setCreatedNameStr(arrayList2.get(1)); //이름
+                reviewDTO.setIdInt(serviceWaitingUidInt); //서비스 고유넘버
+                reviewDTO.setManagerEmailStr(managerName.substring(4));
+                reviewDTO.setManagerNameStr(managerName.substring(0,3));
+                reviewDTO.setPlaceSizeStr(myplaceDTO_sizeStr);
+                reviewDTO.setServiceDateStr(visitDate);
+                reviewDTO.setServiceDayStr(visitDay);
+
+                Log.d(TAG, "=== setCreatedEmailStr ===" + GlobalApplication.currentUser);
+                Log.d(TAG, "=== setCreatedNameStr ===" + arrayList2.get(1));
+                Log.d(TAG, "=== setIdInt ===" + serviceWaitingUidInt);
+
+                Log.d(TAG, "=== setManagerEmailStr ===" + managerName.substring(4));
+                Log.d(TAG, "=== setManagerNameStr ===" + managerName.substring(0,2));
+                Log.d(TAG, "=== setPlaceSizeStr ===" + myplaceDTO_sizeStr);
+                Log.d(TAG, "=== setServiceDateStr ===" + visitDate);
+                Log.d(TAG, "=== setServiceDayStr ===" + visitDay);
+
+                intent.putExtra("reviewDTO", reviewDTO);
+
+                startActivity(intent);
+
+
+            }
+        });
+
     }
 
 
@@ -892,7 +1071,7 @@ public class Service_DetailActivity extends AppCompatActivity {
     }
 
     /* 레트로핏으로 서버에 이메일 보내서 토큰 받아오는 코드 - 서버에서 mysql에 저장 함*/
-    private void postSelectToken(String email, int whichClientManager){
+    private String postSelectToken(String email, int whichClientManager){
 
         Log.e(TAG, "=== postManagerProfile 시작 ===" );
 
@@ -963,6 +1142,7 @@ public class Service_DetailActivity extends AppCompatActivity {
         });
 
 
+        return managerToken;
     }
 
 
@@ -982,12 +1162,13 @@ public class Service_DetailActivity extends AppCompatActivity {
     }
 
     /* 오늘부터 12.30일 형태의 날짜 사이 차이를 구하는 메서드. // 에러 시, 0을 return */
-    public long calDateBetweenNowandB(String b)
-    { //.substring(0,5) 사용하면 됨!!
+    public long calDateBetweenNowandB(String b) { //.substring(0,5) 사용하면 됨!!
         // TODO: 2020-12-18 시연할 때, 날짜 2021년 넘어가면 바꿔야 함...ㅎㅎ
         //입력할 때, 12.15 이런 식임
 
-        String nowYear2 = "2020";
+        Log.d(TAG, "=== b ===" +b);
+
+        String nowYear2 = "2021";
         String month2 = b.substring(0,2); //12월
         String date2 = b.substring(3); // 20일
         Log.e(TAG, "=== month2 ===" +month2 );

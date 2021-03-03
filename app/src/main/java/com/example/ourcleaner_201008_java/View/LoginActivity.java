@@ -7,21 +7,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.ourcleaner_201008_java.Adapter.SelectManagerAdapter;
-import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
-import com.example.ourcleaner_201008_java.Interface.AlarmManagerSelectInterface;
-import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface;
 import com.example.ourcleaner_201008_java.R;
-
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
-import com.example.ourcleaner_201008_java.View.Manager.Manager_AlarmActivity;
+import com.example.ourcleaner_201008_java.SharedP.Preference_User_Info;
 import com.example.ourcleaner_201008_java.View.Manager.Manager_LoginActivity;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
@@ -46,11 +39,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 //로그인 화면 엑티비티
 public class LoginActivity extends AppCompatActivity {
@@ -92,6 +80,48 @@ public class LoginActivity extends AppCompatActivity {
         //getHashKey();
 
 
+        /* 회원 정보 먼저 쉐어드에 저장하고..ㅎㅎ */
+        ArrayList<String> arrayList1 = new ArrayList<>();
+        arrayList1.add("shp7400@naver.com");
+        arrayList1.add("박서현");
+        arrayList1.add("http://52.79.179.66/uploads/1607755662978.png");
+
+        ArrayList<String> arrayList2 = new ArrayList<>();
+        arrayList2.add("shp7401@naver.com");
+        arrayList2.add("배수지");
+        arrayList2.add("http://52.79.179.66/uploads/1607954516629.png");
+
+        ArrayList<String> arrayList3 = new ArrayList<>();
+        arrayList3.add("shp7402@naver.com");
+        arrayList3.add("김제니");
+        arrayList3.add("http://52.79.179.66/uploads/1607954797510.png");
+
+
+
+        ArrayList<String> arrayList4 = new ArrayList<>();
+        arrayList4.add("shp7408@naver.com");
+        arrayList4.add("박서현");
+
+//        ArrayList<String> arrayList5 = new ArrayList<>();
+//        arrayList3.add("shp7403@naver.com");
+//        arrayList3.add("안소희");
+//        arrayList3.add("http://52.79.179.66/uploads/1607955126697.png");
+//
+//        ArrayList<String> arrayList6 = new ArrayList<>();
+//        arrayList3.add("shp7404@naver.com");
+//        arrayList3.add("김청하");
+//        arrayList3.add("http://52.79.179.66/uploads/1611354864094.png");
+
+
+        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7400@naver.com", arrayList1);
+        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7401@naver.com", arrayList2);
+        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7402@naver.com", arrayList3);
+        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7408@naver.com", arrayList4);
+//        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7403@naver.com", arrayList5);
+//        Preference_User_Info.setStringArrayPref(getApplicationContext(), "shp7404@naver.com", arrayList6);
+
+
+
         Log.d(TAG, "=== 쉐어드에서 이메일 있는지 확인. 있으면, 어플리케이션에 해당 이메일, 패스워드 저장하고, 메인 화면으로, 없으면, 현재 엑티비티 진행 ===" );
 
 
@@ -116,7 +146,8 @@ public class LoginActivity extends AppCompatActivity {
                 /* db에 해당 알람 있는지 없는지 확인해야 함. 없으면 해당 엑티비티 그대로 진행,
                 * 있으면, 알람 엑티비티로 이동하기 */
 
-                postEmailAlarm(managerAuto);
+                // TODO: 2021-01-08 여기서 에러가 뜸... 왜 에러가 뜰까..ㅠㅠㅠ시바ㅏㅏㅏ 
+//                postEmailAlarm(managerAuto);
 
 
 
@@ -140,9 +171,8 @@ public class LoginActivity extends AppCompatActivity {
             Log.d(TAG, "=== emtx에 값이 있을 때, 메인 엑티비티 연결 ===" );
 
             GlobalApplication.currentUser = emtx;
-
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
+            
             startActivity(intent);
 
             finish();
@@ -224,84 +254,84 @@ public class LoginActivity extends AppCompatActivity {
 
 
     /* 레트로핏으로 이메일 보내서 해당 매니저에게 알람 왔는지 확인하는 코드 */
-    private void postEmailAlarm(String email){
-
-        Log.e(TAG, "=== postEmailAlarm 시작 ===" );
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AlarmManagerSelectInterface.JSONURL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .build();
-
-        AlarmManagerSelectInterface api =retrofit.create(AlarmManagerSelectInterface.class);
-        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
-        Call<String> call = api.selectAlarmManager(email);
-
-        Log.e(TAG, "=== 매니저 email ===" + email);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                Log.e("Responsestring", response.body().toString());
-                //Toast.makeText()
-                if (response.isSuccessful()) {
-                    if (response.body() != null) {
-                        Log.e("onSuccess", response.body());
-
-                        String jsonresponse = response.body();
-                        writeAlarmInfo(jsonresponse);
-
-
-                    } else {
-                        Log.e("onEmptyResponse", "Returned empty response");
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
-
-            }
-        });
-    }
-
-    private void writeAlarmInfo(String response){
-
-        try {
-            //getting the whole json object from the response
-            JSONObject obj = new JSONObject(response);
-            Log.e(TAG, "=== response ===" +response);
-
-            if(obj.optString("status").equals("true")){
-
-                JSONArray dataArray  = obj.getJSONArray("data");
-
-                //status true 이면, 있으면 알람 엑티비티로 넘어감
-                Intent intent = new Intent(getApplicationContext(), Manager_AlarmActivity.class);
-                startActivity(intent);
-                finish();
-
-
-//                for (int i = 0; i < dataArray.length(); i++) {
+//    private void postEmailAlarm(String email){
 //
-//                    JSONObject dataobj = dataArray.getJSONObject(i);
-//                    dataobj.getInt("uid");
+//        Log.e(TAG, "=== postEmailAlarm 시작 ===" );
+//
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(AlarmManagerSelectInterface.JSONURL)
+//                .addConverterFactory(ScalarsConverterFactory.create())
+//                .build();
+//
+//        AlarmManagerSelectInterface api =retrofit.create(AlarmManagerSelectInterface.class);
+//        /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
+//        Call<String> call = api.selectAlarmManager(email);
+//
+//        Log.e(TAG, "=== 매니저 email ===" + email);
+//
+//        call.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+//                Log.e("Responsestring", response.body().toString());
+//                //Toast.makeText()
+//                if (response.isSuccessful()) {
+//                    if (response.body() != null) {
+//                        Log.e("onSuccess", response.body());
+//
+//                        String jsonresponse = response.body();
+//                        writeAlarmInfo(jsonresponse);
 //
 //
+//                    } else {
+//                        Log.e("onEmptyResponse", "Returned empty response");
+//                    }
 //                }
-
-            }else {
-                Toast.makeText(LoginActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
-
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//
+//                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+//
+//            }
+//        });
+//    }
+//
+//    private void writeAlarmInfo(String response){
+//
+//        try {
+//            //getting the whole json object from the response
+//            JSONObject obj = new JSONObject(response);
+//            Log.e(TAG, "=== response ===" +response);
+//
+//            if(obj.optString("status").equals("true")){
+//
+//                JSONArray dataArray  = obj.getJSONArray("data");
+//
+//                //status true 이면, 있으면 알람 엑티비티로 넘어감
+//                Intent intent = new Intent(getApplicationContext(), Manager_AlarmActivity.class);
+//                startActivity(intent);
+//                finish();
+//
+//
+////                for (int i = 0; i < dataArray.length(); i++) {
+////
+////                    JSONObject dataobj = dataArray.getJSONObject(i);
+////                    dataobj.getInt("uid");
+////
+////
+////                }
+//
+//            }else {
+//                Toast.makeText(LoginActivity.this, obj.optString("message")+"", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
 
 
 

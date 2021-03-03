@@ -78,7 +78,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="* 당일 및 전날 예약은 불가하며, 2주 내의 날짜로 예약 가능합니다."
+                android:text="* 당일 예약은 불가능하며, 2주 내의 날짜로 예약 가능합니다."
                 android:textSize="12sp"
                 android:textColor="@color/black"
                 android:layout_marginStart="10dp"
@@ -89,30 +89,42 @@
         </LinearLayout>
 
 
-        <CalendarView
-            android:id="@+id/calendar_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+<!--        <CalendarView-->
+<!--            android:id="@+id/calendar_view"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
 
+<!--            />-->
+
+        <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/materialCalendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:mcv_showOtherDates="all"
+            app:mcv_selectionColor="@color/black"
+            app:mcv_selectionMode="single"
             />
+
 
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/timeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="5dp"
+        android:visibility="gone"
         >
 
         <HorizontalScrollView
             android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            android:visibility="gone"
-            >
+            android:fadeScrollbars="false">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -122,121 +134,134 @@
 
 
                 <Button
+                    android:id="@+id/timeBtn7"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="7 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn8"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="8 : 00"
                     android:paddingStart="10dp"
                     android:paddingEnd="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn9"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="9 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn10"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="10 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn11"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="11 : 00"
                     android:paddingStart="10dp"
                     android:paddingEnd="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn12"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="12 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn13"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="13 : 00"
                     android:paddingStart="10dp"
                     android:paddingEnd="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn14"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="14 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn15"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="15 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn16"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="16 : 00"
                     android:paddingStart="10dp"
                     android:paddingEnd="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn17"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="17 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn18"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="18 : 00"
                     android:paddingStart="10dp"
                     android:paddingEnd="5dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
                 <Button
+                    android:id="@+id/timeBtn19"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
                     android:text="19 : 00"
                     android:paddingEnd="5dp"
                     android:paddingStart="10dp"
                     android:layout_marginEnd="5dp"
-                    android:background="@drawable/bordercircle60"/>
+                    android:background="@drawable/color_change"/>
 
 
 

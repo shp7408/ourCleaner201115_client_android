@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+
+    <TextView
+        android:id="@+id/whoSendTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="5dp"/>
+
+    <RelativeLayout
+        android:id="@+id/receivedLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/whoSendTxt"
+
+        >
+        <TextView
+            android:id="@+id/receivedMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background2"
+            android:textColor="@color/black"
+            android:text="ddddddddddddddd"
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="30dp"
+            android:minWidth="100dp"
+            android:gravity="center"
+
+            />
+        <ImageView
+            android:id="@+id/receivedImg"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            />
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/whoSendTimeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇시 몇 분"
+        android:layout_below="@+id/receivedLayout"
+        android:layout_alignEnd="@id/receivedLayout"
+        android:textSize="12sp"
+        />
+
+
+
+</RelativeLayout>

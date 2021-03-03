@@ -1,34 +1,27 @@
 package com.example.ourcleaner_201008_java.View;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.ourcleaner_201008_java.GlobalApplication;
-import com.example.ourcleaner_201008_java.Interface.ManagerProfileInterface;
 import com.example.ourcleaner_201008_java.Interface.TokenInsertInterface;
 import com.example.ourcleaner_201008_java.R;
-import com.example.ourcleaner_201008_java.Service.FcmPushTest;
-import com.example.ourcleaner_201008_java.Service.MyFirebaseMessagingService;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentChat;
-import com.example.ourcleaner_201008_java.View.Fragment.FragmentReservation;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentHome;
 import com.example.ourcleaner_201008_java.View.Fragment.FragmentMore;
+import com.example.ourcleaner_201008_java.View.Fragment.FragmentReservation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,11 +59,11 @@ public class MainActivity extends AppCompatActivity  {
 //        System.out.println("token : "+ FirebaseInstanceId.getInstance().getToken());
 
         //추가한 라인
-        Log.e(TAG, "FirebaseApp.initializeApp(this)");
-        FirebaseApp.initializeApp(this);
-
-        Log.e(TAG, "subscribeToTopic(\"news\")");
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+//        Log.e(TAG, "FirebaseApp.initializeApp(this)");
+//        FirebaseApp.initializeApp(this);
+//
+//        Log.e(TAG, "subscribeToTopic(\"news\")");
+//        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         Log.e(TAG, "getInstance().getToken();");
         String token = FirebaseInstanceId.getInstance().getToken();
@@ -84,32 +77,32 @@ public class MainActivity extends AppCompatActivity  {
         /* fcmpush 보내는 코드
         * 1. 클래스 만들어야 함
         * 2. fcmPushTest.pushFCMNotification 의 첫 번째 인자 : 메세지 내용 / 두 번째 인자 : 매니저인지, 고객인지 / 받는 사람 이메일 - 이걸로 찾음 */
-        FcmPushTest fcmPushTest = new FcmPushTest();
-
-        Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try  {
-                        Log.e(TAG, "=== fcmPushTest ==="+fcmPushTest.toString() );
-
-                        fcmPushTest.pushFCMNotification("받앙라ㅏㅏ",1,"");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Log.e(TAG, "fcmPushTest 에러 코드 : "+ e);
-                    }
-                }
-        });
-
-        thread.start();
-        Handler mHandler = new Handler(Looper.getMainLooper());
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.e(TAG, "fcmPushTest : run");
-
-            }
-
-        }, 0);
+//        FcmPushTest fcmPushTest = new FcmPushTest();
+//
+//        Thread thread = new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    try  {
+//                        Log.e(TAG, "=== fcmPushTest ==="+fcmPushTest.toString() );
+//
+//                        fcmPushTest.pushFCMNotification("받앙라ㅏㅏ",1,"");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                        Log.e(TAG, "fcmPushTest 에러 코드 : "+ e);
+//                    }
+//                }
+//        });
+//
+//        thread.start();
+//        Handler mHandler = new Handler(Looper.getMainLooper());
+//        mHandler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Log.e(TAG, "fcmPushTest : run");
+//
+//            }
+//
+//        }, 0);
 
 
 

@@ -21,7 +21,7 @@
             android:orientation="vertical"
             android:paddingVertical="30dp"
             android:paddingHorizontal="20dp"
-            android:background="@drawable/bordercircle601"
+            android:background="@drawable/shadow2"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 <TextView
                     android:id="@+id/reserveDateTxt"
                     android:textStyle="bold"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textSize="25sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="우리집 / 14:00 "
-                android:textColor="@color/colorSecondary1"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:textSize="15sp"/>
         </LinearLayout>

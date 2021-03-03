@@ -1,6 +1,5 @@
 package com.example.ourcleaner_201008_java;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 
@@ -19,7 +18,10 @@ public class Ffament_First_Handler extends Handler {
     public void handleMessage(@NonNull Message msg) {
         super.handleMessage(msg);
         if(msg.what ==0){
-            fragment_first.needDefTimeTxt.setText(String.valueOf(msg.arg1));
+            fragment_first.needDefTimeTxt.setText(msg.arg1+"시간");
         }
     }
+
+
+
 }

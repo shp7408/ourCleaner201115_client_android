@@ -9,18 +9,26 @@
     android:orientation="vertical"
     android:weightSum="20">
 
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        app:mcv_selectionColor="@color/black"
+        app:mcv_showOtherDates="all"
+        app:mcv_calendarMode="month"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myWorkList_recycle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="18"
+        android:layout_height="0dp"
+        android:layout_weight="10"
         tools:listitem="@layout/row_manager_all_reservation"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        android:layout_weight="2"
         android:weightSum="4">
         <TextView
             android:id="@+id/waitingTxt"
@@ -31,7 +39,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:layout_weight="1"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:background="@drawable/bordergrey"
             />
         <TextView
@@ -44,7 +52,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:background="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
 
             />
         <TextView
@@ -57,7 +65,7 @@
             android:gravity="center"
             android:layout_weight="1"
             android:background="@drawable/bordergrey"
-            android:textSize="20sp"
+            android:textSize="18sp"
 
             />
         <TextView

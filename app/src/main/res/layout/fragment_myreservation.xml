@@ -1,15 +1,28 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    android:weightSum="2">
+
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+        android:id="@+id/materialCalendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:mcv_selectionColor="@color/black"
+        app:mcv_showOtherDates="all"
+        app:mcv_calendarMode="month"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="720dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
         android:overScrollMode="never"
         android:id="@+id/myreservation_recycle"
         tools:listitem="@layout/row_myreservation"/>
 
-</RelativeLayout>
+</LinearLayout>

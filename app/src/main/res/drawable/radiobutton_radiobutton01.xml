@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- UNSELECTED -->
+    <item android:state_checked="false">
+        <layer-list>
+            <!-- 배경 -->
+            <item>
+                <shape>
+                    <corners android:radius="50dp" />
+                    <solid android:color="@color/white" />
+                </shape>
+            </item>
+            <!-- 이미지 영역 -->
+            <item
+                android:drawable="@drawable/sad_middle"
+                android:top="4dp"
+                android:right="4dp"
+                android:bottom="4dp"
+                android:left="4dp" />
+        </layer-list>
+    </item>
+    <!-- SELECTED -->
+    <item android:state_checked="true">
+        <layer-list>
+            <!-- 배경 -->
+            <item>
+                <shape>
+                    <corners android:radius="50dp" />
+                    <solid android:color="@color/customerGood" />
+                </shape>
+            </item>
+            <!-- 이미지 영역 -->
+            <item
+                android:drawable="@drawable/sad_middle"
+                android:top="4dp"
+                android:right="4dp"
+                android:bottom="4dp"
+                android:left="4dp" />
+        </layer-list>
+    </item>
+</selector>
+
+
+
+

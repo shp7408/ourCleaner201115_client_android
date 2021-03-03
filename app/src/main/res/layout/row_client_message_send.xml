@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+
+    <RelativeLayout
+        android:id="@+id/sendLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        >
+
+        <TextView
+            android:id="@+id/sendMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shadow2"
+            android:paddingHorizontal="30dp"
+            android:paddingVertical="10dp"
+            android:text="ddddddddddddddd"
+            android:textColor="@color/black"
+            android:minWidth="100dp"
+            android:gravity="center"
+
+            />
+
+        <ImageView
+            android:id="@+id/sendImg"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/sendTimeTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="몇시 몇 분"
+        android:layout_below="@+id/sendLayout"
+        android:layout_alignStart="@id/sendLayout"
+        android:textSize="12sp"
+        />
+
+</RelativeLayout>

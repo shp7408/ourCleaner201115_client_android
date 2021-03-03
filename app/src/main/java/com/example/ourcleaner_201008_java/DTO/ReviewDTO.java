@@ -2,47 +2,58 @@ package com.example.ourcleaner_201008_java.DTO;
 
 import java.io.Serializable;
 import java.util.HashMap;
+/* 일단.. 저장하기 위한 dto로만 하자 머리 안돌아감..  */
 
 public class ReviewDTO implements Serializable {
-    int id;
-    String createdEmailStr;
-    String createdNameStr;
-    String regiDateStr;
 
-    float starScoreLong;
-    HashMap<String, Float> detailScoreHashmap;
+    int idInt; //게시물 id 리사이클러뷰에 뿌려질때
+    String createdEmailStr; //작성자 이메일
+    String createdNameStr; //작성자 이름
+    String regiDateStr; //작성날짜 기본
+    String regiDateLookStr; //보여지기 위함 작성날짜
 
-    int serviceIdInt;
-    String managerEmailStr;
-    String managerNameStr;
+    double likeDouble; //마음에 들어요 ~ 평균 내기 위함
+    HashMap<String, Boolean> radioPosMap;
+    HashMap<String, Boolean> radioNegMap;
 
-    String placeSizeStr;
+    int serviceIdInt; //서비스 id
+    String managerEmailStr; //서비스 매니저 이메일
+    String managerNameStr; //서비스 매니저 이름
+    String serviceDateStr;
+    String serviceDayStr;
 
-    String reviewContentsStr;
+    String placeSizeStr; //몇 평인지
+
+    String reviewContentsStr; //리뷰 내용
+    String imageListStr; //이미지 리스트를 스트링으로 todo 뭘로 저장하는게 좋을지 모르겠음..
 
     public ReviewDTO() {
     }
 
-    public ReviewDTO(int id, String createdEmailStr, String createdNameStr, String regiDateStr, float starScoreLong, HashMap<String, Float> detailScoreHashmap, int serviceIdInt, String managerEmailStr, String managerNameStr, String placeSizeStr, String reviewContentsStr) {
-        this.id = id;
-        this.createdEmailStr = createdEmailStr;
-        this.createdNameStr = createdNameStr;
-        this.regiDateStr = regiDateStr;
-        this.starScoreLong = starScoreLong;
-        this.detailScoreHashmap = detailScoreHashmap;
-        this.serviceIdInt = serviceIdInt;
-        this.managerEmailStr = managerEmailStr;
-        this.managerNameStr = managerNameStr;
-        this.placeSizeStr = placeSizeStr;
-        this.reviewContentsStr = reviewContentsStr;
+
+
+    public String getServiceDateStr() {
+        return serviceDateStr;
     }
 
-    public int getId() {
-        return id;
+    public void setServiceDateStr(String serviceDateStr) {
+        this.serviceDateStr = serviceDateStr;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public String getServiceDayStr() {
+        return serviceDayStr;
+    }
+
+    public void setServiceDayStr(String serviceDayStr) {
+        this.serviceDayStr = serviceDayStr;
+    }
+
+    public int getIdInt() {
+        return idInt;
+    }
+
+    public void setIdInt(int idInt) {
+        this.idInt = idInt;
     }
 
     public String getCreatedEmailStr() {
@@ -69,20 +80,36 @@ public class ReviewDTO implements Serializable {
         this.regiDateStr = regiDateStr;
     }
 
-    public float getStarScoreLong() {
-        return starScoreLong;
+    public String getRegiDateLookStr() {
+        return regiDateLookStr;
     }
 
-    public void setStarScoreLong(long starScoreLong) {
-        this.starScoreLong = starScoreLong;
+    public void setRegiDateLookStr(String regiDateLookStr) {
+        this.regiDateLookStr = regiDateLookStr;
     }
 
-    public HashMap<String, Float> getDetailScoreHashmap() {
-        return detailScoreHashmap;
+    public double getLikeDouble() {
+        return likeDouble;
     }
 
-    public void setDetailScoreHashmap(HashMap<String, Float> detailScoreHashmap) {
-        this.detailScoreHashmap = detailScoreHashmap;
+    public void setLikeDouble(double likeDouble) {
+        this.likeDouble = likeDouble;
+    }
+
+    public HashMap<String, Boolean> getRadioPosMap() {
+        return radioPosMap;
+    }
+
+    public void setRadioPosMap(HashMap<String, Boolean> radioPosMap) {
+        this.radioPosMap = radioPosMap;
+    }
+
+    public HashMap<String, Boolean> getRadioNegMap() {
+        return radioNegMap;
+    }
+
+    public void setRadioNegMap(HashMap<String, Boolean> radioNegMap) {
+        this.radioNegMap = radioNegMap;
     }
 
     public int getServiceIdInt() {
@@ -123,5 +150,13 @@ public class ReviewDTO implements Serializable {
 
     public void setReviewContentsStr(String reviewContentsStr) {
         this.reviewContentsStr = reviewContentsStr;
+    }
+
+    public String getImageListStr() {
+        return imageListStr;
+    }
+
+    public void setImageListStr(String imageListStr) {
+        this.imageListStr = imageListStr;
     }
 }

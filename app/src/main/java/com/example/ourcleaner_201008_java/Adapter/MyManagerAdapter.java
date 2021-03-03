@@ -1,7 +1,6 @@
 package com.example.ourcleaner_201008_java.Adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+/* 안씀.. */
 public class MyManagerAdapter extends RecyclerView.Adapter<MyManagerAdapter.CustomViewHolder> {
 
     private Context context;

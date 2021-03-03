@@ -16,7 +16,11 @@ import com.example.ourcleaner_201008_java.R;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
+/* 매니저용 -
+매칭대기 서비스 화면에 있는 서비스 목록 모두 보여주는 어댑터
+ 업무 목록 화면에 있는 서비스 목록 보여주는 어댑터
 
+ 둘 다 씀!! */
 public class ManagerReservationAdapter extends RecyclerView.Adapter<ManagerReservationAdapter.MyViewHolder> {
 
     private static final String TAG = "매니저용 예약대기 어댑터";
@@ -27,6 +31,8 @@ public class ManagerReservationAdapter extends RecyclerView.Adapter<ManagerReser
 
     //메인에서 뷰 객체를 클릭했을 때
     private ManagerReservationAdapter.OnListItemSelectedInterface mListener;
+
+    private MyViewHolder myViewHolder;
 
     //메인 뉴스피드의 각 객체를 클릭했을 때, 아이템 클릭 인터페이스
     public interface OnListItemSelectedInterface {
@@ -60,12 +66,15 @@ public class ManagerReservationAdapter extends RecyclerView.Adapter<ManagerReser
 
         ManagerWaitingDTO managerWaitingDTO = managerWaitingDTOArrayList.get(position);
 
-        holder.reserveTimeTxt.setText(timeIntToHourMin(managerWaitingDTO.getStartTimeInt())+" ~ "+timeIntToHourMin(managerWaitingDTO.getStartTimeInt()+managerWaitingDTO.getNeedTimeInt()));
-        holder.reserveDateTxt.setText(managerWaitingDTO.getDateStr());
+        holder.reserveTimeTxt.setText(timeIntToHourMin(managerWaitingDTO.getStartTimeInt()) + " 시작");
+        holder.reserveDateTxt.setText(managerWaitingDTO.getDateStr() +" "+timeIntToHourMin(managerWaitingDTO.getStartTimeInt()) + " 시작");
         holder.reserveDetailTxt.setText(managerWaitingDTO.getAddressStr()+" ("+managerWaitingDTO.getMyplaceDTO_sizeStr()+")");
 //        holder.reserveStateTxt.setText(timeIntToHourMin2(managerWaitingDTO.getNeedTimeInt()));
 
     }
+
+
+
 
 
 
@@ -130,32 +139,6 @@ public class ManagerReservationAdapter extends RecyclerView.Adapter<ManagerReser
         return plusTimeStr;
     }
 
-    //int 형태의 정수를 "3시간 30분" String으로 나타내는 메서드
-    public String timeIntToHourMin2(int plusTimeInt){
 
-        long hour = TimeUnit.MINUTES.toHours(plusTimeInt); // 분을 시간으로 변경
-        Log.d(TAG, "=== hour ===" +hour);
-
-        long minutes = TimeUnit.MINUTES.toMinutes(plusTimeInt) - TimeUnit.HOURS.toMinutes(hour); // 시간으로 변경하고, 나머지 분
-        Log.d(TAG, "=== minutes ==="+minutes );
-
-        String plusTimeStr;
-
-        if(hour==0){
-            Log.d(TAG, "=== hour==0  ===" );
-            plusTimeStr = ""+ minutes + "분";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }else if(minutes==0){
-            Log.d(TAG, "=== minutes==0 ===" );
-            plusTimeStr = ""+ hour + "시간";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }else{
-            Log.d(TAG, "=== hour 랑 minutes 둘 다 0이 아닌, 경우 ===" );
-            plusTimeStr = ""+ hour +"시간"+ minutes + "분";
-            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
-        }
-
-        return plusTimeStr;
-    }
 
 }

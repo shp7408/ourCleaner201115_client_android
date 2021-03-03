@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".View.Manager.Manager_LoginActivity"
+    android:padding="5dp"
+    android:orientation="vertical"
+    android:weightSum="10">
+
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="1 / 4"
+                android:gravity="center_horizontal"
+                android:layout_gravity="right"
+                android:layout_marginTop="5dp"
+                android:textSize="20sp"
+                    android:textStyle="bold"
+                />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/back_btn"
+                        android:layout_width="35dp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_baseline_arrow_back_24" />
+
+
+
+
+                </LinearLayout>
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/dateTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12.23(수)에 받은\n박서현 매니저님의\n서비스는 어땠나요?"
+                    android:lineSpacingExtra="15dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"
+                    android:gravity="center"
+                    android:layout_marginBottom="20dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <RadioButton
+                            android:id="@+id/radio1"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:button="@color/transparent"
+                            android:background="@drawable/radiobutton_radiobutton01"
+                            android:paddingBottom="70dp"
+                            android:layout_marginHorizontal="20dp"
+                            />
+
+                        <RadioButton
+                            android:id="@+id/radio2"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:button="@color/transparent"
+                            android:background="@drawable/radiobutton_radiobutton02"
+                            android:layout_marginHorizontal="20dp"
+
+                            />
+                        <RadioButton
+                            android:id="@+id/radio3"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:button="@color/transparent"
+                            android:background="@drawable/radiobutton_radiobutton03"
+                            android:layout_marginHorizontal="20dp"
+
+                            />
+
+
+
+
+
+                    </RadioGroup>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+
+                        >
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="별로에요."
+                            android:gravity="center"
+                            android:layout_marginHorizontal="20dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="보통이에요."
+                            android:gravity="center"
+                            android:layout_marginHorizontal="20dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:text="너무 좋아요."
+                            android:gravity="center"
+                            android:layout_marginHorizontal="20dp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+
+
+
+
+
+</LinearLayout>

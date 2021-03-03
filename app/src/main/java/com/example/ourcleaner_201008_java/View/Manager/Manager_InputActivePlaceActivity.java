@@ -1,42 +1,31 @@
 package com.example.ourcleaner_201008_java.View.Manager;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.ourcleaner_201008_java.Adapter.ReseachBAddressAdapter;
 import com.example.ourcleaner_201008_java.Adapter.RetrofitAdapter;
-import com.example.ourcleaner_201008_java.DTO.AddressDTO;
 import com.example.ourcleaner_201008_java.DTO.BaddressDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.BResearchInterface;
-import com.example.ourcleaner_201008_java.Interface.RecyclerInterface;
-import com.example.ourcleaner_201008_java.Model.ModelRecycler;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.View.GPSInfo;
 
@@ -46,7 +35,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;

@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 현재 위치 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CALL_PHONE" /> <!-- 전화 걸기 -->
+
+
 
     <application
         android:name=".GlobalApplication"
@@ -25,11 +28,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
+        <activity
+            android:name=".View.Chat_Room_Activity"
+           >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_CLIENT"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
 
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        </activity>
+        <activity
+            android:name=".View.Manager.Manager_Chat_Room_Activity"
+             >
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY_MANAGER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
 
-        <activity android:name=".View.Manager.Manager_AlarmActivity"></activity>
+        </activity>
+        <activity android:name=".View.Review_C4_Activity" />
+        <activity android:name=".View.Review_C3_Activity" />
+        <activity android:name=".View.Review_C2_Activity" />
+        <activity android:name=".View.Review_C1_Activity" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
+        <activity android:name=".View.Manager.Manager_AlarmActivity" />
         <activity android:name=".View.Service_SelectManager_DetailActivity" />
         <activity android:name=".View.Service_SelectManagersActivity" />
         <activity android:name=".View.Manager.Manager_InputActivePlaceActivity" />
@@ -44,8 +72,12 @@
         <activity android:name=".View.Manager.Manager_Signin1Activity" />
         <activity android:name=".View.MyPlace_EditActivity" />
         <activity android:name=".View.Manager.Manager_Acount_Activity" />
-        <activity android:name=".View.Service_DetailActivity" />
-        <activity android:name=".View.Manager.Manager_Detail_MatchingPostActivity" />
+        <activity
+            android:name=".View.Service_DetailActivity"
+            android:exported="true"/>
+        <activity
+            android:name=".View.Manager.Manager_Detail_MatchingPostActivity"
+            android:exported="true"/>
         <activity android:name=".View.Manager.Manager_MoreActivity" />
         <activity android:name=".View.Manager.Manager_ChatActivity" />
         <activity android:name=".View.Manager.Manager_ReservationActivity" />
@@ -89,12 +121,6 @@
         <activity android:name=".View.Manager.demos.MarkerDemoActivity" />
         <activity android:name=".View.Manager.demos.PolygonDemoActivity" />
         <activity android:name=".View.Manager.demos.runtimePermissions.AppPermissionHandlerActivity" /> <!-- 아래 두개의 서비스 태그를 추가한다. -->
-        <service android:name=".Service.MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

@@ -1,34 +1,23 @@
 package com.example.ourcleaner_201008_java.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.ourcleaner_201008_java.CircleTransform;
 import com.example.ourcleaner_201008_java.DTO.ManagerDTO;
-import com.example.ourcleaner_201008_java.DTO.ReviewDTO;
 import com.example.ourcleaner_201008_java.R;
-
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
-import com.squareup.picasso.Transformation;
 
 import java.util.ArrayList;
-
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
-import jp.wasabeef.picasso.transformations.internal.Utils;
 
 public class SelectManagerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -48,11 +37,7 @@ public class SelectManagerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     }
 
-    public SelectManagerAdapter(ArrayList<ManagerDTO> managerDTOArrayList, Context context) {
-        inflater = LayoutInflater.from(context);
-        this.managerDTOArrayList = managerDTOArrayList;
-        this.context = context;
-    }
+
 
     public SelectManagerAdapter(Context context, ArrayList<ManagerDTO> managerDTOArrayList, OnListItemSelectedInterface listItemSelectedInterface) {
         inflater = LayoutInflater.from(context);

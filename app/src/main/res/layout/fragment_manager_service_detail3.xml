@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <LinearLayout
+        android:id="@+id/receiptLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:padding="15dp"
+        >
+
+
+
+
+        <LinearLayout
+            android:id="@+id/priceDefLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            >
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="기본금액"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/priceDefNumTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="textEnd"
+                android:text="66,000 원"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:gravity="end" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/priceIronLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:visibility="gone"
+            >
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="다림질(+30분)"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/priceIronNumTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="textEnd"
+                android:text="6,600 원"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="end" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/pricefridgeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:visibility="gone"
+
+            >
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="냉장실 간단청소(+2시간)"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/pricefridgeNumTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="textEnd"
+                android:text="26,400 원"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="end" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/priceResultLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            >
+
+
+            <TextView
+                android:id="@+id/priceResultTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:text="총 금액"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/priceResutNumTxt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
+                android:textAlignment="textEnd"
+                android:text="99,000 원"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:gravity="end" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/priceResul2tLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_marginTop="10dp"
+            >
+
+
+            <TextView
+                android:id="@+id/priceResult2Txt"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:text="매니저님이 받으실 금액 (10% 수수료)"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/priceResutNum2Txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="99,000 원"
+            android:padding="5dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_gravity="end" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="20dp"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <CheckBox
+        android:id="@+id/laundryCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="세탁 및 건조된 빨래 개기"
+        android:checked="true"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="20dp"
+        />
+    <CheckBox
+        android:id="@+id/ironCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다림질 +30"
+        android:checked="true"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="20dp"
+
+        />
+    <CheckBox
+        android:id="@+id/fridgeCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="냉장고 청소 +2시간"
+        android:checked="true"
+        android:textSize="20sp"
+        android:layout_marginHorizontal="20dp"
+
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow2"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="20dp"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/focusTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 화장실 집중적으로 청소해주세요."
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/cautionTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="- 주의 해주세요."
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

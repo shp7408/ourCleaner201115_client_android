@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="5dp"
+    android:paddingVertical="20dp"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- 주방"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="15dp"
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="식탁 위 정리 및 설거지"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="가스렌지 기름때 제거"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="씽크볼 및 거름망 세척"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+
+                <View style="@style/Divider"
+                    android:layout_marginVertical="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- 화장실"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="15dp"
+
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="변기, 세면대, 하수구망 닦기"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="샤워부스, 욕조 닦기"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="화장실 바닥 청소 및 건식 마무리"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="수전 및 거울 닦기"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+
+                <View style="@style/Divider"
+                    android:layout_marginVertical="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- 방"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="15dp"
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="이불 정리"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="책상, 화장대 등 가구 위 먼지 닦기"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="바닥 청소 및 물걸레질"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+
+                    />
+
+                <View style="@style/Divider"
+                    android:layout_marginVertical="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- 거실"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="15dp"
+
+                    />
+
+
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="소파 및 가구 위 먼지 닦기"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="바닥 청소 및 물걸레질"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+
+                    />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="건조된 빨래 개키기 및 정리정돈"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+
+                    />
+
+                <View style="@style/Divider"
+                    android:layout_marginVertical="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="- 현관"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="15dp"
+
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="바닥 닦기 및 현관 위 신발 정리"
+                    android:checked="true"
+                    android:textSize="20sp"
+                    android:layout_marginHorizontal="20dp"
+                    />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+</LinearLayout>

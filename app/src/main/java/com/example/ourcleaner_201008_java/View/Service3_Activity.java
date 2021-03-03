@@ -1,7 +1,5 @@
 package com.example.ourcleaner_201008_java.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,12 +13,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.Dialog.Service3Dialog;
 import com.example.ourcleaner_201008_java.Interface.Service3DialogClickListener;
 import com.example.ourcleaner_201008_java.R;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +33,7 @@ public class Service3_Activity extends AppCompatActivity {
     /* 화면에서 쓰는 변수 */
     LinearLayout ironingLayout, fridgeLayout;
     CheckBox ironingCheckbox, fridgeCheckbox;
+    Button ironingBtn, fridgeBtn;
 
     TextView plusTimeTxt;
 
@@ -68,6 +68,9 @@ public class Service3_Activity extends AppCompatActivity {
         ironingCheckbox = findViewById(R.id.ironingCheckbox);
         fridgeCheckbox = findViewById(R.id.fridgeCheckbox);
 
+        ironingBtn=findViewById(R.id.ironingBtn);
+        fridgeBtn=findViewById(R.id.fridgeBtn);
+
         // 그 외 연결
         plusTimeTxt = findViewById(R.id.plusTimeTxt);
         plusTimeTxt.setText("+"+plusTimeInt+"분");
@@ -92,7 +95,8 @@ public class Service3_Activity extends AppCompatActivity {
 
                             // 이미 체크 된 상태 -> 체크 안 된 상태로 변경
                             ironingCheckbox.setChecked(false);
-                            ironingLayout.setBackgroundResource(R.drawable.bordergrey);
+                            ironingLayout.setBackgroundResource(R.drawable.shadow);
+                            ironingBtn.setTextColor(getResources().getColor(R.color.black));
 
                             Log.d(TAG, "=== plusTimeInt ===" + plusTimeInt); //plusTimeInt은 분으로만 나타냄
                             plusTimeInt = plusTimeInt-30; //30분 빼기
@@ -121,7 +125,8 @@ public class Service3_Activity extends AppCompatActivity {
                                     Log.d(TAG, "=== onPositiveClick ===" );
 
                                     ironingCheckbox.setChecked(true);
-                                    ironingLayout.setBackgroundResource(R.drawable.border);
+                                    ironingLayout.setBackgroundResource(R.drawable.shadow2);
+                                    ironingBtn.setTextColor(getResources().getColor(R.color.white));
 
                                     plusTimeInt = plusTimeInt+30; //30분 더하기
                                     Log.d(TAG, "=== plusTimeInt 30분 더하고난 후, ===" +plusTimeInt);
@@ -153,7 +158,8 @@ public class Service3_Activity extends AppCompatActivity {
                         if(fridgeCheckbox.isChecked()){
                             // 이미 체크 된 상태 -> 체크 안 된 상태로 변경
                             fridgeCheckbox.setChecked(false);
-                            fridgeLayout.setBackgroundResource(R.drawable.bordergrey);
+                            fridgeLayout.setBackgroundResource(R.drawable.shadow);
+                            fridgeBtn.setTextColor(getResources().getColor(R.color.black));
 
                             Log.d(TAG, "=== plusTimeInt ===" +plusTimeInt); //plusTimeInt은 분으로만 나타냄
                             plusTimeInt = plusTimeInt-120; //120분 빼기
@@ -181,7 +187,8 @@ public class Service3_Activity extends AppCompatActivity {
                                     Log.d(TAG, "=== onPositiveClick ===" );
 
                                     fridgeCheckbox.setChecked(true);
-                                    fridgeLayout.setBackgroundResource(R.drawable.border);
+                                    fridgeLayout.setBackgroundResource(R.drawable.shadow2);
+                                    fridgeBtn.setTextColor(getResources().getColor(R.color.white));
 
                                     plusTimeInt = plusTimeInt+120; //120분 더하기
                                     Log.d(TAG, "=== plusTimeInt 120분 더하고난 후, ===" +plusTimeInt);

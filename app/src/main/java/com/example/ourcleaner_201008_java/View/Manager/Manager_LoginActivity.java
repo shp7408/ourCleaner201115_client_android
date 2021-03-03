@@ -1,59 +1,42 @@
 package com.example.ourcleaner_201008_java.View.Manager;
+
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
-import android.widget.Toast;
-
-
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.ourcleaner_201008_java.ClientThread;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.Server.LoginRequest;
-import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Auto;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
 import com.example.ourcleaner_201008_java.View.GPSInfo;
-import com.example.ourcleaner_201008_java.View.LoginActivity;
-import com.example.ourcleaner_201008_java.View.MainActivity;
-import com.example.ourcleaner_201008_java.View.TermsActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class Manager_LoginActivity extends AppCompatActivity {
 
@@ -76,6 +59,20 @@ public class Manager_LoginActivity extends AppCompatActivity {
 
     private final int PERMISSIONS_ACCESS_FINE_LOCATION = 1000;
     private final int PERMISSIONS_ACCESS_COARSE_LOCATION = 1001;
+
+
+    /* 소켓 준비하는 부분 */
+    Socket client;
+    //String ip = "192.168.35.172"; //192.168.0.3
+    //String ip = "192.168.0.3"; //192.168.187.1
+    //String ip = "192.168.187.1"; //172.20.10.14
+    String ip ="192.168.0.6";
+
+    int port = 8080;
+
+    Thread thread;
+    ClientThread clientThread;
+    Handler handler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +126,9 @@ public class Manager_LoginActivity extends AppCompatActivity {
                                 Log.e(TAG, "=== passwordStr ===" +passwordStr);
                                 Log.e(TAG, "=== phoneNumStr ===" +phoneNumStr);
 
+
+                                /* 소켓 준비 */
+                                //instantiate();
 
 
                                 //현재 세션 유지를 위한 글로벌 어플리케이션에 idStr 저장하기
@@ -363,6 +363,27 @@ public class Manager_LoginActivity extends AppCompatActivity {
         } else {
             isPermission = true;
         }
+    }
+
+
+    /* 소켓 준비하는 부분 */
+    private void instantiate(){
+        Log.d(TAG, "=== connect() ===" );
+        thread = new Thread(){
+            public void run() {
+                super.run();
+                try {
+                    client = new Socket(ip, port);
+                    clientThread = new ClientThread(client, handler);
+                    clientThread.start();
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        thread.start();
     }
 
 

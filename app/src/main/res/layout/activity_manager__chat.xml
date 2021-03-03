@@ -10,10 +10,11 @@
     android:weightSum="20">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatList_recycle"
+        android:id="@+id/manager_chat_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="18"
+        tools:listitem="@layout/row_manager_chatlist"
         />
 
     <LinearLayout

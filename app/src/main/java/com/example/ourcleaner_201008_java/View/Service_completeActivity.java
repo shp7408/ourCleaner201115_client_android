@@ -1,25 +1,6 @@
 package com.example.ourcleaner_201008_java.View;
 
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,19 +15,40 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.ourcleaner_201008_java.CircleTransform;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ourcleaner_201008_java.DTO.MyCardDTO;
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.TokenSelectInterface;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.Service.FcmPushTest;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
-import com.squareup.picasso.Picasso;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import kr.co.bootpay.Bootpay;
@@ -55,8 +57,6 @@ import kr.co.bootpay.enums.Method;
 import kr.co.bootpay.enums.PG;
 import kr.co.bootpay.enums.UX;
 import kr.co.bootpay.javaApache.BootpayApi;
-import kr.co.bootpay.javaApache.model.request.Cancel;
-import kr.co.bootpay.javaApache.model.request.SubscribeBilling;
 import kr.co.bootpay.javaApache.model.request.User;
 import kr.co.bootpay.listener.CancelListener;
 import kr.co.bootpay.listener.CloseListener;
@@ -72,14 +72,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class Service_completeActivity extends AppCompatActivity {
 
@@ -788,7 +780,7 @@ public class Service_completeActivity extends AppCompatActivity {
                                                                 managerToken);
                                                     } catch (Exception e) {
                                                         e.printStackTrace();
-                                                        Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지저 경우. 그냥 넘어가도 딤 ==="+e );
+                                                        Log.d(TAG, "=== pushFCMNotification 에러코드 매니저 미지정 경우. 그냥 넘어가도 딤 ==="+e );
                                                     }
 
 
@@ -820,7 +812,10 @@ public class Service_completeActivity extends AppCompatActivity {
 
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("currentUser", serviceDTO3.getCurrentUser());
-                    params.put("serviceState", "매칭 대기 중");
+
+                    // TODO: 2021-01-09 수락 및 거절 기능 뺌..
+//                    params.put("serviceState", "매칭 대기 중");
+                    params.put("serviceState", "매칭 완료");
 
                     params.put("myplaceDTO_placeName", serviceDTO3.getMyplaceDTO().getPlaceNameStr());
                     params.put("myplaceDTO_address", serviceDTO3.getMyplaceDTO().getAddress());
@@ -1126,24 +1121,24 @@ public class Service_completeActivity extends AppCompatActivity {
         /* 인터페이스에서 정의한 메서드 / 인자로 보낼 값 넣는 곳 */
         Call<String> call = api.selectToken(email, whichClientManager);
 
-        Log.e(TAG, "=== email ===" +email);
-        Log.e(TAG, "=== whichClientManager 1이면 클라, 2면 매니저===" +whichClientManager);
+        Log.e(TAG, "postSelectToken === email ===" +email);
+        Log.e(TAG, "postSelectToken === whichClientManager 1이면 클라, 2면 매니저===" +whichClientManager);
 
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, retrofit2.Response<String> response) {
-                Log.e("Responsestring", response.body());
+                Log.e(TAG, "postSelectToken === onResponse ==="+response.body());
                 //Toast.makeText()
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Log.e(TAG, "onSuccess" + response.body());
+                        Log.e(TAG, "postSelectToken onSuccess" + response.body());
 
                         String jsonresponse = response.body();
-                        Log.e(TAG, "=== jsonresponse ===" +jsonresponse );
+                        Log.e(TAG, "postSelectToken === jsonresponse ===" +jsonresponse );
 
                         try {
                             org.json.JSONObject obj = new org.json.JSONObject(jsonresponse);
-                            Log.e(TAG, "=== response ===" +response);
+                            Log.e(TAG, "postSelectToken === response ===" +response);
 
                             if(obj.optString("status").equals("true")){
 
@@ -1157,7 +1152,7 @@ public class Service_completeActivity extends AppCompatActivity {
 
                                     managerToken = dataobj.getString("Token");
 
-                                    Log.e(TAG, "=== ddddddd ===managerToken" +managerToken);
+                                    Log.e(TAG, "postSelectToken === managerToken === " +managerToken);
 
 
 
@@ -1170,7 +1165,9 @@ public class Service_completeActivity extends AppCompatActivity {
                         }
 
                     } else {
-                        Log.e(TAG, "onEmptyResponse"+"Returned empty response");//Toast.makeText(getContext(),"Nothing returned",Toast.LENGTH_LONG).show();
+
+                        Log.e(TAG, "postSelectToken === Returned empty response === ");
+
                     }
                 }
             }
@@ -1178,7 +1175,7 @@ public class Service_completeActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
-                Log.e(TAG, "=== onFailure call ===" +call+" t"+t);
+                Log.e(TAG, "postSelectToken === onFailure === " +call+" t"+t);
 
             }
         });

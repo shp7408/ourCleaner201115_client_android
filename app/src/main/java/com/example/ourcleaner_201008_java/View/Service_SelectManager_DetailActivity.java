@@ -1,28 +1,29 @@
 package com.example.ourcleaner_201008_java.View;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.ourcleaner_201008_java.Adapter.SectionPageAdapter;
 import com.example.ourcleaner_201008_java.CircleTransform;
+import com.example.ourcleaner_201008_java.DTO.MyplaceDTO;
 import com.example.ourcleaner_201008_java.DTO.ServiceDTO;
 import com.example.ourcleaner_201008_java.Dialog.ExampleBottomSheetDialog;
-import com.example.ourcleaner_201008_java.GlobalApplication;
 import com.example.ourcleaner_201008_java.Interface.ManagerSelectDetailInterface;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.View.Fragment.Fragment_First;
@@ -35,14 +36,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,8 +48,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class Service_SelectManager_DetailActivity extends AppCompatActivity implements ExampleBottomSheetDialog.BottomSheetListener {
-//    public class Service_SelectManager_DetailActivity extends AppCompatActivity {
+public class Service_SelectManager_DetailActivity extends AppCompatActivity
+        implements
+        ExampleBottomSheetDialog.BottomSheetListener,
+        Fragment_First.OnDateCickListener,
+        Fragment_First.OnStartTimeClickListener{
 
     private static final String TAG = "매니저디테일정보";
 
@@ -73,10 +74,17 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
 
     /* 현재 엑티비티의 정보 담는 객체 */
     ServiceDTO serviceDTO;
+    MyplaceDTO myplaceDTO;
 
 //    CalendarView calendar_view;
 
 
+    /* 회색상자 */
+    TextView mainNeedTime, mainStartdate, mainStartTime, mainNeedCost;
+
+    String date, day;
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,23 +96,28 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
 
         //intent로 받을 때 사용하는 코드
         Intent intent = getIntent();
-        Log.d(TAG, "약관동의 엑티비티에서 인텐트 받음 intent :"+intent);
+        Log.d(TAG, "약관동의 엑티비티에서 인텐트 받음 intent :" + intent);
 
         managerEmail = intent.getStringExtra("managerEmail");
-        Log.e(TAG, "managerEmail: "+ managerEmail);
+        Log.e(TAG, "managerEmail: " + managerEmail);
         serviceDTO = (ServiceDTO) intent.getSerializableExtra("serviceDTO");
         Log.e(TAG, "serviceDTO getNeedDefCost: "+ serviceDTO.getNeedDefCost());
         Log.e(TAG, "serviceDTO getNeedDefTime: "+ serviceDTO.getNeedDefTime());
 
+        myplaceDTO= serviceDTO.getMyplaceDTO();
+        Log.e(TAG, "serviceDTO getNeedDefCost: "+ myplaceDTO.getSizeIndexint());
+        Log.e(TAG, "serviceDTO getNeedDefCost: "+ myplaceDTO.getSizeStr());
 
         linearlayout = findViewById(R.id.linearlayout);
 
-//        calendar_view = findViewById(R.id.calendar_view);
-//        settingdateCalendar();
-
-
         mcontext=this;
 
+        mainNeedTime = findViewById(R.id.mainNeedTime);
+        mainNeedTime.setText(serviceDTO.getNeedDefTime()/60+" 시간");
+
+        mainStartdate = findViewById(R.id.mainStartdate);
+        mainStartTime= findViewById(R.id.mainStartTime);
+        mainNeedCost = findViewById(R.id.mainNeedCost);
 
 
 
@@ -147,6 +160,8 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
         Bundle bundle = new Bundle();
         bundle.putInt("getNeedDefCost", serviceDTO.getNeedDefCost());
         bundle.putInt("getNeedDefTime", serviceDTO.getNeedDefTime());
+        bundle.putInt("getSizeIndexint", myplaceDTO.getSizeIndexint());
+        bundle.putString("getSizeStr", myplaceDTO.getSizeStr());
 
         fragment_first.setArguments(bundle);
 
@@ -171,21 +186,50 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
         chooseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e(TAG, "=== chooseBtn ===" );
+                Log.e(TAG, "=== chooseBtn 클릭 ===" );
 
                 //있으면 넘어감
-                Intent intent = new Intent();
-                intent.putExtra("managerNameEmailStr", nameTxt.getText().toString()+","+managerEmail);
+//                Intent intent = new Intent();
+//                intent.putExtra("managerNameEmailStr", nameTxt.getText().toString()+","+managerEmail);
 
-                setResult(1, intent); //Service1_TimeActivity.java 에서 미리 설정한 코드를 넣음
+//                setResult(1, intent); //Service1_TimeActivity.java 에서 미리 설정한 코드를 넣음
+//
+//                /* 장소등록엑티비티, 장소등록엑티비티2 삭제하기 위한 코드  4. finish() */
+//                cActivity.finish();
+//                finish();
 
-                /* 장소등록엑티비티, 장소등록엑티비티2 삭제하기 위한 코드  4. finish() */
-                cActivity.finish();
-                finish();
+
+                Log.d(TAG, "=== 객체 넣고 다음 화면으로 이동 ===" );
+                Intent intent = new Intent(getApplicationContext(), Service2_InfoActivity.class);
+                intent.putExtra("serviceDTO", serviceDTO);
+                startActivity(intent);
 
             }
         });
 
+
+        mainStartdate.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(mainStartdate.getText().toString()==""){
+                    Log.d(TAG, "=== 빈 상태임 안되면 null로 바꾸기 ===" );
+
+                }else{
+                    Log.d(TAG, "=== 안 비었음 ===" );
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
 
@@ -206,6 +250,11 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
     }
 
 
+    /* 매니저 이메일 서버로 보내서, 매니저 정보 가져오는 부분
+    * 이 때, 서비스 객체에
+    * 박서현,shp7400@naver.com
+    * 매니저이름 부분
+    * 셋함 */
     private void fetchJSON(){
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -251,6 +300,9 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
                                     managerUidStr = dataobj.getInt("uid");
                                     nameTxt.setText(dataobj.getString("nameStr"));
                                     phoneNumTxt.setText(dataobj.getString("phoneNumStr"));
+
+
+                                    serviceDTO.setManagerName(dataobj.getString("nameStr")+","+managerEmail);
 
                                     activateGuideTxt.setText(dataobj.getString("nameStr")+" 매니저 님이 주로 활동하는 지역입니다.");
 
@@ -362,6 +414,35 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
 
 
 
+    //int 형태의 정수 -> "3시간 30분" String으로 나타내는 메서드
+    public String timeIntToHourMin(int plusTimeInt){
+
+        long hour = TimeUnit.MINUTES.toHours(plusTimeInt); // 분을 시간으로 변경
+        Log.d(TAG, "=== hour ===" +hour);
+
+        long minutes = TimeUnit.MINUTES.toMinutes(plusTimeInt) - TimeUnit.HOURS.toMinutes(hour); // 시간으로 변경하고, 나머지 분
+        Log.d(TAG, "=== minutes ==="+minutes );
+
+        //이거 추가 해야 함.
+        String plusTimeStr;
+
+        if(hour==0){
+            Log.d(TAG, "=== hour==0  ===" );
+            plusTimeStr = minutes + "분";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }else if(minutes==0){
+            Log.d(TAG, "=== minutes==0 ===" );
+            plusTimeStr = hour + "시간";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }else{
+            Log.d(TAG, "=== hour 랑 minutes 둘 다 0이 아닌, 경우 ===" );
+            plusTimeStr = hour +"시간 "+ minutes + "분";
+            Log.d(TAG, "=== plusTimeStr ===" +plusTimeStr);
+        }
+
+        return plusTimeStr;
+    }
+
 
 
 
@@ -373,7 +454,81 @@ public class Service_SelectManager_DetailActivity extends AppCompatActivity impl
 //    }
 //
     @Override
-    public void onButtonClicked(int getNeedDefTime) {
+    public void onButtonClicked(int getNeedDefTime) { // 3~
         Log.d(TAG, "=== onButtonClicked ===" +getNeedDefTime);
+        Log.d(TAG, "=== onButtonClicked*60 ===" +getNeedDefTime*60);
+        /* 데이터 객체에서 시간도 바꾸고, 뷰에도 셋텍스트 해야 함 */
+        serviceDTO.setNeedDefTime(getNeedDefTime*60);
+        Log.d(TAG, "=== 전달할 객체 setNeedDefTime 바뀌었는지 확인하기 ===" +serviceDTO.getNeedDefTime());
+
+
+        mainNeedTime.setText(getNeedDefTime+" 시간");
+
+        int cost;
+
+        cost = 30000+(getNeedDefTime-3)*12000;
+
+
+        //숫자 천 자리에 콤마 찍기
+        DecimalFormat formatter = new DecimalFormat("###,###");
+
+        mainNeedCost.setText(formatter.format(cost)+ " 원");
+
+    }
+
+   @Override
+    public void onDateSetFinish(String date, String day) {
+        Log.e(TAG, "=== date day === " +date + day);
+
+
+        String monthStr, dateStr;
+
+        /* date 01.05 를 나누는 작업 */
+        monthStr = date.substring(0,2);
+        dateStr = date.substring(3);
+        Log.d(TAG, "=== monthStr ===" +monthStr);
+        Log.d(TAG, "=== dateStr ===" +dateStr);
+
+        mainStartdate.setText(remove0Word(monthStr)+"월 "+remove0Word(dateStr) +"일 ("+day+")");
+
+        serviceDTO.setVisitDate(remove0Word(monthStr)+"."+remove0Word(dateStr));
+        serviceDTO.setVisitDay(day);
+    }
+
+    /* String 날짜의 경우, 앞에 0 제거 */
+    public String remove0Word(String word){
+
+        String sum = "";
+        String firstWord = "";
+
+        for (int i = 0; i < word.length(); i++) {
+            String dic = word.substring(i, i+1);
+            if(i==0){firstWord=dic;}
+            if(i!=0 && !firstWord.equals("0")){
+
+                sum += dic;
+
+            }else if(!dic.equals("0")){
+                sum += dic;
+                firstWord = dic;
+            }
+            System.out.println(i + " : " + dic);
+
+        }
+
+        return sum;
+
+    }
+
+
+    @Override
+    public void onStartTimeFinish(int startTime) {
+        Log.d(TAG, "=== startTime ===" +startTime);
+        mainStartTime.setText(startTime/60+"시 시작");
+
+        serviceDTO.setStartTime(startTime);
+        chooseBtn.setEnabled(true);
+
+
     }
 }

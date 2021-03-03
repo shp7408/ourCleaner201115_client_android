@@ -22,8 +22,8 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.ourcleaner_201008_java.R.drawable.background2;
-import static com.example.ourcleaner_201008_java.R.drawable.bordercircle603grey;
 
+/* 고객용 - 내예약 목록 보는 어댑터 */
 public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdapter.Viewholder> {
 
     private static final String TAG = "나의예약 어댑터";
@@ -67,7 +67,7 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
         Log.d(TAG, "=== 뷰에 데이터 넣기 onBindViewHolder ===");
         MyReservationDTO myReservationDTO = reservationDTOArrayList.get(position);
 
-        holder.reserveDateTxt.setText(myReservationDTO.getServiceDate()+" 예약");
+        holder.reserveDateTxt.setText(myReservationDTO.getServiceDate()+ " "+myReservationDTO.getServiceTime());
         Log.d(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceDate());
 
         if(myReservationDTO.getServiceState().equals("매칭 대기 중")) {
@@ -82,27 +82,15 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
             int blackColcor = ContextCompat.getColor(mContext, R.color.black);
             holder.reserveStateTxt.setTextColor(blackColcor);
 
-            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
 
         } else if(myReservationDTO.getServiceState().equals("매칭 완료")){
             Log.e(TAG, "=== 매칭 완료인 경우, 검은색 배경 그대로 진행 서비스까지 남은 날짜 / 매니저 이름 보여주기 ===" );
-            Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
+            Log.e(TAG, "=== onBindViewHolder getServiceDate ===" +myReservationDTO.getServiceDate());
+
+            holder.reserveStateTxt.setText("청소 전");
 
 
-            // TODO: 2020-12-18 시연 당일 날짜 확인해야 함!!
-//            holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
-//                    calDateBetweenAandB("12.19",myReservationDTO.getServiceDate().substring(0,5))+" )");
 
-
-            if(calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))==0){
-                holder.reserveStateTxt.setText("예약 당일");
-            }else{
-                holder.reserveStateTxt.setText(myReservationDTO.getServiceState() +" ( D - "+
-                        calDateBetweenNowandB(myReservationDTO.getServiceDate().substring(0,5))+" )");
-            }
-
-
-            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
         } else if(myReservationDTO.getServiceState().equals("예약 취소")){
             Log.e(TAG, "=== 예약 취소인 경우, 회색 배경 그대로 진행 서비스까지 남은 날짜 / 매니저 이름 보여주기 ===" );
             Log.e(TAG, "=== getServiceDate ===" +myReservationDTO.getServiceState());
@@ -116,18 +104,32 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
             int greyColcor = ContextCompat.getColor(mContext, R.color.grey2);
             holder.reserveStateTxt.setTextColor(greyColcor);
 
-            holder.reserveDetailTxt.setText(myReservationDTO.getServiceTime());
+
+
+        } else if(myReservationDTO.getServiceState().equals("이동 중")){
+            Log.e(TAG, "=== 이동 중인 경우, 검은색 배경 그대로 진행 ===" );
+
+            holder.reserveStateTxt.setText("이동 중");
+
+            // TODO: 2020-12-18 시연 당일 날짜 확인해야 함!!
+
+
+
+        } else if(myReservationDTO.getServiceState().equals("청소 중")){
+            Log.e(TAG, "=== 청소 중인 경우, 검은색 배경 그대로 진행 ===" );
+
+            holder.reserveStateTxt.setText("청소 중");
+
+        } else if(myReservationDTO.getServiceState().equals("청소 완료")){
+            Log.e(TAG, "=== 청소 완료인 경우, 검은색 배경 그대로 진행 ===" );
+
+            holder.reserveStateTxt.setText("청소 완료");
+
         }
 
 
+        holder.reserveDetailTxt.setText(myReservationDTO.getPlaceName());
 
-
-//        holder.reserveDetailTxt.setText(myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
-
-
-
-
-        Log.d(TAG, "=== getServiceDate ===" +myReservationDTO.getPlaceName() + " " + myReservationDTO.getServiceTime());
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
@@ -213,7 +215,7 @@ public class MyReservationAdapter extends RecyclerView.Adapter<MyReservationAdap
         // TODO: 2020-12-18 시연할 때, 날짜 2021년 넘어가면 바꿔야 함...ㅎㅎ
         //입력할 때, 12.15 이런 식임
 
-        String nowYear2 = "2020";
+        String nowYear2 = "2021";
         String month2 = b.substring(0,2); //12월
         String date2 = b.substring(3); // 20일
         Log.e(TAG, "=== month2 ===" +month2 );

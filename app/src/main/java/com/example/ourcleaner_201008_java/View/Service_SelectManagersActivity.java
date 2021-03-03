@@ -1,19 +1,15 @@
 package com.example.ourcleaner_201008_java.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ourcleaner_201008_java.Adapter.MyManagerAdapter;
 import com.example.ourcleaner_201008_java.Adapter.SelectManagerAdapter;
@@ -28,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,13 +37,16 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class Service_SelectManagersActivity extends AppCompatActivity
         implements SelectManagerAdapter.OnListItemSelectedInterface{
 
+    /* 1. 우리동네 매니저
+    *  2. 내가 이용했던 매니저
+    * 목록 보여주는 화면*/
     private static final String TAG = "매니저선택엑티비티1";
 
 
     private SelectManagerAdapter selectManagerAdapter;
     private RecyclerView recyclerView;
 
-    ArrayList<ManagerDTO> managerDTOArrayList = new ArrayList<>();;
+    ArrayList<ManagerDTO> managerDTOArrayList = new ArrayList<>();
 
 
     private MyManagerAdapter myManagerAdapter;
@@ -127,6 +125,7 @@ public class Service_SelectManagersActivity extends AppCompatActivity
         Map<String, String> mapdata = new HashMap<>();
         mapdata.put("siGunGuStr", siGunGuStr2);
         mapdata.put("user", GlobalApplication.currentUser);
+        mapdata.put("visit", "dd");
 
         Log.e(TAG, "siGunGuStr"+siGunGuStr2);
         Log.e(TAG, "user"+GlobalApplication.currentUser);
@@ -178,7 +177,7 @@ public class Service_SelectManagersActivity extends AppCompatActivity
 
                     ManagerDTO managerDTOGide = new ManagerDTO();
 
-                    managerDTOGide.setNameStr("나의 매니저");
+                    managerDTOGide.setNameStr("회원님이 " +"'"+serviceDTO.getMyplaceDTO().getPlaceNameStr()+"'"+"에 예약했던 매니저님입니다.");
                     managerDTOGide.setViewType(0);
 
                     managerDTOArrayList.add(managerDTOGide);
@@ -304,10 +303,8 @@ public class Service_SelectManagersActivity extends AppCompatActivity
 
         Map<String, String> mapdata = new HashMap<>();
         mapdata.put("siGunGuStr", siGunGuStr2);
-        mapdata.put("eupmyundongStr", eupmyundongStr);
+        mapdata.put("user", GlobalApplication.currentUser);
 
-        Log.e(TAG, "3333333333 siGunGuStr"+siGunGuStr2);
-        Log.e(TAG, "3333333333 eupmyundongStr"+eupmyundongStr);
 
         Call<String> call = api.getNearManager(mapdata);
 

@@ -56,8 +56,8 @@ android:padding="5dp">
 
 
                     <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
                         android:background="@drawable/happy_small"
                         android:layout_marginStart="5dp"
@@ -69,9 +69,9 @@ android:padding="5dp">
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="3dp"
-                        android:text="80% (15)"
-                        android:textColor="@color/white"
-                        android:textSize="15sp"
+                        android:text="만족도 80%"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -80,8 +80,8 @@ android:padding="5dp">
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginStart="10dp"
-                        android:text="수행 완료 20 건"
-                        android:textColor="@color/white"
+                        android:text="20 건 완료"
+                        android:textColor="@color/black"
                         android:textSize="14sp"
                         android:gravity="center"
                         android:textStyle="bold" />
@@ -94,7 +94,7 @@ android:padding="5dp">
                         android:layout_marginStart="10dp"
                         android:text="재신청 의향 80%"
                         android:gravity="center"
-                        android:textColor="@color/white"
+                        android:textColor="@color/black"
                         android:textSize="14sp"
                         android:textStyle="bold" />
 

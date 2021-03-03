@@ -1,7 +1,5 @@
 package com.example.ourcleaner_201008_java.View.Manager;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,13 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.ourcleaner_201008_java.Interface.AlarmManagerSelectInterface;
 import com.example.ourcleaner_201008_java.Interface.ServiceStatesChangeInterface;
 import com.example.ourcleaner_201008_java.Interface.TokenSelectInterface;
 import com.example.ourcleaner_201008_java.R;
 import com.example.ourcleaner_201008_java.Service.FcmPushTest;
 import com.example.ourcleaner_201008_java.SharedP.PreferenceManager_Manager;
-import com.example.ourcleaner_201008_java.View.MainActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -547,7 +546,7 @@ public class Manager_AlarmActivity extends AppCompatActivity {
         return plusTimeStr;
     }
 
-    /* 레트로핏으로 서버에 이메일 보내서 토큰 받아오는 코드 - 서버에서 mysql에 저장 함*/
+    /* 레트로핏으로 서버에 이메일 보내서 토큰 받아오는 코드 - 서버에서 이메일에 해당하는 토큰값 가져오는 코드*/
     private void postSelectToken(String email, int whichClientManager){
 
         Log.e(TAG, "=== postManagerProfile 시작 ===" );
