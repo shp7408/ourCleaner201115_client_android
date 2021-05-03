@@ -50,7 +50,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="서비스에서 마음에 들었던 점을 선택해주세요."
+                android:text="서비스에서 마음에 들지 않았던 점이 무엇인가요?"
                 android:lineSpacingExtra="15dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -63,7 +63,7 @@
                 android:id="@+id/radio1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="깨끗하게 청소해주셨어요."
+                android:text="청소가 깨끗하지 않아요."
                 android:layout_marginStart="30dp"
                 android:textSize="20sp"/>
 
@@ -71,21 +71,21 @@
                 android:id="@+id/radio2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="시간 약속을 잘 지켜주셨어요."
+                android:text="시간 약속을 지키지 않았어요."
                 android:layout_marginStart="30dp"
                 android:textSize="20sp"/>
             <RadioButton
                 android:id="@+id/radio3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="친절하고 상냥하세요."
+                android:text="불친절했어요."
                 android:layout_marginStart="30dp"
                 android:textSize="20sp"/>
             <RadioButton
                 android:id="@+id/radio4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="요청한 업무를 모두 해주셨어요."
+                android:text="요청한 업무를 안해주셨어요."
                 android:layout_marginStart="30dp"
                 android:textSize="20sp"/>
 
